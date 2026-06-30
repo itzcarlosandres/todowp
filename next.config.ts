@@ -37,7 +37,6 @@ const securityHeaders = [
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
-  output: process.env.VERCEL ? undefined : "standalone",
   serverExternalPackages: ["jsdom", "isomorphic-dompurify"],
   experimental: {
     optimizePackageImports: [
