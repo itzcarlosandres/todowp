@@ -1,0 +1,539 @@
+{
+  "common": {
+    "siteName": "MarketFlow",
+    "siteDescription": "Marketplace premium de productos digitales",
+    "search": "Buscar productos...",
+    "searchPlaceholder": "Busca themes, plugins, templates...",
+    "loading": "Cargando...",
+    "error": "Algo salió mal",
+    "retry": "Reintentar",
+    "cancel": "Cancelar",
+    "save": "Guardar",
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "create": "Crear",
+    "back": "Volver",
+    "next": "Siguiente",
+    "previous": "Anterior",
+    "seeMore": "Ver más",
+    "seeLess": "Ver menos",
+    "seeAll": "Ver todo",
+    "viewDetails": "Ver detalles",
+    "learnMore": "Saber más",
+    "getStarted": "Empezar",
+    "submit": "Enviar",
+    "confirm": "Confirmar",
+    "yes": "Sí",
+    "no": "No",
+    "or": "o",
+    "and": "y",
+    "from": "desde",
+    "free": "Gratis",
+    "new": "Nuevo",
+    "popular": "Popular",
+    "trending": "Tendencia",
+    "featured": "Destacado",
+    "bestSeller": "Más vendido",
+    "exclusive": "Exclusivo",
+    "results": "resultados",
+    "noResults": "No se encontraron resultados",
+    "filterBy": "Filtrar por",
+    "sortBy": "Ordenar por",
+    "price": "Precio",
+    "category": "Categoría",
+    "categories": "Categorías",
+    "brand": "Marca",
+    "brands": "Marcas",
+    "rating": "Valoración",
+    "reviews": "Valoraciones",
+    "version": "Versión",
+    "compatibility": "Compatibilidad",
+    "size": "Tamaño",
+    "downloads": "Descargas",
+    "sales": "Ventas",
+    "license": "Licencia",
+    "licenses": "Licencias",
+    "tags": "Etiquetas",
+    "addedToCart": "Añadido al carrito",
+    "addToCart": "Añadir al carrito",
+    "buyNow": "Comprar ahora",
+    "addedToFavorites": "Añadido a favoritos",
+    "removedFromFavorites": "Eliminado de favoritos",
+    "language": "Cambiar idioma"
+  },
+  "nav": {
+    "home": "Inicio",
+    "products": "Productos",
+    "blog": "Blog",
+    "membership": "Membresías",
+    "pricing": "Precios",
+    "login": "Iniciar sesión",
+    "register": "Registrarse",
+    "logout": "Cerrar sesión",
+    "profile": "Perfil",
+    "dashboard": "Panel",
+    "admin": "Administración",
+    "cart": "Carrito",
+    "favorites": "Favoritos",
+    "downloads": "Descargas",
+    "orders": "Pedidos",
+    "settings": "Ajustes",
+    "support": "Soporte"
+  },
+  "home": {
+    "announcement": "🎉 Oferta de lanzamiento: 30% de descuento con el código LAUNCH30",
+    "hero": {
+      "badge": "Marketplace #1 en productos digitales",
+      "title": "El marketplace premium para creadores",
+      "subtitle": "Descubre miles de themes, plugins, templates y scripts creados por los mejores estudios del mundo. Calidad profesional, soporte premium y actualizaciones de por vida.",
+      "searchHint": "Prueba buscar: \"theme para portfolio\", \"plugin para reservas\", \"SaaS starter\"",
+      "stats": {
+        "products": "Productos",
+        "creators": "Creadores",
+        "downloads": "Descargas",
+        "satisfaction": "Satisfacción"
+      },
+      "trust": {
+        "payments": "Pagos 100% seguros",
+        "instant": "Descarga instantánea",
+        "support": "Soporte premium",
+        "updates": "Actualizaciones gratis"
+      }
+    },
+    "categories": {
+      "title": "Explora por categoría",
+      "subtitle": "Encuentra exactamente lo que necesitas",
+      "explore": "Explorar"
+    },
+    "brands": {
+      "title": "Marcas de confianza",
+      "subtitle": "Las mejores marcas y estudios crean aquí"
+    },
+    "featured": {
+      "title": "Productos destacados",
+      "subtitle": "Lo mejor de nuestro marketplace, seleccionado para ti"
+    },
+    "new": {
+      "title": "Recién llegados",
+      "subtitle": "Lo último en productos digitales"
+    },
+    "top": {
+      "title": "Los más vendidos",
+      "subtitle": "Los favoritos de nuestra comunidad"
+    },
+    "testimonials": {
+      "title": "Lo que dicen nuestros clientes",
+      "subtitle": "Miles de profesionales confían en nosotros"
+    },
+    "faq": {
+      "title": "Preguntas frecuentes",
+      "subtitle": "Resolvemos tus dudas"
+    },
+    "newsletter": {
+      "title": "No te pierdas nada",
+      "subtitle": "Recibe las últimas novedades, ofertas exclusivas y nuevos productos directamente en tu correo.",
+      "placeholder": "tu@email.com",
+      "cta": "Suscribirme",
+      "success": "¡Gracias por suscribirte!",
+      "privacy": "Respetamos tu privacidad. Puedes darte de baja en cualquier momento."
+    },
+    "cta": {
+      "title": "¿Listo para empezar?",
+      "subtitle": "Únete a miles de profesionales que ya confían en MarketFlow",
+      "button": "Explorar marketplace"
+    }
+  },
+  "products": {
+    "title": "Productos",
+    "subtitle": "Explora nuestro catálogo completo de productos digitales",
+    "filters": {
+      "title": "Filtros",
+      "clear": "Limpiar filtros",
+      "apply": "Aplicar",
+      "price": {
+        "title": "Precio",
+        "min": "Mínimo",
+        "max": "Máximo",
+        "free": "Gratis"
+      },
+      "category": "Categoría",
+      "brand": "Marca",
+      "type": "Tipo",
+      "rating": "Valoración",
+      "version": "Versión",
+      "compatibility": "Compatibilidad",
+      "features": "Características"
+    },
+    "sort": {
+      "newest": "Más recientes",
+      "oldest": "Más antiguos",
+      "popular": "Más populares",
+      "rating": "Mejor valorados",
+      "priceAsc": "Precio: menor a mayor",
+      "priceDesc": "Precio: mayor a menor",
+      "sales": "Más vendidos"
+    },
+    "view": {
+      "grid": "Cuadrícula",
+      "list": "Lista"
+    }
+  },
+  "product": {
+    "tabs": {
+      "description": "Descripción",
+      "versions": "Versiones",
+      "changelog": "Cambios",
+      "reviews": "Valoraciones",
+      "comments": "Comentarios",
+      "questions": "Preguntas",
+      "demo": "Demo",
+      "support": "Soporte",
+      "noReviews": "No hay valoraciones todavía",
+      "loginToReview": "Inicia sesión para dejar tu valoración",
+      "alreadyReviewed": "Ya has valorado este producto",
+      "purchaseToReview": "Solo los compradores verificados pueden dejar una valoración"
+    },
+    "actions": {
+      "addToCart": "Añadir al carrito",
+      "buyNow": "Comprar ahora",
+      "favorite": "Favorito",
+      "share": "Compartir",
+      "preview": "Ver demo",
+      "documentation": "Documentación"
+    },
+    "info": {
+      "updated": "Actualizado",
+      "released": "Lanzamiento",
+      "version": "Versión actual",
+      "downloads": "Descargas",
+      "sales": "Ventas",
+      "category": "Categoría",
+      "brand": "Marca",
+      "tags": "Etiquetas",
+      "fileSize": "Tamaño",
+      "fileType": "Tipo de archivo",
+      "compatibility": "Compatibilidad"
+    },
+    "license": {
+      "title": "Elige tu licencia",
+      "single": "Licencia individual",
+      "singleDesc": "Uso en 1 sitio web",
+      "unlimited": "Licencia ilimitada",
+      "unlimitedDesc": "Uso en sitios ilimitados"
+    },
+    "versions": {
+      "latest": "Última versión",
+      "changelog": "Ver cambios",
+      "releasedAt": "Lanzado el"
+    },
+    "reviews": {
+      "title": "Valoraciones",
+      "write": "Escribir valoración",
+      "verified": "Compra verificada",
+      "helpful": "Útil",
+      "noReviews": "Sé el primero en opinar",
+      "ratingLabel": "Tu puntuación",
+      "titleLabel": "Título de la valoración",
+      "bodyLabel": "¿Qué te pareció el producto?",
+      "titlePlaceholder": "Resume tu experiencia",
+      "bodyPlaceholder": "Cuéntanos los detalles: qué te gustó, qué se puede mejorar...",
+      "submit": "Enviar valoración",
+      "success": "¡Valoración enviada correctamente!",
+      "error": "No se pudo enviar la valoración",
+      "loginToReview": "Inicia sesión para dejar tu valoración",
+      "purchaseToReview": "Solo los compradores verificados pueden dejar una valoración",
+      "alreadyReviewed": "Ya has valorado este producto",
+      "ratingRequired": "Selecciona una puntuación",
+      "titleTooShort": "El título debe tener al menos 3 caracteres",
+      "titleTooLong": "El título no puede superar los 120 caracteres",
+      "bodyTooShort": "El comentario debe tener al menos 10 caracteres",
+      "bodyTooLong": "El comentario no puede superar los 2000 caracteres"
+    },
+    "questions": {
+      "title": "Preguntas y respuestas",
+      "ask": "Hacer una pregunta",
+      "noQuestions": "No hay preguntas todavía"
+    },
+    "related": {
+      "title": "Productos relacionados"
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Inicia sesión",
+      "subtitle": "Accede a tu cuenta para continuar",
+      "email": "Correo electrónico",
+      "password": "Contraseña",
+      "rememberMe": "Recuérdame",
+      "forgotPassword": "¿Olvidaste tu contraseña?",
+      "submit": "Iniciar sesión",
+      "noAccount": "¿No tienes cuenta?",
+      "signUp": "Regístrate",
+      "orContinueWith": "o continúa con"
+    },
+    "register": {
+      "title": "Crea tu cuenta",
+      "subtitle": "Únete a miles de profesionales",
+      "name": "Nombre",
+      "email": "Correo electrónico",
+      "password": "Contraseña",
+      "confirmPassword": "Confirma la contraseña",
+      "submit": "Crear cuenta",
+      "haveAccount": "¿Ya tienes cuenta?",
+      "signIn": "Inicia sesión",
+      "terms": "Al registrarte, aceptas nuestros términos y política de privacidad"
+    },
+    "2fa": {
+      "title": "Verificación en dos pasos",
+      "subtitle": "Introduce el código de tu aplicación autenticadora",
+      "code": "Código de 6 dígitos",
+      "submit": "Verificar",
+      "backup": "Usar código de respaldo"
+    },
+    "providers": {
+      "google": "Google",
+      "github": "GitHub",
+      "discord": "Discord"
+    }
+  },
+  "cart": {
+    "title": "Carrito",
+    "empty": "Tu carrito está vacío",
+    "continueShopping": "Continuar comprando",
+    "subtotal": "Subtotal",
+    "discount": "Descuento",
+    "tax": "Impuestos",
+    "total": "Total",
+    "checkout": "Finalizar compra",
+    "coupon": "Código de descuento",
+    "couponPlaceholder": "Introduce tu código",
+    "apply": "Aplicar",
+    "remove": "Eliminar",
+    "items": "productos"
+  },
+  "checkout": {
+    "title": "Finalizar compra",
+    "billing": "Información de facturación",
+    "payment": "Método de pago",
+    "summary": "Resumen del pedido",
+    "placeOrder": "Realizar pedido",
+    "processing": "Procesando...",
+    "methods": {
+      "stripe": "Tarjeta de crédito/débito",
+      "paypal": "PayPal",
+      "mercadopago": "MercadoPago",
+      "binance": "Binance Pay",
+      "crypto": "Criptomonedas",
+      "bank": "Transferencia bancaria"
+    },
+    "success": {
+      "title": "¡Compra realizada con éxito!",
+      "subtitle": "Gracias por tu compra. Recibirás un email con los detalles.",
+      "download": "Ir a descargas",
+      "orders": "Ver mis pedidos"
+    }
+  },
+  "dashboard": {
+    "welcome": "Bienvenido",
+    "overview": "Resumen",
+    "stats": {
+      "orders": "Pedidos",
+      "downloads": "Descargas",
+      "favorites": "Favoritos",
+      "spent": "Gastado"
+    },
+    "orders": {
+      "title": "Mis pedidos",
+      "orderNumber": "Número de pedido",
+      "date": "Fecha",
+      "total": "Total",
+      "status": "Estado",
+      "items": "Productos",
+      "view": "Ver pedido",
+      "empty": "No tienes pedidos todavía"
+    },
+    "downloads": {
+      "title": "Mis descargas",
+      "expiresAt": "Expira",
+      "download": "Descargar",
+      "empty": "No tienes descargas disponibles"
+    },
+    "licenses": {
+      "title": "Mis licencias",
+      "key": "Clave",
+      "type": "Tipo",
+      "activations": "Activaciones",
+      "status": "Estado",
+      "copy": "Copiar",
+      "copied": "¡Copiada!",
+      "empty": "No tienes licencias todavía"
+    },
+    "favorites": {
+      "title": "Mis favoritos",
+      "empty": "No tienes productos favoritos"
+    },
+    "settings": {
+      "title": "Ajustes",
+      "profile": "Perfil",
+      "security": "Seguridad",
+      "notifications": "Notificaciones",
+      "billing": "Facturación",
+      "apiKeys": "API Keys"
+    }
+  },
+  "admin": {
+    "title": "Panel de administración",
+    "stats": {
+      "revenue": "Ingresos",
+      "orders": "Pedidos",
+      "users": "Usuarios",
+      "products": "Productos"
+    },
+    "menu": {
+      "overview": "Resumen",
+      "products": "Productos",
+      "categories": "Categorías",
+      "brands": "Marcas",
+      "orders": "Pedidos",
+      "users": "Usuarios",
+      "coupons": "Cupones",
+      "blog": "Blog",
+      "tickets": "Tickets",
+      "logs": "Logs",
+      "emails": "Emails",
+      "settings": "Configuración",
+      "backups": "Backups",
+      "memberships": "Membresías"
+    }
+  },
+  "products": {
+    "title": "Explora nuestro catálogo",
+    "subtitle": "Descubre los mejores productos digitales para tu próximo proyecto",
+    "search": "Buscar productos...",
+    "filter": "Filtrar por",
+    "categories": "Categorías",
+    "priceRange": "Rango de precio",
+    "clearFilters": "Limpiar filtros",
+    "filters": {
+      "title": "Filtros",
+      "clear": "Limpiar",
+      "apply": "Aplicar filtros",
+      "price": {
+        "title": "Rango de precio"
+      },
+      "category": "Categorías",
+      "brand": "Marcas",
+      "rating": "Calificación mínima"
+    },
+    "sort": {
+      "newest": "Más recientes",
+      "oldest": "Más antiguos",
+      "popular": "Más populares",
+      "rating": "Mejor valorados",
+      "priceAsc": "Precio: Menor a mayor",
+      "priceDesc": "Precio: Mayor a menor",
+      "sales": "Más vendidos"
+    },
+    "view": {
+      "grid": "Vista de cuadrícula",
+      "list": "Vista de lista"
+    }
+  },
+  "footer": {
+    "company": "Empresa",
+    "about": "Sobre nosotros",
+    "careers": "Carreras",
+    "press": "Prensa",
+    "blog": "Blog",
+    "support": "Soporte",
+    "help": "Centro de ayuda",
+    "contact": "Contacto",
+    "documentation": "Documentación",
+    "api": "API",
+    "status": "Estado del servicio",
+    "legal": "Legal",
+    "terms": "Términos",
+    "privacy": "Privacidad",
+    "cookies": "Cookies",
+    "licenses": "Licencias",
+    "products": "Productos",
+    "products": "Productos",
+    "themes": "Themes",
+    "plugins": "Plugins",
+    "templates": "Templates",
+    "scripts": "Scripts",
+    "social": "Social",
+    "rights": "Todos los derechos reservados",
+    "newsletter": {
+      "title": "Mantente al día",
+      "description": "Recibe las últimas novedades y ofertas"
+    }
+  },
+  "errors": {
+    "notFound": "Página no encontrada",
+    "notFoundDesc": "La página que buscas no existe o ha sido movida",
+    "goHome": "Ir al inicio",
+    "serverError": "Error del servidor",
+    "serverErrorDesc": "Algo salió mal. Por favor, inténtalo de nuevo.",
+    "unauthorized": "No autorizado",
+    "unauthorizedDesc": "Necesitas iniciar sesión para acceder a esta página",
+    "forbidden": "Acceso denegado",
+    "validationError": "Por favor, revisa los datos introducidos"
+  },
+  "testimonials": {
+    "items": [
+      {
+        "name": "María González",
+        "role": "Diseñadora freelance",
+        "avatar": "https://i.pravatar.cc/100?img=1",
+        "content": "MarketFlow ha transformado mi flujo de trabajo. La calidad de los themes y el soporte son incomparables."
+      },
+      {
+        "name": "Carlos Ruiz",
+        "role": "CTO en TechStartup",
+        "avatar": "https://i.pravatar.cc/100?img=2",
+        "content": "Hemos ahorrado meses de desarrollo gracias a los SaaS starters. Una inversión que vale cada céntimo."
+      },
+      {
+        "name": "Laura Martínez",
+        "role": "Desarrolladora web",
+        "avatar": "https://i.pravatar.cc/100?img=3",
+        "content": "El marketplace favorito de mi equipo. Actualizaciones constantes, soporte premium y precios justos."
+      },
+      {
+        "name": "David Sánchez",
+        "role": "Agencia digital",
+        "avatar": "https://i.pravatar.cc/100?img=4",
+        "content": "Calidad profesional y una experiencia de compra impecable. Lo recomiendo a todos mis clientes."
+      }
+    ]
+  },
+  "faq": {
+    "items": [
+      {
+        "question": "¿Cómo descargo mis productos?",
+        "answer": "Después de comprar, recibirás un email con los enlaces de descarga. También puedes acceder a ellos en cualquier momento desde tu panel de usuario en la sección 'Descargas'."
+      },
+      {
+        "question": "¿Las licencias tienen caducidad?",
+        "answer": "No, todas las licencias son perpetuas. Compras una vez y puedes usar el producto para siempre, incluyendo todas las actualizaciones futuras."
+      },
+      {
+        "question": "¿Puedo usar los productos en proyectos comerciales?",
+        "answer": "Sí, todas nuestras licencias permiten el uso comercial. La licencia individual es para un sitio y la ilimitada para proyectos ilimitados."
+      },
+      {
+        "question": "¿Ofrecen soporte técnico?",
+        "answer": "Sí, ofrecemos soporte premium por 6 meses incluido con cada compra. Puedes ampliar el soporte en cualquier momento."
+      },
+      {
+        "question": "¿Cómo funcionan las actualizaciones?",
+        "answer": "Las actualizaciones son gratuitas de por vida. Te notificaremos por email cada vez que haya una nueva versión disponible."
+      },
+      {
+        "question": "¿Qué métodos de pago aceptan?",
+        "answer": "Aceptamos tarjeta de crédito/débito (Stripe), PayPal, MercadoPago, Binance Pay, criptomonedas y transferencia bancaria."
+      }
+    ]
+  }
+}

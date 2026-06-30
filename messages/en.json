@@ -1,0 +1,539 @@
+{
+  "common": {
+    "siteName": "MarketFlow",
+    "siteDescription": "Premium digital marketplace",
+    "search": "Search products...",
+    "searchPlaceholder": "Search themes, plugins, templates...",
+    "loading": "Loading...",
+    "error": "Something went wrong",
+    "retry": "Retry",
+    "cancel": "Cancel",
+    "save": "Save",
+    "edit": "Edit",
+    "delete": "Delete",
+    "create": "Create",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "seeMore": "See more",
+    "seeLess": "See less",
+    "seeAll": "See all",
+    "viewDetails": "View details",
+    "learnMore": "Learn more",
+    "getStarted": "Get started",
+    "submit": "Submit",
+    "confirm": "Confirm",
+    "yes": "Yes",
+    "no": "No",
+    "or": "or",
+    "and": "and",
+    "from": "from",
+    "free": "Free",
+    "new": "New",
+    "popular": "Popular",
+    "trending": "Trending",
+    "featured": "Featured",
+    "bestSeller": "Best seller",
+    "exclusive": "Exclusive",
+    "results": "results",
+    "noResults": "No results found",
+    "filterBy": "Filter by",
+    "sortBy": "Sort by",
+    "price": "Price",
+    "category": "Category",
+    "categories": "Categories",
+    "brand": "Brand",
+    "brands": "Brands",
+    "rating": "Rating",
+    "reviews": "Reviews",
+    "version": "Version",
+    "compatibility": "Compatibility",
+    "size": "Size",
+    "downloads": "Downloads",
+    "sales": "Sales",
+    "license": "License",
+    "licenses": "Licenses",
+    "tags": "Tags",
+    "addedToCart": "Added to cart",
+    "addToCart": "Add to cart",
+    "buyNow": "Buy now",
+    "addedToFavorites": "Added to favorites",
+    "removedFromFavorites": "Removed from favorites",
+    "language": "Change language"
+  },
+  "nav": {
+    "home": "Home",
+    "products": "Products",
+    "blog": "Blog",
+    "membership": "Memberships",
+    "pricing": "Pricing",
+    "login": "Login",
+    "register": "Sign up",
+    "logout": "Log out",
+    "profile": "Profile",
+    "dashboard": "Dashboard",
+    "admin": "Admin",
+    "cart": "Cart",
+    "favorites": "Favorites",
+    "downloads": "Downloads",
+    "orders": "Orders",
+    "settings": "Settings",
+    "support": "Support"
+  },
+  "home": {
+    "announcement": "🎉 Launch offer: 30% off with code LAUNCH30",
+    "hero": {
+      "badge": "#1 Marketplace for digital products",
+      "title": "The premium marketplace for creators",
+      "subtitle": "Discover thousands of themes, plugins, templates and scripts created by the world's best studios. Professional quality, premium support and lifetime updates.",
+      "searchHint": "Try searching: \"portfolio theme\", \"booking plugin\", \"SaaS starter\"",
+      "stats": {
+        "products": "Products",
+        "creators": "Creators",
+        "downloads": "Downloads",
+        "satisfaction": "Satisfaction"
+      },
+      "trust": {
+        "payments": "100% secure payments",
+        "instant": "Instant download",
+        "support": "Premium support",
+        "updates": "Free updates"
+      }
+    },
+    "categories": {
+      "title": "Explore by category",
+      "subtitle": "Find exactly what you need",
+      "explore": "Explore"
+    },
+    "brands": {
+      "title": "Trusted brands",
+      "subtitle": "The best brands and studios create here"
+    },
+    "featured": {
+      "title": "Featured products",
+      "subtitle": "The best of our marketplace, handpicked for you"
+    },
+    "new": {
+      "title": "Just arrived",
+      "subtitle": "The latest in digital products"
+    },
+    "top": {
+      "title": "Best sellers",
+      "subtitle": "Our community's favorites"
+    },
+    "testimonials": {
+      "title": "What our clients say",
+      "subtitle": "Thousands of professionals trust us"
+    },
+    "faq": {
+      "title": "Frequently asked questions",
+      "subtitle": "We answer your questions"
+    },
+    "newsletter": {
+      "title": "Don't miss anything",
+      "subtitle": "Get the latest news, exclusive offers and new products straight to your inbox.",
+      "placeholder": "you@email.com",
+      "cta": "Subscribe",
+      "success": "Thanks for subscribing!",
+      "privacy": "We respect your privacy. Unsubscribe at any time."
+    },
+    "cta": {
+      "title": "Ready to start?",
+      "subtitle": "Join thousands of professionals who already trust MarketFlow",
+      "button": "Explore marketplace"
+    }
+  },
+  "products": {
+    "title": "Products",
+    "subtitle": "Explore our complete catalog of digital products",
+    "filters": {
+      "title": "Filters",
+      "clear": "Clear filters",
+      "apply": "Apply",
+      "price": {
+        "title": "Price",
+        "min": "Min",
+        "max": "Max",
+        "free": "Free"
+      },
+      "category": "Category",
+      "brand": "Brand",
+      "type": "Type",
+      "rating": "Rating",
+      "version": "Version",
+      "compatibility": "Compatibility",
+      "features": "Features"
+    },
+    "sort": {
+      "newest": "Newest",
+      "oldest": "Oldest",
+      "popular": "Most popular",
+      "rating": "Top rated",
+      "priceAsc": "Price: low to high",
+      "priceDesc": "Price: high to low",
+      "sales": "Best sellers"
+    },
+    "view": {
+      "grid": "Grid",
+      "list": "List"
+    }
+  },
+  "product": {
+    "tabs": {
+      "description": "Description",
+      "versions": "Versions",
+      "changelog": "Changelog",
+      "reviews": "Reviews",
+      "comments": "Comments",
+      "questions": "Questions",
+      "demo": "Demo",
+      "support": "Support",
+      "noReviews": "No reviews yet",
+      "loginToReview": "Log in to leave a review",
+      "alreadyReviewed": "You have already reviewed this product",
+      "purchaseToReview": "Only verified buyers can leave a review"
+    },
+    "actions": {
+      "addToCart": "Add to cart",
+      "buyNow": "Buy now",
+      "favorite": "Favorite",
+      "share": "Share",
+      "preview": "Live demo",
+      "documentation": "Documentation"
+    },
+    "info": {
+      "updated": "Updated",
+      "released": "Released",
+      "version": "Current version",
+      "downloads": "Downloads",
+      "sales": "Sales",
+      "category": "Category",
+      "brand": "Brand",
+      "tags": "Tags",
+      "fileSize": "File size",
+      "fileType": "File type",
+      "compatibility": "Compatibility"
+    },
+    "license": {
+      "title": "Choose your license",
+      "single": "Single license",
+      "singleDesc": "Use in 1 website",
+      "unlimited": "Unlimited license",
+      "unlimitedDesc": "Use in unlimited websites"
+    },
+    "versions": {
+      "latest": "Latest version",
+      "changelog": "View changes",
+      "releasedAt": "Released on"
+    },
+    "reviews": {
+      "title": "Reviews",
+      "write": "Write a review",
+      "verified": "Verified purchase",
+      "helpful": "Helpful",
+      "noReviews": "Be the first to review",
+      "ratingLabel": "Your rating",
+      "titleLabel": "Review title",
+      "bodyLabel": "What did you think of the product?",
+      "titlePlaceholder": "Summarize your experience",
+      "bodyPlaceholder": "Tell us the details: what you liked, what could be improved...",
+      "submit": "Submit review",
+      "success": "Review submitted successfully!",
+      "error": "Could not submit review",
+      "loginToReview": "Log in to leave a review",
+      "purchaseToReview": "Only verified buyers can leave a review",
+      "alreadyReviewed": "You have already reviewed this product",
+      "ratingRequired": "Please select a rating",
+      "titleTooShort": "Title must be at least 3 characters",
+      "titleTooLong": "Title cannot exceed 120 characters",
+      "bodyTooShort": "Review must be at least 10 characters",
+      "bodyTooLong": "Review cannot exceed 2000 characters"
+    },
+    "questions": {
+      "title": "Questions and answers",
+      "ask": "Ask a question",
+      "noQuestions": "No questions yet"
+    },
+    "related": {
+      "title": "Related products"
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Log in",
+      "subtitle": "Access your account to continue",
+      "email": "Email",
+      "password": "Password",
+      "rememberMe": "Remember me",
+      "forgotPassword": "Forgot password?",
+      "submit": "Log in",
+      "noAccount": "Don't have an account?",
+      "signUp": "Sign up",
+      "orContinueWith": "or continue with"
+    },
+    "register": {
+      "title": "Create your account",
+      "subtitle": "Join thousands of professionals",
+      "name": "Name",
+      "email": "Email",
+      "password": "Password",
+      "confirmPassword": "Confirm password",
+      "submit": "Create account",
+      "haveAccount": "Already have an account?",
+      "signIn": "Log in",
+      "terms": "By signing up, you agree to our terms and privacy policy"
+    },
+    "2fa": {
+      "title": "Two-factor authentication",
+      "subtitle": "Enter the code from your authenticator app",
+      "code": "6-digit code",
+      "submit": "Verify",
+      "backup": "Use a backup code"
+    },
+    "providers": {
+      "google": "Google",
+      "github": "GitHub",
+      "discord": "Discord"
+    }
+  },
+  "cart": {
+    "title": "Cart",
+    "empty": "Your cart is empty",
+    "continueShopping": "Continue shopping",
+    "subtotal": "Subtotal",
+    "discount": "Discount",
+    "tax": "Tax",
+    "total": "Total",
+    "checkout": "Checkout",
+    "coupon": "Discount code",
+    "couponPlaceholder": "Enter your code",
+    "apply": "Apply",
+    "remove": "Remove",
+    "items": "items"
+  },
+  "checkout": {
+    "title": "Checkout",
+    "billing": "Billing information",
+    "payment": "Payment method",
+    "summary": "Order summary",
+    "placeOrder": "Place order",
+    "processing": "Processing...",
+    "methods": {
+      "stripe": "Credit/debit card",
+      "paypal": "PayPal",
+      "mercadopago": "MercadoPago",
+      "binance": "Binance Pay",
+      "crypto": "Cryptocurrencies",
+      "bank": "Bank transfer"
+    },
+    "success": {
+      "title": "Purchase completed!",
+      "subtitle": "Thanks for your purchase. You'll receive an email with the details.",
+      "download": "Go to downloads",
+      "orders": "View my orders"
+    }
+  },
+  "dashboard": {
+    "welcome": "Welcome",
+    "overview": "Overview",
+    "stats": {
+      "orders": "Orders",
+      "downloads": "Downloads",
+      "favorites": "Favorites",
+      "spent": "Spent"
+    },
+    "orders": {
+      "title": "My orders",
+      "orderNumber": "Order number",
+      "date": "Date",
+      "total": "Total",
+      "status": "Status",
+      "items": "Items",
+      "view": "View order",
+      "empty": "You don't have any orders yet"
+    },
+    "downloads": {
+      "title": "My downloads",
+      "expiresAt": "Expires",
+      "download": "Download",
+      "empty": "You don't have any downloads available"
+    },
+    "licenses": {
+      "title": "My licenses",
+      "key": "Key",
+      "type": "Type",
+      "activations": "Activations",
+      "status": "Status",
+      "copy": "Copy",
+      "copied": "Copied!",
+      "empty": "You don't have any licenses yet"
+    },
+    "favorites": {
+      "title": "My favorites",
+      "empty": "You don't have any favorite products"
+    },
+    "settings": {
+      "title": "Settings",
+      "profile": "Profile",
+      "security": "Security",
+      "notifications": "Notifications",
+      "billing": "Billing",
+      "apiKeys": "API Keys"
+    }
+  },
+  "products": {
+    "title": "Explore our catalog",
+    "subtitle": "Discover the best digital products for your next project",
+    "search": "Search products...",
+    "filter": "Filter by",
+    "categories": "Categories",
+    "priceRange": "Price range",
+    "clearFilters": "Clear filters",
+    "filters": {
+      "title": "Filters",
+      "clear": "Clear",
+      "apply": "Apply filters",
+      "price": {
+        "title": "Price range"
+      },
+      "category": "Categories",
+      "brand": "Brands",
+      "rating": "Minimum rating"
+    },
+    "sort": {
+      "newest": "Newest",
+      "oldest": "Oldest",
+      "popular": "Most popular",
+      "rating": "Highest rated",
+      "priceAsc": "Price: Low to High",
+      "priceDesc": "Price: High to Low",
+      "sales": "Best selling"
+    },
+    "view": {
+      "grid": "Grid view",
+      "list": "List view"
+    }
+  },
+  "admin": {
+    "title": "Admin panel",
+    "stats": {
+      "revenue": "Revenue",
+      "orders": "Orders",
+      "users": "Users",
+      "products": "Products"
+    },
+    "menu": {
+      "overview": "Overview",
+      "products": "Products",
+      "categories": "Categories",
+      "brands": "Brands",
+      "orders": "Orders",
+      "users": "Users",
+      "coupons": "Coupons",
+      "blog": "Blog",
+      "tickets": "Tickets",
+      "logs": "Logs",
+      "emails": "Emails",
+      "settings": "Settings",
+      "backups": "Backups",
+      "memberships": "Memberships"
+    }
+  },
+  "footer": {
+    "company": "Company",
+    "about": "About us",
+    "careers": "Careers",
+    "press": "Press",
+    "blog": "Blog",
+    "support": "Support",
+    "help": "Help center",
+    "contact": "Contact",
+    "documentation": "Documentation",
+    "api": "API",
+    "status": "Service status",
+    "legal": "Legal",
+    "terms": "Terms",
+    "privacy": "Privacy",
+    "cookies": "Cookies",
+    "licenses": "Licenses",
+    "products": "Products",
+    "products": "Products",
+    "themes": "Themes",
+    "plugins": "Plugins",
+    "templates": "Templates",
+    "scripts": "Scripts",
+    "social": "Social",
+    "rights": "All rights reserved",
+    "newsletter": {
+      "title": "Stay up to date",
+      "description": "Get the latest news and offers"
+    }
+  },
+  "errors": {
+    "notFound": "Page not found",
+    "notFoundDesc": "The page you're looking for doesn't exist or has been moved",
+    "goHome": "Go home",
+    "serverError": "Server error",
+    "serverErrorDesc": "Something went wrong. Please try again.",
+    "unauthorized": "Unauthorized",
+    "unauthorizedDesc": "You need to log in to access this page",
+    "forbidden": "Access denied",
+    "validationError": "Please review the data entered"
+  },
+  "testimonials": {
+    "items": [
+      {
+        "name": "María González",
+        "role": "Freelance designer",
+        "avatar": "https://i.pravatar.cc/100?img=1",
+        "content": "MarketFlow has transformed my workflow. The quality of the themes and the support are unmatched."
+      },
+      {
+        "name": "Carlos Ruiz",
+        "role": "CTO at TechStartup",
+        "avatar": "https://i.pravatar.cc/100?img=2",
+        "content": "We've saved months of development thanks to the SaaS starters. An investment worth every penny."
+      },
+      {
+        "name": "Laura Martínez",
+        "role": "Web developer",
+        "avatar": "https://i.pravatar.cc/100?img=3",
+        "content": "My team's favorite marketplace. Constant updates, premium support and fair prices."
+      },
+      {
+        "name": "David Sánchez",
+        "role": "Digital agency",
+        "avatar": "https://i.pravatar.cc/100?img=4",
+        "content": "Professional quality and a flawless shopping experience. I recommend it to all my clients."
+      }
+    ]
+  },
+  "faq": {
+    "items": [
+      {
+        "question": "How do I download my products?",
+        "answer": "After purchasing, you'll receive an email with the download links. You can also access them anytime from your user dashboard under the 'Downloads' section."
+      },
+      {
+        "question": "Do licenses expire?",
+        "answer": "No, all licenses are perpetual. Buy once and use the product forever, including all future updates."
+      },
+      {
+        "question": "Can I use the products in commercial projects?",
+        "answer": "Yes, all our licenses allow commercial use. The single license is for one site and the unlimited for unlimited projects."
+      },
+      {
+        "question": "Do you offer technical support?",
+        "answer": "Yes, we offer premium support for 6 months included with each purchase. You can extend the support anytime."
+      },
+      {
+        "question": "How do updates work?",
+        "answer": "Updates are free for life. We'll notify you by email whenever a new version is available."
+      },
+      {
+        "question": "What payment methods do you accept?",
+        "answer": "We accept credit/debit card (Stripe), PayPal, MercadoPago, Binance Pay, cryptocurrencies and bank transfer."
+      }
+    ]
+  }
+}

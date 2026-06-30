@@ -1,0 +1,66 @@
+Skills recomendadas para el Frontend
+
+Para que el frontend se vea como una plataforma de nivel profesional, estas son las habilidades y tecnologías que deberías dominar o exigir en el proyecto:
+
+Core
+✅ HTML5 Semántico
+✅ CSS3 Moderno
+✅ TypeScript
+✅ React 19
+✅ Next.js 15 (App Router)
+UI/UX
+✅ Tailwind CSS v4
+✅ Shadcn/UI
+✅ Radix UI
+✅ Framer Motion
+✅ Lucide React
+✅ React Icons
+Estado y Datos
+✅ Zustand
+✅ TanStack Query
+✅ React Hook Form
+✅ Zod
+✅ Axios
+Optimización
+✅ Server Components
+✅ Suspense
+✅ Streaming
+✅ Lazy Loading
+✅ Dynamic Imports
+✅ Image Optimization
+✅ Partial Prerendering (PPR)
+SEO
+✅ Metadata API
+✅ JSON-LD
+✅ Open Graph
+✅ Sitemap
+✅ Robots
+✅ Canonical URLs
+Diseño
+✅ Sistema de diseño (Design System)
+✅ Tokens de color
+✅ Tipografía escalable
+✅ Espaciado consistente (8px Grid)
+✅ Modo claro/oscuro
+✅ Componentes reutilizables
+✅ Animaciones fluidas (60 FPS)
+Calidad
+✅ ESLint
+✅ Prettier
+✅ Husky
+✅ Commitlint
+✅ Storybook (opcional para documentar componentes)
+Mi recomendación de valor añadido
+
+En lugar de replicar únicamente ThemeForest, puedes diferenciarte con funciones que hoy son muy demandadas:
+
+Vista previa en vivo de temas y plugins dentro de un iframe aislado.
+Actualizaciones automáticas mediante una API propia y sistema de licencias.
+Centro de descargas con historial de versiones y changelog.
+Wishlist, comparación de productos y recomendaciones inteligentes.
+Búsqueda con IA que entienda consultas como "plugin para reservas WooCommerce".
+Panel analítico con métricas de ventas, descargas y productos más populares.
+CDN y almacenamiento S3/R2 para descargas rápidas en todo el mundo.
+PWA para que los clientes puedan instalar la tienda como una aplicación.
+
+Con esta arquitectura tendrías una base sólida para construir una plataforma de nivel comercial, preparada para crecer sin depender de WordPress y con tecnologías actuales del ecosistema React/Next.js.

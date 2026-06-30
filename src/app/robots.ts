@@ -1,0 +1,21 @@
+import type { MetadataRoute } from "next";
+import { SITE } from "@/lib/seo";
+
+export default function robots(): MetadataRoute.Robots {
+  return {
+    rules: [
+      {
+        userAgent: "*",
+        allow: "/",
+        disallow: ["/api/", "/admin/", "/dashboard/", "/_next/", "/private/"],
+      },
+      {
+        userAgent: "Googlebot",
+        allow: "/",
+        disallow: ["/api/", "/admin/", "/dashboard/"],
+      },
+    ],
+    sitemap: `${SITE.url}/sitemap.xml`,
+    host: SITE.url,
+  };
+}
