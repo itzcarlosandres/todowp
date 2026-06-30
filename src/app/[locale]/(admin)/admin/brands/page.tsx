@@ -9,11 +9,22 @@ import { Button } from "@/components/ui/button";
 import { Plus, MoreHorizontal } from "lucide-react";
 import Link from "next/link";
 
+type AdminBrand = {
+  id: string;
+  name: string;
+  slug: string;
+  logo: string | null;
+  website: string | null;
+  isActive: boolean;
+  createdAt: Date;
+  _count: { products: number };
+};
+
 export default async function AdminBrandsPage() {
   const session = await auth();
   if (!session?.user || session.user.role !== "ADMIN") redirect("/login");
   
-  const brands = await db.brand.findMany({
+  const brands: AdminBrand[] = await db.brand.findMany({
     take: 50,
     orderBy: { createdAt: "desc" },
     select: {
