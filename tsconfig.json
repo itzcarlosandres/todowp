@@ -41,5 +41,5 @@
     "**/*.tsx",
     ".next/types/**/*.ts"
   ],
-  "exclude": ["node_modules", ".next", "out", "dist"]
+  "exclude": ["node_modules", ".next", "out", "dist", "prisma", "tests", "e2e", "vitest.config.ts", "playwright.config.ts"]
 }
