@@ -42,7 +42,7 @@ export default async function DashboardDownloadsPage() {
   );
 
   return (
-    <div className="container-fluid py-8">
+    <>
       <h1 className="mb-6 text-3xl font-bold tracking-tight">Mis descargas</h1>
       {purchasedItems.length === 0 ? (
         <Card>
@@ -90,6 +90,6 @@ export default async function DashboardDownloadsPage() {
           })}
         </div>
       )}
-    </div>
+    </>
   );
 }

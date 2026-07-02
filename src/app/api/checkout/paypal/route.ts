@@ -1,11 +1,12 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
+import { applyCashbackToOrder } from "@/modules/cashback/checkout-helper";
 
 export async function POST(req: Request) {
   try {
     const session = await auth();
-    const { items, subtotal, type, planId } = await req.json();
+    const { items, subtotal, type, planId, useCashback } = await req.json();
 
     const isMembership = type === "membership";
 
@@ -16,7 +17,6 @@ export async function POST(req: Request) {
     const email = session?.user?.email || "guest@example.com";
     const userId = session?.user?.id;
 
-    // 1. Obtener credenciales de la BD
     const settings = await db.setting.findMany({
       where: { key: { in: ["payment_paypal_client_id", "payment_paypal_secret"] } },
     });
@@ -53,10 +53,20 @@ export async function POST(req: Request) {
       };
     }
 
-    // 2. Crear orden local en estado PENDING
-    const order = await db.order.create({
-      data: orderData,
-    });
+    const order = await db.order.create({ data: orderData });
+
+    // Apply cashback
+    let finalTotal = subtotal;
+    if (useCashback && userId && !isMembership) {
+      const result = await applyCashbackToOrder(userId, order.id, subtotal);
+      if (result.discount > 0) {
+        finalTotal = result.finalTotal;
+        await db.order.update({
+          where: { id: order.id },
+          data: { discount: result.discount, total: result.finalTotal },
+        });
+      }
+    }
 
     // 3. Autenticarse con PayPal (Basic Auth)
     const authString = Buffer.from(`${clientId}:${secret}`).toString("base64");
@@ -90,8 +100,8 @@ export async function POST(req: Request) {
           {
             reference_id: order.id,
             amount: {
-              currency_code: "USD", // Asegúrate de que esto coincida con tu moneda base
-              value: subtotal.toFixed(2),
+                currency_code: "USD",
+                value: finalTotal.toFixed(2),
             },
           },
         ],

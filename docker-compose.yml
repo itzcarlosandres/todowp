@@ -3,13 +3,13 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: marketflow-app
+    container_name: todowp-app
     restart: unless-stopped
     ports:
       - "3000:3000"
     environment:
       - NODE_ENV=production
-      - DATABASE_URL=postgresql://postgres:postgres@db:5432/marketflow
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/todowp
       - REDIS_URL=redis://redis:6379
       - AUTH_SECRET=${AUTH_SECRET:-changeme-please-generate-with-openssl}
       - AUTH_URL=${AUTH_URL:-http://localhost:3000}
@@ -28,16 +28,16 @@ services:
       redis:
         condition: service_healthy
     networks:
-      - marketflow
+      - todowp
 
   db:
     image: postgres:16-alpine
-    container_name: marketflow-db
+    container_name: todowp-db
     restart: unless-stopped
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=marketflow
+      - POSTGRES_DB=todowp
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
@@ -48,11 +48,11 @@ services:
       timeout: 5s
       retries: 5
     networks:
-      - marketflow
+      - todowp
 
   redis:
     image: redis:7-alpine
-    container_name: marketflow-redis
+    container_name: todowp-redis
     restart: unless-stopped
     command: redis-server --appendonly yes --maxmemory 256mb --maxmemory-policy allkeys-lru
     volumes:
@@ -65,12 +65,12 @@ services:
       timeout: 5s
       retries: 5
     networks:
-      - marketflow
+      - todowp
 
   # Opcional: MinIO para desarrollo local (S3 compatible)
   minio:
     image: minio/minio:latest
-    container_name: marketflow-minio
+    container_name: todowp-minio
     restart: unless-stopped
     command: server /data --console-address ":9001"
     environment:
@@ -82,18 +82,18 @@ services:
       - "9000:9000"
       - "9001:9001"
     networks:
-      - marketflow
+      - todowp
 
   # Opcional: MailHog para desarrollo local
   mailhog:
     image: mailhog/mailhog:latest
-    container_name: marketflow-mailhog
+    container_name: todowp-mailhog
     restart: unless-stopped
     ports:
       - "1025:1025"
       - "8025:8025"
     networks:
-      - marketflow
+      - todowp
 
 volumes:
   postgres_data:
@@ -101,5 +101,6 @@ volumes:
   minio_data:
 
 networks:
-  marketflow:
+  todowp:
     driver: bridge
+

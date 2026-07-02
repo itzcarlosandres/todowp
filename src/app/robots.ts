@@ -1,21 +1,14 @@
 import type { MetadataRoute } from "next";
-import { SITE } from "@/lib/seo";
+import { getSiteConfig } from "@/lib/site-config";
 
-export default function robots(): MetadataRoute.Robots {
+export default async function robots(): Promise<MetadataRoute.Robots> {
+  const site = await getSiteConfig();
   return {
     rules: [
-      {
-        userAgent: "*",
-        allow: "/",
-        disallow: ["/api/", "/admin/", "/dashboard/", "/_next/", "/private/"],
-      },
-      {
-        userAgent: "Googlebot",
-        allow: "/",
-        disallow: ["/api/", "/admin/", "/dashboard/"],
-      },
+      { userAgent: "*", allow: "/", disallow: ["/api/", "/admin/", "/dashboard/", "/_next/", "/private/"] },
+      { userAgent: "Googlebot", allow: "/", disallow: ["/api/", "/admin/", "/dashboard/"] },
     ],
-    sitemap: `${SITE.url}/sitemap.xml`,
-    host: SITE.url,
+    sitemap: `${site.url}/sitemap.xml`,
+    host: site.url,
   };
 }

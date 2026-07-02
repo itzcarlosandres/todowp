@@ -4,6 +4,7 @@ import { db } from "@/lib/db";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { BrandingForm } from "@/components/admin/settings/branding-form";
 import { FaqForm } from "@/components/admin/settings/faq-form";
+import { SmtpForm } from "@/components/admin/settings/smtp-form";
 import { StorageForm } from "@/components/admin/settings/storage-form";
 import { AiForm } from "@/components/admin/settings/ai-form";
 import { PaymentsForm } from "@/components/admin/settings/payments-form";
@@ -80,6 +81,7 @@ export default async function AdminSettingsPage({ params }: PageProps) {
           <TabsTrigger value="payments">Métodos de Pago</TabsTrigger>
           <TabsTrigger value="ai">IA (Gemini)</TabsTrigger>
           <TabsTrigger value="faqs">Preguntas Frecuentes</TabsTrigger>
+          <TabsTrigger value="smtp">Servidor SMTP</TabsTrigger>
         </TabsList>
         <TabsContent value="branding">
           <BrandingForm initialData={settings} />
@@ -101,6 +103,9 @@ export default async function AdminSettingsPage({ params }: PageProps) {
         </TabsContent>
         <TabsContent value="faqs">
           <FaqForm initialData={settings} />
+        </TabsContent>
+        <TabsContent value="smtp">
+          <SmtpForm initialData={settings} />
         </TabsContent>
       </Tabs>
     </div>

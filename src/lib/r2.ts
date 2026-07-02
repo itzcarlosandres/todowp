@@ -5,7 +5,7 @@ import { createReadStream } from "fs";
 const accountId = process.env.R2_ACCOUNT_ID;
 const accessKeyId = process.env.R2_ACCESS_KEY_ID;
 const secretAccessKey = process.env.R2_SECRET_ACCESS_KEY;
-const bucket = process.env.R2_BUCKET ?? "marketflow-files";
+const bucket = process.env.R2_BUCKET ?? "todowp-files";
 const endpoint =
   process.env.R2_ENDPOINT ?? `https://${accountId}.r2.cloudflarestorage.com`;
 

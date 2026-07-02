@@ -12,7 +12,7 @@ const testimonials = [
     role: "Diseñadora freelance",
     avatar: "https://i.pravatar.cc/100?img=1",
     content:
-      "MarketFlow ha transformado mi flujo de trabajo. La calidad de los themes y el soporte son incomparables.",
+      "TodoWP ha transformado mi flujo de trabajo. La calidad de los themes y el soporte son incomparables.",
     rating: 5,
   },
   {

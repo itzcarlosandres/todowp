@@ -1,0 +1,82 @@
+# Dependencies
+node_modules
+.pnpm-store
+
+# Next.js build
+.next
+out
+build
+dist
+
+# Production runtime
+.cache
+.turbo
+.vercel
+.netlify
+
+# Testing
+coverage
+.nyc_output
+test-results
+playwright-report
+test-results
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+pnpm-error.log*
+
+# Environment
+.env*.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# IDEs
+.idea
+.vscode
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Docker
+Dockerfile
+Dockerfile.*
+docker-compose.yml
+docker-compose.production.yml
+.dockerignore
+
+# Documentation
+README.md
+CHANGELOG.md
+CONTRIBUTING.md
+LICENSE
+docs/
+
+# Scripts y herramientas de desarrollo
+.husky/
+scripts/
+playwright.config.ts
+vitest.config.ts
+vitest.setup.ts
+e2e/
+test-db.ts
+dev-server.log
+dev-server-error.log
+
+# Backups y temporales
+*.tmp
+*.bak
+*.swp
+*.orig
+.rej

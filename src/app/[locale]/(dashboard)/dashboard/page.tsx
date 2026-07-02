@@ -35,10 +35,10 @@ export default async function DashboardPage() {
   ]);
 
   const stats = [
-    { label: t("stats.orders"), value: orderCount, icon: Package, color: "text-brand-500", href: "/dashboard/orders" },
-    { label: t("stats.downloads"), value: downloadCount, icon: Download, color: "text-blue-500", href: "/dashboard/downloads" },
-    { label: t("stats.favorites"), value: favoriteCount, icon: Heart, color: "text-pink-500", href: "/dashboard/favorites" },
-    { label: t("stats.spent"), value: formatPrice(Number(spentAgg._sum.total ?? 0)), icon: DollarSign, color: "text-green-500", href: "/dashboard/orders" },
+    { label: t("stats.orders"), value: orderCount, icon: Package, color: "text-brand-500" },
+    { label: t("stats.downloads"), value: downloadCount, icon: Download, color: "text-blue-500" },
+    { label: t("stats.favorites"), value: favoriteCount, icon: Heart, color: "text-pink-500" },
+    { label: t("stats.spent"), value: formatPrice(Number(spentAgg._sum.total ?? 0)), icon: DollarSign, color: "text-green-500" },
   ];
 
   const getMembershipStatus = () => {
@@ -50,7 +50,7 @@ export default async function DashboardPage() {
   const mStatus = getMembershipStatus();
 
   return (
-    <div className="container-fluid py-8">
+    <>
       <div className="mb-8">
         <h1 className="text-3xl font-bold tracking-tight">
           {t("welcome")}, {session.user.name ?? "usuario"} 👋
@@ -171,6 +171,6 @@ export default async function DashboardPage() {
           </CardContent>
         </Card>
       </div>
-    </div>
+    </>
   );
 }

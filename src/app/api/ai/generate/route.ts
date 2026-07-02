@@ -36,6 +36,26 @@ REGLAS ESTRICTAS:
 - No uses comillas, asteriscos ni Markdown.
 - Escribe directamente el texto, sin introducciones.
 - El producto es: "${prompt}"`;
+    } else if (type === "blog") {
+      geminiPrompt = `Eres un redactor profesional de blogs sobre WordPress, desarrollo web, plugins, themes y tecnología. 
+Escribe un artículo completo y optimizado para SEO sobre el siguiente tema: "${prompt}".
+
+REGLAS ESTRICTAS de formato:
+- Usa exactamente este formato Markdown limpio.
+- El título principal debe ser un H1 (# Título) corto (máximo 60 caracteres).
+- Usa H2 (## Sección) para las secciones principales.
+- Usa H3 (### Subsección) para subsecciones dentro de cada H2.
+- Usa **negritas** para palabras clave y conceptos importantes.
+- Usa listas con guiones (- item) para enumerar características o pasos.
+- NO uses H4, H5, ni H6. Máximo hasta H3.
+- Incluye entre 4 y 6 secciones con H2.
+- Cada párrafo debe tener 2-4 oraciones. No párrafos muy largos.
+- Incluye una introducción atractiva con palabras clave al inicio.
+- Incluye una conclusión o resumen final.
+- Añade un call-to-action al final como "## ¿Listo para empezar?" o similar.
+- Longitud total: entre 800 y 1500 palabras.
+- Optimiza naturalmente para SEO usando la palabra clave principal en el primer párrafo, en al menos 2 H2, y en la conclusión.
+- Usa un tono profesional pero cercano, enfocado en ayudar al lector.`;
     } else {
       geminiPrompt = `Eres un copywriter experto en ventas de productos digitales. 
 Escribe una descripción atractiva, profesional y detallada (formateada en texto plano sin markdown pesado) 

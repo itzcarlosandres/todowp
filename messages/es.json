@@ -1,6 +1,6 @@
 {
   "common": {
-    "siteName": "MarketFlow",
+    "siteName": "TodoWP",
     "siteDescription": "Marketplace premium de productos digitales",
     "search": "Buscar productos...",
     "searchPlaceholder": "Busca themes, plugins, templates...",
@@ -56,6 +56,7 @@
     "tags": "Etiquetas",
     "addedToCart": "Añadido al carrito",
     "addToCart": "Añadir al carrito",
+    "liveDemo": "Live Demo",
     "buyNow": "Comprar ahora",
     "addedToFavorites": "Añadido a favoritos",
     "removedFromFavorites": "Eliminado de favoritos",
@@ -139,7 +140,7 @@
     },
     "cta": {
       "title": "¿Listo para empezar?",
-      "subtitle": "Únete a miles de profesionales que ya confían en MarketFlow",
+      "subtitle": "Únete a miles de profesionales que ya confían en TodoWP",
       "button": "Explorar marketplace"
     }
   },
@@ -334,6 +335,19 @@
     }
   },
   "dashboard": {
+    "sidebar": {
+      "user": "Usuario",
+      "overview": "Resumen",
+      "orders": "Pedidos",
+      "downloads": "Descargas",
+      "licenses": "Licencias",
+      "favorites": "Favoritos",
+      "tickets": "Tickets",
+      "marketplace": "Marketplace",
+      "settings": "Ajustes",
+      "rewards": "Recompensas",
+      "logout": "Cerrar sesión"
+    },
     "welcome": "Bienvenido",
     "overview": "Resumen",
     "stats": {
@@ -375,10 +389,44 @@
     "settings": {
       "title": "Ajustes",
       "profile": "Perfil",
+      "profileDesc": "Actualiza tu información personal y foto de perfil",
+      "profileUpdated": "Perfil actualizado correctamente",
+      "nameLabel": "Nombre completo",
+      "usernameLabel": "Nombre de usuario",
+      "usernamePlaceholder": "tu_usuario",
+      "bioLabel": "Biografía",
+      "bioPlaceholder": "Cuéntanos un poco sobre ti...",
+      "saveProfile": "Guardar cambios",
+      "saving": "Guardando...",
+      "avatarTooBig": "La imagen no puede superar los 5MB",
+      "avatarUpdated": "Avatar actualizado correctamente",
+      "avatarError": "Error al subir el avatar",
       "security": "Seguridad",
+      "securityDesc": "Cambia tu contraseña",
+      "currentPassword": "Contraseña actual",
+      "newPassword": "Nueva contraseña",
+      "confirmPassword": "Confirmar nueva contraseña",
+      "changePassword": "Cambiar contraseña",
+      "passwordUpdated": "Contraseña actualizada correctamente",
+      "oauthPasswordNotice": "Tu cuenta usa inicio de sesión con Google/GitHub/Discord. No se puede cambiar la contraseña desde aquí.",
+      "accountInfo": "Información de la cuenta",
+      "role": "Rol",
+      "memberSince": "Miembro desde",
+      "twoFactor": "Verificación 2 pasos",
+      "enabled": "Activado",
+      "disabled": "Desactivado",
+      "email": "Email",
       "notifications": "Notificaciones",
       "billing": "Facturación",
-      "apiKeys": "API Keys"
+      "apiKeys": "API Keys",
+      "notifyNewProducts": "Novedades de productos",
+      "notifyNewProductsDesc": "Recibe alertas de nuevos productos",
+      "notifyOffers": "Ofertas y descuentos",
+      "notifyOffersDesc": "Promociones exclusivas",
+      "notifyUpdates": "Actualizaciones de productos",
+      "notifyUpdatesDesc": "Notificaciones de nuevas versiones",
+      "notifyMarketing": "Emails de marketing",
+      "notifyMarketingDesc": "Recibir emails promocionales y novedades"
     }
   },
   "admin": {
@@ -390,6 +438,11 @@
       "products": "Productos"
     },
     "menu": {
+      "sectionPrincipal": "Principal",
+      "sectionSales": "Ventas",
+      "sectionUsers": "Usuarios",
+      "sectionContent": "Contenido",
+      "sectionConfig": "Configuración",
       "overview": "Resumen",
       "products": "Productos",
       "categories": "Categorías",
@@ -399,11 +452,9 @@
       "coupons": "Cupones",
       "blog": "Blog",
       "tickets": "Tickets",
-      "logs": "Logs",
-      "emails": "Emails",
       "settings": "Configuración",
-      "backups": "Backups",
-      "memberships": "Membresías"
+      "memberships": "Membresías",
+      "cashback": "Cashback"
     }
   },
   "products": {
@@ -464,6 +515,7 @@
     "scripts": "Scripts",
     "social": "Social",
     "rights": "Todos los derechos reservados",
+    "refund": "Reembolsos",
     "newsletter": {
       "title": "Mantente al día",
       "description": "Recibe las últimas novedades y ofertas"
@@ -486,7 +538,7 @@
         "name": "María González",
         "role": "Diseñadora freelance",
         "avatar": "https://i.pravatar.cc/100?img=1",
-        "content": "MarketFlow ha transformado mi flujo de trabajo. La calidad de los themes y el soporte son incomparables."
+        "content": "TodoWP ha transformado mi flujo de trabajo. La calidad de los themes y el soporte son incomparables."
       },
       {
         "name": "Carlos Ruiz",
@@ -509,6 +561,8 @@
     ]
   },
   "faq": {
+    "title": "Preguntas frecuentes",
+    "subtitle": "Resolvemos tus dudas",
     "items": [
       {
         "question": "¿Cómo descargo mis productos?",
@@ -535,5 +589,106 @@
         "answer": "Aceptamos tarjeta de crédito/débito (Stripe), PayPal, MercadoPago, Binance Pay, criptomonedas y transferencia bancaria."
       }
     ]
+  },
+  "tickets": {
+    "title": "Tickets de soporte",
+    "subtitle": "Gestiona tus solicitudes de ayuda",
+    "newTicket": "Nuevo ticket",
+    "subject": "Asunto",
+    "subjectPlaceholder": "Describe brevemente tu problema",
+    "category": "Categoría",
+    "categoryPlaceholder": "Ej: Pagos, Descargas, Cuenta",
+    "priority": "Prioridad",
+    "low": "Baja",
+    "medium": "Media",
+    "high": "Alta",
+    "urgent": "Urgente",
+    "message": "Mensaje",
+    "messagePlaceholder": "Describe tu problema con detalle...",
+    "send": "Enviar ticket",
+    "created": "Ticket creado correctamente",
+    "empty": "No tienes tickets de soporte",
+    "replyPlaceholder": "Escribe tu respuesta...",
+    "replySent": "Respuesta enviada",
+    "status": "Estado",
+    "statusUpdated": "Estado actualizado",
+    "open": "Abierto",
+    "pending": "Pendiente",
+    "resolved": "Resuelto",
+    "closed": "Cerrado"
+  },
+  "legal": {
+    "terms": {
+      "title": "Términos y Condiciones",
+      "lastUpdated": "Última actualización",
+      "s1Title": "1. Aceptación de los términos",
+      "s1Content": "Al acceder y utilizar este sitio web, aceptas estar sujeto a estos términos y condiciones. Si no estás de acuerdo con alguna parte, no debes utilizar nuestros servicios.",
+      "s2Title": "2. Uso de productos digitales",
+      "s2Content": "Al adquirir un producto digital, recibes una licencia no exclusiva y no transferible para su uso. La licencia individual permite el uso en 1 sitio web o proyecto. La licencia ilimitada permite uso en múltiples proyectos. No está permitida la reventa, redistribución o sublicencia de los productos sin autorización expresa.",
+      "s3Title": "3. Propiedad intelectual",
+      "s3Content": "Todos los productos digitales disponibles en TodoWP son propiedad de sus respectivos creadores. La compra de un producto no transfiere la propiedad intelectual del mismo, solo otorga una licencia de uso según los términos especificados.",
+      "s4Title": "4. Cuentas de usuario",
+      "s4Content": "Eres responsable de mantener la confidencialidad de tu cuenta y contraseña. Debes notificar inmediatamente cualquier uso no autorizado. TodoWP no se hace responsable por pérdidas derivadas del acceso no autorizado a tu cuenta.",
+      "s5Title": "5. Limitación de responsabilidad",
+      "s5Content": "TodoWP proporciona los productos y servicios 'tal cual', sin garantías de ningún tipo. No garantizamos que los productos funcionen sin interrupciones o errores en todos los entornos. El uso de los productos es bajo tu propio riesgo.",
+      "s6Title": "6. Modificaciones",
+      "s6Content": "Nos reservamos el derecho de modificar estos términos en cualquier momento. Los cambios entrarán en vigor inmediatamente después de su publicación. El uso continuado del sitio después de los cambios constituye la aceptación de los nuevos términos."
+    },
+    "privacy": {
+      "title": "Política de Privacidad",
+      "lastUpdated": "Última actualización",
+      "s1Title": "1. Información que recopilamos",
+      "s1Content": "Recopilamos información que nos proporcionas directamente: nombre, email, información de facturación y detalles de pago al realizar una compra. También recopilamos datos de uso del sitio mediante cookies y tecnologías similares.",
+      "s2Title": "2. Uso de la información",
+      "s2Content": "Utilizamos tu información para procesar pedidos, proporcionar soporte, enviar actualizaciones de productos, mejorar nuestros servicios y enviar comunicaciones de marketing (solo si has dado tu consentimiento).",
+      "s3Title": "3. Compartir información",
+      "s3Content": "No vendemos tu información personal. Compartimos datos con procesadores de pago (Stripe, PayPal) para completar transacciones y con servicios de email para envío de comunicaciones. Todos los terceros cumplen con estándares de protección de datos.",
+      "s4Title": "4. Seguridad",
+      "s4Content": "Implementamos medidas de seguridad técnicas y organizativas para proteger tu información personal. Utilizamos encriptación SSL, autenticación segura y almacenamiento protegido de contraseñas mediante hashing.",
+      "s5Title": "5. Tus derechos",
+      "s5Content": "Tienes derecho a acceder, rectificar, eliminar y portar tus datos personales. Puedes solicitar la eliminación de tu cuenta y datos en cualquier momento contactando a nuestro equipo de soporte."
+    },
+    "cookies": {
+      "title": "Política de Cookies",
+      "lastUpdated": "Última actualización",
+      "s1Title": "1. ¿Qué son las cookies?",
+      "s1Content": "Las cookies son pequeños archivos de texto que los sitios web colocan en tu dispositivo para almacenar información sobre tus preferencias y actividad de navegación.",
+      "s2Title": "2. Cookies que utilizamos",
+      "s2Content": "Utilizamos cookies esenciales para el funcionamiento del sitio (sesión, autenticación), cookies de preferencias (idioma, tema oscuro) y cookies analíticas para entender cómo se usa nuestro sitio y mejorarlo.",
+      "s3Title": "3. Cookies de terceros",
+      "s3Content": "Algunos servicios que utilizamos (Stripe, Google Analytics) pueden colocar cookies en tu navegador. Estas cookies están sujetas a las políticas de privacidad de dichos terceros.",
+      "s4Title": "4. Control de cookies",
+      "s4Content": "Puedes configurar tu navegador para rechazar todas las cookies o para que te avise cuando se envía una cookie. Sin embargo, algunas funciones del sitio pueden no funcionar correctamente sin cookies."
+    },
+    "refund": {
+      "title": "Política de Reembolso",
+      "lastUpdated": "Última actualización",
+      "s1Title": "1. Productos digitales",
+      "s1Content": "Debido a la naturaleza digital de nuestros productos, generalmente no ofrecemos reembolsos una vez que el producto ha sido descargado. Te recomendamos revisar cuidadosamente la descripción, demostraciones y requisitos antes de comprar.",
+      "s2Title": "2. Excepciones",
+      "s2Content": "Se considerarán reembolsos en los siguientes casos: (a) el producto no funciona como se describe y el vendedor no puede resolver el problema en 7 días hábiles, (b) el producto no fue entregado o el archivo está corrupto, (c) compra duplicada por error técnico.",
+      "s3Title": "3. Proceso de solicitud",
+      "s3Content": "Para solicitar un reembolso, contacta a nuestro equipo de soporte dentro de los 14 días posteriores a la compra. Incluye el número de pedido, el producto y una explicación detallada del problema. Evaluaremos cada caso individualmente.",
+      "s4Title": "4. Tiempo de procesamiento",
+      "s4Content": "Los reembolsos aprobados se procesarán en un plazo de 5 a 10 días hábiles y se realizarán a través del mismo método de pago utilizado en la compra. Recibirás una confirmación por email cuando se complete el reembolso."
+    },
+    "about": {
+      "title": "Sobre Nosotros",
+      "subtitle": "El marketplace premium donde los mejores creadores comparten sus productos digitales con el mundo.",
+      "p1": "TodoWP nació en 2024 con una misión clara: crear el mejor marketplace de productos digitales para profesionales. Creemos que los creadores merecen una plataforma justa, con herramientas potentes y una comunidad que valore su trabajo.",
+      "p2": "Trabajamos con los mejores estudios y desarrolladores independientes del mundo para ofrecerte themes, plugins, templates, scripts y SaaS starters de la más alta calidad. Cada producto pasa por un riguroso proceso de revisión antes de ser publicado.",
+      "p3": "Hoy, miles de profesionales confían en TodoWP para impulsar sus proyectos. Desde freelancers hasta agencias y startups, nuestra plataforma es el punto de encuentro entre creadores talentosos y compradores exigentes.",
+      "valuesTitle": "Nuestros valores",
+      "v1Title": "Calidad primero",
+      "v1Desc": "Solo aceptamos productos que cumplan con nuestros estándares de calidad. Cada envío es revisado manualmente.",
+      "v2Title": "Seguridad y confianza",
+      "v2Desc": "Pagos 100% seguros, licencias verificadas y protección al comprador en cada transacción.",
+      "v3Title": "Soporte real",
+      "v3Desc": "Atención personalizada para cada cliente. Respuesta en menos de 24 horas, siempre.",
+      "v4Title": "Comunidad global",
+      "v4Desc": "Creadores y compradores de todo el mundo. Productos en múltiples idiomas y monedas.",
+      "joinTitle": "Únete a TodoWP",
+      "joinContent": "Ya seas un creador buscando vender tus productos o un profesional buscando las mejores herramientas, TodoWP es tu lugar. Explora nuestro catálogo, descubre productos increíbles y forma parte de la comunidad de creadores más grande del mundo."
+    }
   }
 }

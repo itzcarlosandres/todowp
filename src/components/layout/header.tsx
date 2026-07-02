@@ -66,7 +66,7 @@ export function Header() {
       >
         <div className="container-fluid flex h-16 items-center justify-between gap-4">
           <div className="flex items-center gap-8">
-            <I18nLink href="/" className="flex items-center" aria-label="MarketFlow">
+            <I18nLink href="/" className="flex items-center" aria-label={process.env.NEXT_PUBLIC_APP_NAME || "TodoWP"}>
               <Logo />
             </I18nLink>
             <nav className="hidden items-center gap-1 md:flex">

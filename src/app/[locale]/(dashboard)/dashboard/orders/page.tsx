@@ -18,7 +18,7 @@ export default async function OrdersPage() {
   });
 
   return (
-    <div className="container-fluid py-8">
+    <>
       <h1 className="mb-6 text-3xl font-bold tracking-tight">{t("title")}</h1>
       {orders.length === 0 ? (
         <Card>
@@ -52,6 +52,6 @@ export default async function OrdersPage() {
           ))}
         </div>
       )}
-    </div>
+    </>
   );
 }

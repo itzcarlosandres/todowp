@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
-export const alt = "MarketFlow";
+export const alt = process.env.NEXT_PUBLIC_APP_NAME ?? "TodoWP";
 export const size = { width: 32, height: 32 };
 export const contentType = "image/png";
 

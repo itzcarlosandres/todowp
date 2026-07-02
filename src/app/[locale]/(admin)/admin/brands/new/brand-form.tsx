@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createBrandAction } from "./actions";
+import { updateBrandAction } from "../actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -11,14 +12,34 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 
-export function BrandForm() {
+interface BrandFormProps {
+  initialData?: { id: string; name: string; slug: string; description: string; logo: string; website: string };
+}
+
+export function BrandForm({ initialData }: BrandFormProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const isEdit = !!initialData;
+
+  const [slug, setSlug] = useState(initialData?.slug || "");
+
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (isEdit) return;
+    const value = e.target.value;
+    const autoSlug = value
+      .toLowerCase()
+      .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-z0-9 -]/g, "")
+      .replace(/\s+/g, "-")
+      .replace(/-+/g, "-")
+      .replace(/^-+|-+$/g, "");
+    setSlug(autoSlug);
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
-    
+
     const formData = new FormData(e.currentTarget);
     const data = {
       name: formData.get("name") as string,
@@ -28,61 +49,55 @@ export function BrandForm() {
       website: formData.get("website") as string,
     };
 
-    const result = await createBrandAction(data);
+    const result = isEdit ? await updateBrandAction(initialData!.id, data) : await createBrandAction(data);
     setLoading(false);
 
-    if (result.error) {
-      toast.error(result.error);
-    } else {
-      toast.success("Marca creada correctamente");
+    if (result.error) toast.error(result.error);
+    else {
+      toast.success(isEdit ? "Marca actualizada" : "Marca creada correctamente");
       router.push("/admin/brands");
       router.refresh();
     }
   };
 
   return (
-    <Card className="max-w-2xl mx-auto">
+    <Card>
       <CardHeader>
-        <CardTitle>Nueva Marca</CardTitle>
-        <CardDescription>Crea un nuevo estudio o marca para asociar productos.</CardDescription>
+        <CardTitle>{isEdit ? "Editar marca" : "Nueva marca"}</CardTitle>
+        <CardDescription>{isEdit ? "Modifica los datos de la marca" : "Registra una nueva marca o estudio en la plataforma"}</CardDescription>
       </CardHeader>
       <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="grid gap-4 sm:grid-cols-2">
             <div className="space-y-2">
-              <Label htmlFor="name">Nombre de la Marca</Label>
-              <Input id="name" name="name" placeholder="Ej. CodeForge" required />
+              <Label htmlFor="name">Nombre *</Label>
+              <Input id="name" name="name" defaultValue={initialData?.name || ""} required onChange={handleNameChange} />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="slug">Slug (URL amigable)</Label>
-              <Input id="slug" name="slug" placeholder="Ej. codeforge" required />
+              <Label htmlFor="slug">Slug *</Label>
+              <Input id="slug" name="slug" value={slug} onChange={(e) => setSlug(e.target.value)} required disabled={isEdit} />
             </div>
           </div>
-          
           <div className="space-y-2">
             <Label htmlFor="description">Descripción</Label>
-            <Textarea id="description" name="description" placeholder="Breve descripción del estudio..." />
+            <Textarea id="description" name="description" defaultValue={initialData?.description || ""} rows={2} />
           </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid gap-4 sm:grid-cols-2">
             <div className="space-y-2">
-              <Label htmlFor="logo">URL del Logo (Opcional)</Label>
-              <Input id="logo" name="logo" type="url" placeholder="https://..." />
+              <Label htmlFor="logo">Logo URL</Label>
+              <Input id="logo" name="logo" defaultValue={initialData?.logo || ""} placeholder="https://..." />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="website">Sitio Web (Opcional)</Label>
-              <Input id="website" name="website" type="url" placeholder="https://..." />
+              <Label htmlFor="website">Website</Label>
+              <Input id="website" name="website" defaultValue={initialData?.website || ""} placeholder="https://..." />
             </div>
           </div>
-
-          <div className="flex justify-end gap-2 pt-4">
-            <Button type="button" variant="outline" onClick={() => router.back()}>
-              Cancelar
-            </Button>
+          <div className="flex gap-3 pt-2">
             <Button type="submit" variant="brand" disabled={loading}>
-              {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              Guardar Marca
+              {loading && <Loader2 className="mr-2 size-4 animate-spin" />}
+              {isEdit ? "Guardar cambios" : "Crear marca"}
             </Button>
+            <Button type="button" variant="outline" onClick={() => router.push("/admin/brands")}>Cancelar</Button>
           </div>
         </form>
       </CardContent>

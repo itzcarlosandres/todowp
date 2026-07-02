@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { useTranslations } from "next-intl";
-import { History, Sparkles } from "lucide-react";
+import { History, Sparkles, ChevronDown } from "lucide-react";
 import { motion } from "framer-motion";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
@@ -20,6 +20,10 @@ interface ProductTabsProps {
 
 export function ProductTabs({ product, canReview = false, userHasReviewed = false, isAuthenticated = false }: ProductTabsProps) {
   const t = useTranslations("product.tabs");
+  const [descExpanded, setDescExpanded] = React.useState(false);
+  const descText = product.description || "";
+  const descShort = descText.length > 400 ? descText.slice(0, 400) + "..." : "";
+  const hasMore = descText.length > 400;
 
   return (
     <Tabs defaultValue="description" className="w-full">
@@ -31,8 +35,14 @@ export function ProductTabs({ product, canReview = false, userHasReviewed = fals
       </TabsList>
 
       <TabsContent value="description" className="space-y-6">
-        <div className="prose-content max-w-none">
-          {product.description.split("\n").map((line, i) => {
+        <div
+          className={`prose-content max-w-none relative ${
+            !descExpanded && hasMore
+              ? "max-h-[400px] overflow-hidden"
+              : "max-h-[5000px]"
+          } transition-all duration-700 ease-in-out`}
+        >
+          {(!descExpanded && hasMore ? descShort : descText).split("\n").map((line, i) => {
             if (line.startsWith("## "))
               return (
                 <h2 key={i}>{line.replace("## ", "")}</h2>
@@ -46,7 +56,23 @@ export function ProductTabs({ product, canReview = false, userHasReviewed = fals
             if (line.trim()) return <p key={i}>{line}</p>;
             return null;
           })}
+          {!descExpanded && hasMore && (
+            <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-card via-card/80 to-transparent pointer-events-none" />
+          )}
         </div>
+        {hasMore && (
+          <div className="flex justify-center">
+            <button
+              onClick={() => setDescExpanded(!descExpanded)}
+              className="group inline-flex items-center gap-2 rounded-full border border-brand-500/20 bg-brand-500/5 px-5 py-2 text-sm font-semibold text-brand-500 transition-all duration-300 hover:bg-brand-500/10 hover:border-brand-500/40 hover:shadow-lg hover:shadow-brand-500/10"
+            >
+              {descExpanded ? "Ver menos" : "Ver descripción completa"}
+              <ChevronDown
+                className={`size-4 transition-transform duration-500 ease-out ${descExpanded ? "rotate-180" : "group-hover:translate-y-0.5"}`}
+              />
+            </button>
+          </div>
+        )}
       </TabsContent>
 
       <TabsContent value="versions">

@@ -79,7 +79,7 @@ export function StorageForm({ initialData }: { initialData: Record<string, any> 
                 <Input 
                   name="r2_bucket_name" 
                   defaultValue={initialData.r2_bucket_name || ""} 
-                  placeholder="Ej. marketflow-storage"
+                  placeholder="Ej. todowp-storage"
                 />
               </div>
               <div className="space-y-2">

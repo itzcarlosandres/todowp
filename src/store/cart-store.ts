@@ -73,7 +73,7 @@ export const useCartStore = create<CartState>()(
       toggle: () => set((s) => ({ isOpen: !s.isOpen })),
     }),
     {
-      name: "marketflow-cart",
+      name: "todowp-cart",
       storage: createJSONStorage(() => localStorage),
       partialize: (state) => ({ items: state.items }),
     },

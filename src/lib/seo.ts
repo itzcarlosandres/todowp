@@ -1,15 +1,8 @@
 /**
  * Helpers para generar metadata SEO y JSON-LD.
  */
-
 import type { Metadata } from "next";
-import { getTranslations } from "next-intl/server";
-
-const SITE_NAME = "MarketFlow";
-const SITE_URL = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
-const DEFAULT_DESCRIPTION =
-  "Marketplace premium de productos digitales: WordPress themes, plugins, scripts PHP, templates UI, SaaS apps y más.";
-const DEFAULT_OG_IMAGE = `${SITE_URL}/og-default.png`;
+import { getSiteConfig } from "@/lib/site-config";
 
 export interface SeoMetadata {
   title?: string;
@@ -29,100 +22,90 @@ export async function generateMetadata(
   seo: SeoMetadata = {},
   locale: string = "es",
 ): Promise<Metadata> {
-  const t = await getTranslations({ locale, namespace: "common" });
+  const site = await getSiteConfig();
 
-  const title = seo.title ?? t("siteName");
-  const description = seo.description ?? DEFAULT_DESCRIPTION;
-  const image = seo.image ?? DEFAULT_OG_IMAGE;
-  const url = seo.url ?? SITE_URL;
+  const description = seo.description ?? site.description;
+  const image = seo.image ?? site.ogImage;
+  const url = seo.url ?? site.url;
 
-  return {
-    title: {
-      default: title,
-      template: `%s | ${SITE_NAME}`,
-    },
+  const result: Metadata = {
     description,
     keywords: seo.keywords,
     authors: seo.authors ? [{ name: seo.authors.join(", ") }] : undefined,
-    creator: SITE_NAME,
-    metadataBase: new URL(SITE_URL),
+    creator: site.displayName,
+    metadataBase: new URL(site.url),
     alternates: {
       canonical: url,
       languages: {
-        es: `${SITE_URL}/es`,
-        en: `${SITE_URL}/en`,
+        es: `${site.url}/es`,
+        en: `${site.url}/en`,
       },
     },
     openGraph: {
       type: seo.type ?? "website",
       locale: seo.locale ?? locale,
       url,
-      title,
+      title: seo.title ?? site.displayName,
       description,
-      siteName: SITE_NAME,
-      images: [
-        {
-          url: image,
-          width: 1200,
-          height: 630,
-          alt: title,
-        },
-      ],
+      siteName: site.displayName,
+      images: [{ url: image, width: 1200, height: 630, alt: seo.title ?? site.displayName }],
       publishedTime: seo.publishedTime,
       modifiedTime: seo.modifiedTime,
       authors: seo.authors,
     },
     twitter: {
       card: "summary_large_image",
-      title,
+      title: seo.title ?? site.displayName,
       description,
       images: [image],
-      creator: "@marketflow",
+      creator: "@todowp",
     },
     robots: seo.noIndex
       ? { index: false, follow: false }
       : { index: true, follow: true, googleBot: { index: true, follow: true } },
   };
+
+  if (seo.title) {
+    result.title = seo.title;
+  }
+
+  return result;
 }
 
-export const SITE = {
-  name: SITE_NAME,
-  url: SITE_URL,
-  defaultDescription: DEFAULT_DESCRIPTION,
-  defaultOgImage: DEFAULT_OG_IMAGE,
-} as const;
+export async function getSite() {
+  const site = await getSiteConfig();
+  return site;
+}
 
-// =========================
-// JSON-LD generators
-// =========================
-
-export function organizationJsonLd() {
+export async function organizationJsonLd() {
+  const site = await getSiteConfig();
   return {
     "@context": "https://schema.org",
     "@type": "Organization",
-    name: SITE_NAME,
-    url: SITE_URL,
-    logo: `${SITE_URL}/logo.png`,
-    description: DEFAULT_DESCRIPTION,
+    name: site.displayName,
+    url: site.url,
+    logo: `${site.url}/logo.png`,
+    description: site.description,
     sameAs: [
-      "https://twitter.com/marketflow",
-      "https://github.com/marketflow",
-      "https://discord.gg/marketflow",
+      "https://twitter.com/todowp",
+      "https://github.com/todowp",
+      "https://discord.gg/todowp",
     ],
   };
 }
 
-export function websiteJsonLd() {
+export async function websiteJsonLd() {
+  const site = await getSiteConfig();
   return {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    name: SITE_NAME,
-    url: SITE_URL,
+    name: site.displayName,
+    url: site.url,
     potentialAction: {
       "@type": "SearchAction",
       target: {
         "@type": "EntryPoint",
-        urlTemplate: `${SITE_URL}/products?q={search_term_string}`,
+        urlTemplate: `${site.url}/products?q={search_term_string}`,
       },
       "query-input": "required name=search_term_string",
     },
@@ -144,7 +127,8 @@ export interface ProductJsonLdInput {
   availability: "InStock" | "OutOfStock" | "PreOrder";
 }
 
-export function productJsonLd(p: ProductJsonLdInput) {
+export async function productJsonLd(p: ProductJsonLdInput) {
+  const site = await getSiteConfig();
   return {
     "@context": "https://schema.org",
     "@type": "Product",
@@ -160,7 +144,7 @@ export function productJsonLd(p: ProductJsonLdInput) {
       priceCurrency: p.currency,
       price: p.salePrice ?? p.price,
       availability: `https://schema.org/${p.availability}`,
-      seller: { "@type": "Organization", name: SITE_NAME },
+      seller: { "@type": "Organization", name: site.name },
     },
     aggregateRating:
       p.reviewCount > 0
@@ -175,9 +159,7 @@ export function productJsonLd(p: ProductJsonLdInput) {
   };
 }
 
-export function breadcrumbJsonLd(
-  items: { name: string; url: string }[],
-) {
+export function breadcrumbJsonLd(items: { name: string; url: string }[]) {
   return {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -190,7 +172,7 @@ export function breadcrumbJsonLd(
   };
 }
 
-export function articleJsonLd(input: {
+export async function articleJsonLd(input: {
   title: string;
   description: string;
   image: string;
@@ -199,6 +181,7 @@ export function articleJsonLd(input: {
   modifiedAt?: string;
   authorName: string;
 }) {
+  const site = await getSiteConfig();
   return {
     "@context": "https://schema.org",
     "@type": "Article",
@@ -210,8 +193,8 @@ export function articleJsonLd(input: {
     author: { "@type": "Person", name: input.authorName },
     publisher: {
       "@type": "Organization",
-      name: SITE_NAME,
-      logo: { "@type": "ImageObject", url: `${SITE_URL}/logo.png` },
+      name: site.name,
+      logo: { "@type": "ImageObject", url: `${site.url}/logo.png` },
     },
     mainEntityOfPage: { "@type": "WebPage", "@id": input.url },
   };

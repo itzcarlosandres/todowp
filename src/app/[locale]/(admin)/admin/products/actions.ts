@@ -17,6 +17,7 @@ export async function deleteProductAction(id: string) {
     });
 
     revalidatePath("/admin/products");
+    revalidatePath("/sitemap.xml");
     return { success: true };
   } catch (error) {
     return { error: "Error al eliminar el producto." };

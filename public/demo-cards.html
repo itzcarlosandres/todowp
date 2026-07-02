@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rediseños Premium · List & Card</title>
+<style>
+  *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+  :root{
+    --bg:#06080d;
+    --surface:#0b0f1a;
+    --surface2:#101524;
+    --border:#1a1f32;
+    --text:#e8ecf5;
+    --muted:#5f6b82;
+    --brand:#6366f1;
+    --amber:#f59e0b;
+    --green:#22c55e;
+    --rose:#f43f5e;
+    --cyan:#06b6d4;
+    --radius:16px;
+  }
+  body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);padding:2.5rem;line-height:1.5}
+  .wrap{max-width:1100px;margin:0 auto}
+  h1{font-size:2rem;font-weight:800;letter-spacing:-0.03em;text-align:center;background:linear-gradient(135deg,#a78bfa,#6366f1,#ec4899);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:.25rem}
+  .sub{text-align:center;color:var(--muted);margin-bottom:2.5rem;font-size:.9rem}
+  h2{font-size:1rem;font-weight:700;color:var(--muted);margin:3rem 0 1.25rem;display:flex;align-items:center;gap:.75rem;text-transform:uppercase;letter-spacing:.05em}
+  h2::after{content:'';flex:1;height:1px;background:var(--border)}
+
+  /* ============ ① PREMIUM LIST (elegido) ============ */
+  .d1-list{display:flex;flex-direction:column;gap:.5rem}
+  .d1{display:flex;align-items:center;gap:1rem;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.75rem 1rem;transition:all .25s;cursor:pointer;position:relative;overflow:hidden}
+  .d1::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:transparent;transition:background .3s}
+  .d1:hover::before{background:var(--brand)}
+  .d1:hover{background:var(--surface2);border-color:#2a2d4a;transform:translateX(2px);box-shadow:0 8px 30px rgba(0,0,0,.3)}
+  .d1 .rank{width:28px;text-align:center;font-size:.8rem;font-weight:800;color:var(--muted);flex-shrink:0}
+  .d1:nth-child(1) .rank{color:#f59e0b}
+  .d1:nth-child(2) .rank{color:#94a3b8}
+  .d1:nth-child(3) .rank{color:#b45309}
+  .d1:nth-child(4) .rank{color:var(--brand)}
+  .d1:nth-child(5) .rank{color:var(--brand)}
+  .d1 .thumb{width:52px;height:52px;border-radius:10px;object-fit:cover;flex-shrink:0;border:1px solid rgba(255,255,255,.04)}
+  .d1 .info{flex:1;min-width:0}
+  .d1 .info .title{font-size:.85rem;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:.15rem}
+  .d1 .info .meta{font-size:.68rem;color:var(--muted);display:flex;gap:.6rem;align-items:center}
+  .d1 .info .meta .dot{width:3px;height:3px;border-radius:50%;background:var(--muted);flex-shrink:0}
+  .d1 .tag{font-size:.58rem;font-weight:600;padding:.15em .55em;border-radius:5px;border:1px solid}
+  .d1 .tag-theme{border-color:rgba(99,102,241,.2);color:#a5b4fc;background:rgba(99,102,241,.06)}
+  .d1 .tag-plugin{border-color:rgba(34,197,94,.2);color:#4ade80;background:rgba(34,197,94,.06)}
+  .d1 .tag-script{border-color:rgba(6,182,212,.2);color:#22d3ee;background:rgba(6,182,212,.06)}
+  .d1 .tag-template{border-color:rgba(245,158,11,.2);color:#fcd34d;background:rgba(245,158,11,.06)}
+  .d1 .right-col{text-align:right;flex-shrink:0;min-width:90px}
+  .d1 .right-col .price{font-weight:800;font-size:.95rem;color:var(--text)}
+  .d1 .right-col .price .old{font-size:.65rem;color:#4b5563;text-decoration:line-through;margin-right:.3rem;font-weight:500}
+  .d1 .right-col .sales{font-size:.62rem;color:var(--muted);margin-top:.1rem}
+  .d1 .stars{color:var(--amber);font-size:.62rem;margin-top:.1rem}
+  @media(max-width:600px){.d1 .meta{display:none}.d1 .tag{display:none}}
+
+  /* ============ ② COMPACT LIST ============ */
+  .d2-wrap{display:flex;flex-direction:column;gap:.4rem}
+  .d2{display:flex;align-items:center;gap:.8rem;background:var(--surface);border:1px solid transparent;border-radius:10px;padding:.55rem .9rem;transition:all .2s;cursor:pointer}
+  .d2:hover{background:var(--surface2);border-color:#1e2440;transform:translateX(1px)}
+  .d2 .d2-img{width:40px;height:40px;border-radius:8px;object-fit:cover;flex-shrink:0}
+  .d2 .d2-info{flex:1;min-width:0;display:flex;align-items:center;gap:1rem}
+  .d2 .d2-info .d2-title{font-size:.8rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1}
+  .d2 .d2-badge{font-size:.55rem;font-weight:700;padding:.15em .45em;border-radius:4px;background:rgba(99,102,241,.1);color:var(--brand);border:1px solid rgba(99,102,241,.15);text-transform:uppercase;white-space:nowrap}
+  .d2 .d2-price{font-weight:700;font-size:.85rem;flex-shrink:0;min-width:55px;text-align:right}
+  .d2 .d2-price .old{font-size:.6rem;color:#4b5563;text-decoration:line-through;font-weight:500}
+  .d2 .d2-star{color:var(--amber);font-size:.65rem;flex-shrink:0;min-width:40px;text-align:right}
+
+  /* ============ ③ GRADIENT BORDER LIST ============ */
+  .d3-wrap{display:flex;flex-direction:column;gap:.5rem}
+  .d3{display:flex;align-items:center;gap:1rem;background:var(--surface);border-radius:12px;padding:.75rem 1rem;transition:all .3s;cursor:pointer;position:relative}
+  .d3::after{content:'';position:absolute;inset:0;border-radius:12px;padding:1px;background:linear-gradient(135deg,transparent,transparent);-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;transition:background .5s}
+  .d3:hover::after{background:linear-gradient(135deg,var(--brand),var(--cyan),var(--rose))}
+  .d3:hover{transform:translateY(-1px);box-shadow:0 12px 32px -6px rgba(0,0,0,.35)}
+  .d3 .d3-rank{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:800;flex-shrink:0;background:var(--surface2);color:var(--muted);border:1px solid var(--border)}
+  .d3:nth-child(1) .d3-rank{background:linear-gradient(135deg,rgba(245,158,11,.2),rgba(245,158,11,.05));border-color:rgba(245,158,11,.25);color:#f59e0b}
+  .d3:nth-child(2) .d3-rank{background:linear-gradient(135deg,rgba(148,163,184,.15),rgba(148,163,184,.03));border-color:rgba(148,163,184,.2);color:#94a3b8}
+  .d3:nth-child(3) .d3-rank{background:linear-gradient(135deg,rgba(180,83,9,.2),rgba(180,83,9,.05));border-color:rgba(180,83,9,.25);color:#b45309}
+  .d3 .d3-img{width:48px;height:48px;border-radius:10px;object-fit:cover;flex-shrink:0}
+  .d3 .d3-info{flex:1;min-width:0}
+  .d3 .d3-info .d3-title{font-size:.85rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .d3 .d3-info .d3-sub{font-size:.65rem;color:var(--muted);margin-top:.1rem}
+  .d3 .d3-price{font-weight:800;font-size:.95rem;text-align:right;flex-shrink:0}
+  .d3 .d3-price .old{font-size:.62rem;color:#4b5563;text-decoration:line-through}
+  .d3 .d3-badge{font-size:.55rem;padding:.15em .5em;border-radius:3px;font-weight:700;margin-left:.3rem}
+  .d3 .d3-badge.sale{background:rgba(34,197,94,.15);color:var(--green)}
+  .d3 .d3-badge.hot{background:rgba(244,63,94,.15);color:var(--rose)}
+
+  /* ============ ④ DARK CARD GRID ============ */
+  .d4-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:1rem}
+  .d4{background:var(--surface);border-radius:var(--radius);overflow:hidden;border:1px solid var(--border);transition:all .3s;cursor:pointer;position:relative}
+  .d4:hover{border-color:#2e3150;transform:translateY(-4px);box-shadow:0 24px 48px -10px rgba(0,0,0,.45)}
+  .d4 .d4-img-wrap{position:relative;aspect-ratio:16/10;overflow:hidden}
+  .d4 .d4-img-wrap img{width:100%;height:100%;object-fit:cover;transition:transform .7s;filter:brightness(.88)}
+  .d4:hover .d4-img-wrap img{transform:scale(1.06);filter:brightness(1)}
+  .d4 .d4-img-wrap .d4-badge{position:absolute;top:.65rem;left:.65rem;padding:.2rem .55rem;border-radius:5px;font-size:.55rem;font-weight:800;text-transform:uppercase;backdrop-filter:blur(6px)}
+  .d4 .d4-img-wrap .d4-badge.best{background:linear-gradient(135deg,rgba(99,102,241,.85),rgba(168,85,247,.85));color:#fff}
+  .d4 .d4-img-wrap .d4-badge.new{background:rgba(34,197,94,.85);color:#fff}
+  .d4 .d4-img-wrap .d4-badge.sale{background:rgba(244,63,94,.85);color:#fff}
+  .d4 .d4-body{padding:.9rem 1rem}
+  .d4 .d4-body .d4-cat{font-size:.58rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--brand);margin-bottom:.2rem}
+  .d4 .d4-body .d4-title{font-size:.82rem;font-weight:700;line-height:1.25;margin-bottom:.15rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .d4 .d4-body .d4-desc{font-size:.68rem;color:var(--muted);line-height:1.35;margin-bottom:.5rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .d4 .d4-footer{display:flex;align-items:center;justify-content:space-between}
+  .d4 .d4-footer .d4-price{font-weight:800;font-size:.9rem}
+  .d4 .d4-footer .d4-price .old{font-size:.6rem;color:#525b6e;text-decoration:line-through;margin-right:.25rem;font-weight:500}
+  .d4 .d4-footer .d4-meta{display:flex;align-items:center;gap:.3rem;font-size:.62rem;color:var(--muted)}
+  .d4 .d4-footer .d4-meta .star{color:var(--amber)}
+
+  /* ============ ⑤ HORIZONTAL SPLIT ============ */
+  .d5-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+  @media(max-width:700px){.d5-grid{grid-template-columns:1fr}}
+  .d5{display:flex;background:var(--surface);border-radius:var(--radius);overflow:hidden;border:1px solid var(--border);transition:all .3s;cursor:pointer;min-height:140px}
+  .d5:hover{border-color:#2a2d50;transform:translateY(-2px);box-shadow:0 16px 40px -6px rgba(0,0,0,.35)}
+  .d5 .d5-img{width:140px;flex-shrink:0;overflow:hidden;position:relative}
+  .d5 .d5-img img{width:100%;height:100%;object-fit:cover;transition:transform .6s}
+  .d5:hover .d5-img img{transform:scale(1.06)}
+  .d5 .d5-img::after{content:'';position:absolute;inset:0;background:linear-gradient(to right,transparent 60%,var(--surface) 100%)}
+  .d5 .d5-body{flex:1;padding:1rem;display:flex;flex-direction:column;justify-content:center;min-width:0}
+  .d5 .d5-body .d5-cat{font-size:.58rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--brand);margin-bottom:.2rem}
+  .d5 .d5-body .d5-title{font-size:.88rem;font-weight:700;line-height:1.25;margin-bottom:.15rem}
+  .d5 .d5-body .d5-desc{font-size:.7rem;color:var(--muted);line-height:1.4;margin-bottom:.35rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .d5 .d5-body .d5-bottom{display:flex;align-items:center;justify-content:space-between}
+  .d5 .d5-body .d5-price{font-weight:800;font-size:.95rem}
+  .d5 .d5-body .d5-price .old{font-size:.62rem;color:#4b5563;text-decoration:line-through;margin-left:.3rem}
+  .d5 .d5-body .d5-meta{font-size:.65rem;color:var(--muted)}
+
+  @media(max-width:600px){
+    body{padding:1.5rem 1rem}
+    .d4-grid{grid-template-columns:repeat(2,1fr)}
+    .d2 .d2-star{display:none}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>5 Rediseños Premium</h1>
+<p class="sub">Los más vendidos · Productos destacados</p>
+
+<!-- ============ ① PREMIUM LIST ============ -->
+<h2>① Premium List · Los más vendidos</h2>
+<div class="d1-list">
+  <div class="d1">
+    <span class="rank">01</span>
+    <img class="thumb" src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=120&h=120&fit=crop" alt="">
+    <div class="info">
+      <div class="title">Velocity Pro — SaaS Starter Kit con IA</div>
+      <div class="meta">
+        <span class="tag tag-theme">Theme</span><span class="dot"></span>
+        <span>Pixel Studio</span><span class="dot"></span>
+        <span class="stars">★ 4.9</span>
+      </div>
+    </div>
+    <div class="right-col"><div class="price"><span class="old">$299</span>$149</div><div class="sales">12.3k ventas</div></div>
+  </div>
+  <div class="d1">
+    <span class="rank">02</span>
+    <img class="thumb" src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=120&h=120&fit=crop" alt="">
+    <div class="info">
+      <div class="title">Bookify — Sistema de reservas inteligente</div>
+      <div class="meta">
+        <span class="tag tag-plugin">Plugin</span><span class="dot"></span>
+        <span>DevCraft</span><span class="dot"></span>
+        <span class="stars">★ 4.6</span>
+      </div>
+    </div>
+    <div class="right-col"><div class="price">$29</div><div class="sales">28.5k ventas</div></div>
+  </div>
+  <div class="d1">
+    <span class="rank">03</span>
+    <img class="thumb" src="https://images.unsplash.com/photo-1619410283995-43d9134e7656?w=120&h=120&fit=crop" alt="">
+    <div class="info">
+      <div class="title">DataForge — Pipeline ETL empresarial</div>
+      <div class="meta">
+        <span class="tag tag-script">Script</span><span class="dot"></span>
+        <span>DataCraft</span><span class="dot"></span>
+        <span class="stars">★ 5.0</span>
+      </div>
+    </div>
+    <div class="right-col"><div class="price"><span class="old">$499</span>$249</div><div class="sales">3.9k ventas</div></div>
+  </div>
+  <div class="d1">
+    <span class="rank">04</span>
+    <img class="thumb" src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=120&h=120&fit=crop" alt="">
+    <div class="info">
+      <div class="title">Astra Dashboard — Admin UI Kit 240+</div>
+      <div class="meta">
+        <span class="tag tag-template">Template</span><span class="dot"></span>
+        <span>UILab</span><span class="dot"></span>
+        <span class="stars">★ 5.0</span>
+      </div>
+    </div>
+    <div class="right-col"><div class="price">$79</div><div class="sales">1.2k ventas</div></div>
+  </div>
+  <div class="d1">
+    <span class="rank">05</span>
+    <img class="thumb" src="https://images.unsplash.com/photo-1551650975-87deedd944c3?w=120&h=120&fit=crop" alt="">
+    <div class="info">
+      <div class="title">CryptX — Payment Gateway cripto</div>
+      <div class="meta">
+        <span class="tag tag-plugin">Plugin</span><span class="dot"></span>
+        <span>BlockStudio</span><span class="dot"></span>
+        <span class="stars">★ 4.4</span>
+      </div>
+    </div>
+    <div class="right-col"><div class="price">$69</div><div class="sales">11.7k ventas</div></div>
+  </div>
+</div>
+
+<!-- ============ ② COMPACT LIST ============ -->
+<h2>② Compact List</h2>
+<div class="d2-wrap">
+  <div class="d2">
+    <img class="d2-img" src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=100&h=100&fit=crop" alt="">
+    <div class="d2-info">
+      <span class="d2-badge">Theme</span>
+      <span class="d2-title">Velocity Pro — SaaS Starter Kit con IA integrada</span>
+    </div>
+    <span class="d2-star">★ 4.9</span>
+    <div class="d2-price"><span class="old">$299</span> $149</div>
+  </div>
+  <div class="d2">
+    <img class="d2-img" src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=100&h=100&fit=crop" alt="">
+    <div class="d2-info">
+      <span class="d2-badge">Plugin</span>
+      <span class="d2-title">Bookify — Sistema de reservas inteligente WP</span>
+    </div>
+    <span class="d2-star">★ 4.6</span>
+    <div class="d2-price">$29</div>
+  </div>
+  <div class="d2">
+    <img class="d2-img" src="https://images.unsplash.com/photo-1619410283995-43d9134e7656?w=100&h=100&fit=crop" alt="">
+    <div class="d2-info">
+      <span class="d2-badge">Script</span>
+      <span class="d2-title">DataForge — Pipeline ETL empresarial</span>
+    </div>
+    <span class="d2-star">★ 5.0</span>
+    <div class="d2-price"><span class="old">$499</span> $249</div>
+  </div>
+  <div class="d2">
+    <img class="d2-img" src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=100&h=100&fit=crop" alt="">
+    <div class="d2-info">
+      <span class="d2-badge">Template</span>
+      <span class="d2-title">Astra Dashboard — Admin UI Kit 240+ componentes</span>
+    </div>
+    <span class="d2-star">★ 5.0</span>
+    <div class="d2-price">$79</div>
+  </div>
+  <div class="d2">
+    <img class="d2-img" src="https://images.unsplash.com/photo-1551650975-87deedd944c3?w=100&h=100&fit=crop" alt="">
+    <div class="d2-info">
+      <span class="d2-badge">Plugin</span>
+      <span class="d2-title">CryptX — Payment Gateway criptomonedas</span>
+    </div>
+    <span class="d2-star">★ 4.4</span>
+    <div class="d2-price">$69</div>
+  </div>
+</div>
+
+<!-- ============ ③ GRADIENT BORDER LIST ============ -->
+<h2>③ Gradient Border List</h2>
+<div class="d3-wrap">
+  <div class="d3">
+    <span class="d3-rank">1</span>
+    <img class="d3-img" src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=120&h=120&fit=crop" alt="">
+    <div class="d3-info">
+      <div class="d3-title">Velocity Pro — SaaS Starter Kit con IA</div>
+      <div class="d3-sub">Pixel Studio · 12.3k ventas · ★ 4.9</div>
+    </div>
+    <div class="d3-price"><span class="old">$299</span> $149 <span class="d3-badge sale">-50%</span></div>
+  </div>
+  <div class="d3">
+    <span class="d3-rank">2</span>
+    <img class="d3-img" src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=120&h=120&fit=crop" alt="">
+    <div class="d3-info">
+      <div class="d3-title">Bookify — Sistema de reservas inteligente</div>
+      <div class="d3-sub">DevCraft · 28.5k ventas · ★ 4.6</div>
+    </div>
+    <div class="d3-price">$29 <span class="d3-badge hot">TOP</span></div>
+  </div>
+  <div class="d3">
+    <span class="d3-rank">3</span>
+    <img class="d3-img" src="https://images.unsplash.com/photo-1619410283995-43d9134e7656?w=120&h=120&fit=crop" alt="">
+    <div class="d3-info">
+      <div class="d3-title">DataForge — Pipeline ETL empresarial</div>
+      <div class="d3-sub">DataCraft · 3.9k ventas · ★ 5.0</div>
+    </div>
+    <div class="d3-price"><span class="old">$499</span> $249 <span class="d3-badge sale">-50%</span></div>
+  </div>
+  <div class="d3">
+    <span class="d3-rank">4</span>
+    <img class="d3-img" src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=120&h=120&fit=crop" alt="">
+    <div class="d3-info">
+      <div class="d3-title">Astra Dashboard — Admin UI Kit</div>
+      <div class="d3-sub">UILab · 1.2k ventas · ★ 5.0</div>
+    </div>
+    <div class="d3-price">$79</div>
+  </div>
+  <div class="d3">
+    <span class="d3-rank">5</span>
+    <img class="d3-img" src="https://images.unsplash.com/photo-1551650975-87deedd944c3?w=120&h=120&fit=crop" alt="">
+    <div class="d3-info">
+      <div class="d3-title">CryptX — Payment Gateway cripto</div>
+      <div class="d3-sub">BlockStudio · 11.7k ventas · ★ 4.4</div>
+    </div>
+    <div class="d3-price">$69</div>
+  </div>
+</div>
+
+<!-- ============ ④ DARK CARD GRID ============ -->
+<h2>④ Dark Card Grid</h2>
+<div class="d4-grid">
+  <div class="d4">
+    <div class="d4-img-wrap">
+      <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=400&h=250&fit=crop" alt="">
+      <span class="d4-badge best">Best</span>
+    </div>
+    <div class="d4-body">
+      <div class="d4-cat">SaaS Starter</div>
+      <div class="d4-title">Velocity Pro — SaaS Kit con IA integrada</div>
+      <div class="d4-desc">Next.js 15, pagos, emails y 240+ componentes. Listo en minutos.</div>
+      <div class="d4-footer">
+        <div class="d4-price"><span class="old">$299</span>$149</div>
+        <div class="d4-meta"><span class="star">★ 4.9</span> 12.3k</div>
+      </div>
+    </div>
+  </div>
+  <div class="d4">
+    <div class="d4-img-wrap">
+      <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=250&fit=crop" alt="">
+      <span class="d4-badge new">New</span>
+    </div>
+    <div class="d4-body">
+      <div class="d4-cat">WordPress Plugin</div>
+      <div class="d4-title">Bookify — Reservas inteligentes WP</div>
+      <div class="d4-desc">Calendario drag & drop, Google sync, pagos integrados y SMS.</div>
+      <div class="d4-footer">
+        <div class="d4-price">$29</div>
+        <div class="d4-meta"><span class="star">★ 4.6</span> 28.5k</div>
+      </div>
+    </div>
+  </div>
+  <div class="d4">
+    <div class="d4-img-wrap">
+      <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=250&fit=crop" alt="">
+      <span class="d4-badge best">Best</span>
+    </div>
+    <div class="d4-body">
+      <div class="d4-cat">Template · Figma</div>
+      <div class="d4-title">Astra Dashboard UI Kit</div>
+      <div class="d4-desc">240+ componentes, 8 dashboards y dark mode nativo.</div>
+      <div class="d4-footer">
+        <div class="d4-price">$79</div>
+        <div class="d4-meta"><span class="star">★ 5.0</span> 1.2k</div>
+      </div>
+    </div>
+  </div>
+  <div class="d4">
+    <div class="d4-img-wrap">
+      <img src="https://images.unsplash.com/photo-1619410283995-43d9134e7656?w=400&h=250&fit=crop" alt="">
+      <span class="d4-badge sale">-50%</span>
+    </div>
+    <div class="d4-body">
+      <div class="d4-cat">Script · Python</div>
+      <div class="d4-title">DataForge — ETL Empresarial</div>
+      <div class="d4-desc">50+ conectores, orquestación visual y monitoreo en tiempo real.</div>
+      <div class="d4-footer">
+        <div class="d4-price"><span class="old">$499</span>$249</div>
+        <div class="d4-meta"><span class="star">★ 5.0</span> 3.9k</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ ⑤ HORIZONTAL SPLIT ============ -->
+<h2>⑤ Horizontal Split Cards</h2>
+<div class="d5-grid">
+  <div class="d5">
+    <div class="d5-img"><img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=300&h=250&fit=crop" alt=""></div>
+    <div class="d5-body">
+      <div class="d5-cat">SaaS Starter</div>
+      <div class="d5-title">Velocity Pro — Kit SaaS con IA</div>
+      <div class="d5-desc">Next.js 15, autenticación, Stripe, emails y dashboard analytics.</div>
+      <div class="d5-bottom">
+        <div class="d5-price">$149 <span class="old">$299</span></div>
+        <div class="d5-meta">★ 4.9 · 12.3k</div>
+      </div>
+    </div>
+  </div>
+  <div class="d5">
+    <div class="d5-img"><img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=300&h=250&fit=crop" alt=""></div>
+    <div class="d5-body">
+      <div class="d5-cat">WordPress Plugin</div>
+      <div class="d5-title">Bookify — Reservas inteligentes</div>
+      <div class="d5-desc">Calendario drag & drop, sincronización Google/Outlook, pagos y SMS.</div>
+      <div class="d5-bottom">
+        <div class="d5-price">$29</div>
+        <div class="d5-meta">★ 4.6 · 28.5k</div>
+      </div>
+    </div>
+  </div>
+  <div class="d5">
+    <div class="d5-img"><img src="https://images.unsplash.com/photo-1619410283995-43d9134e7656?w=300&h=250&fit=crop" alt=""></div>
+    <div class="d5-body">
+      <div class="d5-cat">Script · Python</div>
+      <div class="d5-title">DataForge — ETL Empresarial</div>
+      <div class="d5-desc">50+ conectores nativos, orquestación visual, monitoreo en tiempo real.</div>
+      <div class="d5-bottom">
+        <div class="d5-price"><span class="old">$499</span> $249</div>
+        <div class="d5-meta">★ 5.0 · 3.9k</div>
+      </div>
+    </div>
+  </div>
+  <div class="d5">
+    <div class="d5-img"><img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=300&h=250&fit=crop" alt=""></div>
+    <div class="d5-body">
+      <div class="d5-cat">Template · Figma</div>
+      <div class="d5-title">Astra Dashboard UI Kit</div>
+      <div class="d5-desc">240+ componentes React, 8 dashboards prebuilt, TailwindCSS.</div>
+      <div class="d5-bottom">
+        <div class="d5-price">$79</div>
+        <div class="d5-meta">★ 5.0 · 1.2k</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+</body>
+</html>

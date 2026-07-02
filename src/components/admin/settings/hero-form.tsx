@@ -84,7 +84,7 @@ function HeroLocaleForm({
   };
 
   const addStat = () => {
-    update("stats", [...config.stats, { value: "0", label: "" }]);
+    update("stats", [...config.stats, { value: "0", label: "", icon: "Star" }]);
   };
 
   const removeStat = (index: number) => {
@@ -197,7 +197,7 @@ function HeroLocaleForm({
       <div className="space-y-4">
         <h3 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">Stats</h3>
         {config.stats.map((stat, i) => (
-          <div key={i} className="grid grid-cols-1 gap-3 rounded-lg border p-3 md:grid-cols-[1fr_1fr_auto]">
+          <div key={i} className="grid grid-cols-1 gap-3 rounded-lg border p-3 sm:grid-cols-[1fr_1fr_1fr_auto]">
             <Input
               placeholder="Valor (ej. 12,500+)"
               value={stat.value}
@@ -207,6 +207,11 @@ function HeroLocaleForm({
               placeholder="Etiqueta"
               value={stat.label}
               onChange={(e) => updateStat(i, { label: e.target.value })}
+            />
+            <Input
+              placeholder="Ícono Lucide (ej. Package)"
+              value={stat.icon || ""}
+              onChange={(e) => updateStat(i, { icon: e.target.value })}
             />
             <Button type="button" variant="ghost" size="icon" onClick={() => removeStat(i)}>
               <Trash2 className="size-4 text-destructive" />

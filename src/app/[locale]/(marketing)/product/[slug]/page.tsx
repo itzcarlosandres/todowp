@@ -15,6 +15,9 @@ import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import { setRequestLocale } from "next-intl/server";
 import type { ProductWithRelations } from "@/types/product";
+import { unstable_noStore as noStore } from "next/cache";
+
+export const dynamic = "force-dynamic";
 
 interface PageProps {
   params: Promise<{ locale: string; slug: string }>;
@@ -36,11 +39,14 @@ export async function generateMetadata({ params }: PageProps) {
 }
 
 export default async function ProductPage({ params }: PageProps) {
+  noStore();
   const { locale, slug } = await params;
   setRequestLocale(locale);
-  const product = await getProductBySlug(slug);
+  const rawProduct = await getProductBySlug(slug);
 
-  if (!product) notFound();
+  if (!rawProduct) notFound();
+
+  const product = rawProduct;
 
   // Increment view count asynchronously
   void incrementViewCount(product.id).catch(() => null);
@@ -137,7 +143,7 @@ export default async function ProductPage({ params }: PageProps) {
           video={product.video}
         />
         <div>
-          <ProductBuyBox product={product as unknown as ProductWithRelations} hasAccess={hasAccess} />
+          <ProductBuyBox product={{ ...product, demoUrl: product.demoUrl ?? undefined } as unknown as ProductWithRelations} hasAccess={hasAccess} />
         </div>
       </div>
 

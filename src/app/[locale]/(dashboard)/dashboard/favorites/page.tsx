@@ -21,7 +21,7 @@ export default async function DashboardFavoritesPage() {
   });
 
   return (
-    <div className="container-fluid py-8">
+    <>
       <h1 className="mb-6 text-3xl font-bold tracking-tight">Mis favoritos</h1>
       {favorites.length === 0 ? (
         <div className="rounded-xl border border-dashed border-border/60 bg-muted/30 p-12 text-center text-muted-foreground">
@@ -30,6 +30,6 @@ export default async function DashboardFavoritesPage() {
       ) : (
         <ProductGrid products={favorites.map((f) => f.product)} cols={4} />
       )}
-    </div>
+    </>
   );
 }

@@ -6,7 +6,7 @@ import { routing } from "@/i18n/routing";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { QueryProvider } from "@/components/providers/query-provider";
 import { MotionProvider } from "@/components/providers/motion-provider";
-import { SITE } from "@/lib/seo";
+import { getSiteConfig } from "@/lib/site-config";
 import { organizationJsonLd, websiteJsonLd } from "@/lib/seo";
 
 export function generateStaticParams() {
@@ -15,17 +15,15 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
+  const site = await getSiteConfig();
   return {
-    metadataBase: new URL(SITE.url),
+    metadataBase: new URL(site.url),
     alternates: {
       canonical: "/",
-      languages: {
-        es: "/es",
-        en: "/en",
-      },
+      languages: { es: "/es", en: "/en" },
     },
     openGraph: {
-      siteName: SITE.name,
+      siteName: site.displayName,
       locale: locale,
       type: "website",
     },
@@ -47,6 +45,9 @@ export default async function LocaleLayout({
   setRequestLocale(locale);
   const messages = await getMessages();
 
+  const orgLd = await organizationJsonLd();
+  const webLd = await websiteJsonLd();
+
   return (
     <NextIntlClientProvider locale={locale} messages={messages}>
       <ThemeProvider>
@@ -58,11 +59,11 @@ export default async function LocaleLayout({
       </ThemeProvider>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd()) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(orgLd) }}
       />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd()) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(webLd) }}
       />
     </NextIntlClientProvider>
   );

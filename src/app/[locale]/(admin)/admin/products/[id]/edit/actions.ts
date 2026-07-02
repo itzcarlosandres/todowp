@@ -27,6 +27,7 @@ export async function updateProductAction(id: string, data: any) {
         isNew: data.isNew,
         metaTitle: data.metaTitle || null,
         metaDescription: data.metaDescription || null,
+        demoUrl: data.demoUrl || null,
         status: "PUBLISHED",
       },
     });
@@ -53,6 +54,8 @@ export async function updateProductAction(id: string, data: any) {
     }
 
     revalidatePath("/admin/products");
+    revalidatePath("/sitemap.xml");
+    revalidatePath(`/product/${data.slug || product.slug}`);
     return { success: true };
   } catch (error: any) {
     if (error.code === "P2002") {

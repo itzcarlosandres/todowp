@@ -1,0 +1,75 @@
+# =====================================================
+# docker-compose para producción (Dokploy)
+# La base de datos y Redis se proveen externamente
+# desde los servicios administrados de Dokploy.
+# =====================================================
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: todowp-app
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      # Runtime
+      NODE_ENV: production
+      PORT: 3000
+      HOSTNAME: "0.0.0.0"
+
+      # Base de datos (provista por Dokploy como servicio externo)
+      DATABASE_URL: ${DATABASE_URL}
+
+      # Redis opcional para cache (provisto por Dokploy o servicio externo)
+      REDIS_URL: ${REDIS_URL}
+
+      # Auth
+      AUTH_SECRET: ${AUTH_SECRET}
+      AUTH_URL: ${AUTH_URL}
+      AUTH_TRUST_HOST: "true"
+
+      # URL pública de la app (configurar con el dominio real)
+      NEXT_PUBLIC_APP_URL: ${NEXT_PUBLIC_APP_URL}
+
+      # SMTP (provisto por servicio externo como Resend, Brevo, etc.)
+      SMTP_HOST: ${SMTP_HOST}
+      SMTP_PORT: ${SMTP_PORT:-587}
+      SMTP_USER: ${SMTP_USER}
+      SMTP_PASSWORD: ${SMTP_PASSWORD}
+      SMTP_FROM_NAME: ${SMTP_FROM_NAME}
+      SMTP_FROM_EMAIL: ${SMTP_FROM_EMAIL}
+
+      # Cloudflare R2 (opcional, para almacenamiento de archivos)
+      R2_ACCOUNT_ID: ${R2_ACCOUNT_ID}
+      R2_ACCESS_KEY_ID: ${R2_ACCESS_KEY_ID}
+      R2_SECRET_ACCESS_KEY: ${R2_SECRET_ACCESS_KEY}
+      R2_BUCKET: ${R2_BUCKET:-todowp-files}
+      R2_PUBLIC_URL: ${R2_PUBLIC_URL}
+
+      # IA (opcional)
+      GEMINI_API_KEY: ${GEMINI_API_KEY}
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY}
+
+      # Pagos (opcional, al menos uno)
+      STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY}
+      PAYPAL_CLIENT_ID: ${PAYPAL_CLIENT_ID}
+      PAYPAL_CLIENT_SECRET: ${PAYPAL_CLIENT_SECRET}
+      MERCADOPAGO_ACCESS_TOKEN: ${MERCADOPAGO_ACCESS_TOKEN}
+
+      # Telemetry de Next.js (recomendado en producción)
+      NEXT_TELEMETRY_DISABLED: "1"
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:3000/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - todowp
+
+networks:
+  todowp:
+    driver: bridge

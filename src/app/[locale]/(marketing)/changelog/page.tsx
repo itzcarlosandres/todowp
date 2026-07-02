@@ -10,7 +10,7 @@ import Image from "next/image";
 export async function generateMetadata() {
   return {
     title: "Últimas actualizaciones",
-    description: "Descubre las últimas versiones y mejoras de los productos en MarketFlow.",
+    description: "Descubre las últimas versiones y mejoras de los productos en TodoWP.",
   };
 }
 

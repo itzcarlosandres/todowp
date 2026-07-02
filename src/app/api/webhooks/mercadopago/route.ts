@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
+import { handlePaymentCompleted } from "@/modules/cashback/webhook-handler";
 
 export async function POST(req: Request) {
   try {
@@ -46,6 +47,7 @@ export async function POST(req: Request) {
           const { activateMembershipForUser } = await import("@/lib/membership");
           await activateMembershipForUser(metadata.planId, updatedOrder.userId!);
         }
+        handlePaymentCompleted(orderId);
       }
     }
 

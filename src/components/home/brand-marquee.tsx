@@ -1,7 +1,8 @@
 import * as React from "react";
 import Image from "next/image";
 import { getBrands } from "@/modules/brands";
-import { Section, SectionHeader } from "@/components/shared/section";
+import { Section } from "@/components/shared/section";
+import { Tags } from "lucide-react";
 
 export async function BrandMarquee() {
   const t = await import("next-intl/server").then((m) => m.getTranslations("home.brands"));
@@ -11,7 +12,15 @@ export async function BrandMarquee() {
 
   return (
     <Section spacing="sm" containerSize="wide">
-      <SectionHeader title={t("title")} subtitle={t("subtitle")} align="center" />
+      <div className="mb-10 flex flex-col items-center text-center gap-2">
+        <h2 className="text-balance text-3xl font-bold tracking-tight md:text-4xl inline-flex items-center gap-2.5">
+          <Tags className="size-7 text-brand-500" />
+          {t("title")}
+        </h2>
+        <p className="text-pretty max-w-2xl text-base text-muted-foreground md:text-lg">
+          {t("subtitle")}
+        </p>
+      </div>
 
       <div className="relative overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
         <div className="flex w-max animate-marquee gap-12 [--gap:3rem]">

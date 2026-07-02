@@ -1,10 +1,13 @@
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { redirect } from "next/navigation";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
 import { formatDate } from "@/lib/date";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { getTranslations } from "next-intl/server";
+import { ProfileForm } from "@/components/dashboard/settings/profile-form";
+import { PasswordForm } from "@/components/dashboard/settings/password-form";
+import { NotificationSettings } from "@/components/dashboard/settings/notification-settings";
 
 export default async function SettingsPage() {
   const session = await auth();
@@ -12,96 +15,66 @@ export default async function SettingsPage() {
   const user = await db.user.findUnique({ where: { id: session.user.id } });
   if (!user) redirect("/login");
 
+  const t = await getTranslations("dashboard.settings");
+
   return (
-    <div className="container-fluid py-8">
-      <h1 className="mb-6 text-3xl font-bold tracking-tight">Ajustes</h1>
+    <>
+      <h1 className="mb-6 text-3xl font-bold tracking-tight">{t("title")}</h1>
 
       <div className="grid gap-6 lg:grid-cols-3">
-        <Card className="lg:col-span-1">
-          <CardHeader>
-            <CardTitle>Perfil</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="flex flex-col items-center gap-3">
-              <Avatar className="size-20">
-                <AvatarImage src={user.image ?? undefined} />
-                <AvatarFallback>{user.name?.charAt(0) ?? "U"}</AvatarFallback>
-              </Avatar>
-              <div className="text-center">
-                <p className="font-semibold">{user.name}</p>
-                <p className="text-sm text-muted-foreground">{user.email}</p>
-              </div>
-            </div>
-            <div className="space-y-2 border-t border-border/60 pt-4 text-sm">
+        <div className="space-y-6 lg:col-span-2">
+          <ProfileForm
+            user={{
+              name: user.name,
+              email: user.email,
+              username: user.username,
+              bio: user.bio,
+              image: user.image,
+              role: user.role,
+              twoFactorEnabled: user.twoFactorEnabled,
+            }}
+          />
+          <PasswordForm hasPassword={!!user.passwordHash} />
+          <NotificationSettings
+            preferences={{
+              marketingEmails: user.marketingEmails,
+              notifyNewProducts: user.notifyNewProducts,
+              notifyOffers: user.notifyOffers,
+              notifyUpdates: user.notifyUpdates,
+            }}
+          />
+        </div>
+
+        <div className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>{t("accountInfo")}</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3 text-sm">
               <div className="flex justify-between">
-                <span className="text-muted-foreground">Rol</span>
+                <span className="text-muted-foreground">{t("role")}</span>
                 <Badge variant={user.role === "ADMIN" ? "brand" : "secondary"}>
                   {user.role}
                 </Badge>
               </div>
               <div className="flex justify-between">
-                <span className="text-muted-foreground">Miembro desde</span>
+                <span className="text-muted-foreground">{t("memberSince")}</span>
                 <span>{formatDate(user.createdAt)}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-muted-foreground">2FA</span>
+                <span className="text-muted-foreground">{t("twoFactor")}</span>
                 <Badge variant={user.twoFactorEnabled ? "success" : "secondary"}>
-                  {user.twoFactorEnabled ? "Activado" : "Desactivado"}
+                  {user.twoFactorEnabled ? t("enabled") : t("disabled")}
                 </Badge>
               </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <div className="space-y-6 lg:col-span-2">
-          <Card>
-            <CardHeader>
-              <CardTitle>Seguridad</CardTitle>
-              <CardDescription>Protege tu cuenta</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              <div className="flex items-center justify-between rounded-lg border border-border/60 p-3">
-                <div>
-                  <p className="text-sm font-medium">Contraseña</p>
-                  <p className="text-xs text-muted-foreground">Última actualización: hace 30 días</p>
-                </div>
-                <button className="text-sm font-medium text-primary hover:underline">Cambiar</button>
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">{t("email")}</span>
+                <span className="max-w-[180px] truncate">{user.email}</span>
               </div>
-              <div className="flex items-center justify-between rounded-lg border border-border/60 p-3">
-                <div>
-                  <p className="text-sm font-medium">Verificación en dos pasos</p>
-                  <p className="text-xs text-muted-foreground">Añade una capa extra de seguridad</p>
-                </div>
-                <button className="text-sm font-medium text-primary hover:underline">
-                  {user.twoFactorEnabled ? "Desactivar" : "Activar"}
-                </button>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>Notificaciones</CardTitle>
-              <CardDescription>Elige qué quieres recibir</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              {[
-                { name: "Novedades de productos", desc: "Recibe alertas de nuevos productos" },
-                { name: "Ofertas y descuentos", desc: "Promociones exclusivas" },
-                { name: "Actualizaciones", desc: "Notificaciones de versiones de tus productos" },
-              ].map((n) => (
-                <div key={n.name} className="flex items-center justify-between rounded-lg border border-border/60 p-3">
-                  <div>
-                    <p className="text-sm font-medium">{n.name}</p>
-                    <p className="text-xs text-muted-foreground">{n.desc}</p>
-                  </div>
-                  <input type="checkbox" defaultChecked className="size-4 accent-primary" />
-                </div>
-              ))}
             </CardContent>
           </Card>
         </div>
       </div>
-    </div>
+    </>
   );
 }

@@ -20,6 +20,7 @@ export async function createProductAction(data: {
   fileKey: string | null;
   metaTitle?: string;
   metaDescription?: string;
+  demoUrl?: string;
 }) {
   const session = await auth();
   if (!session?.user || session.user.role !== "ADMIN") {
@@ -43,6 +44,7 @@ export async function createProductAction(data: {
         isNew: data.isNew,
         metaTitle: data.metaTitle || null,
         metaDescription: data.metaDescription || null,
+        demoUrl: data.demoUrl || null,
       },
     });
 
@@ -61,6 +63,7 @@ export async function createProductAction(data: {
     }
 
     revalidatePath("/admin/products");
+    revalidatePath("/sitemap.xml");
     return { success: true };
   } catch (error: any) {
     if (error.code === "P2002") {

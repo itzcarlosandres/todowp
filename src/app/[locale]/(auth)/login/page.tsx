@@ -103,12 +103,12 @@ export default function LoginPage() {
             <div>
               <div className="mb-1.5 flex items-center justify-between">
                 <Label htmlFor="password">{t("password")}</Label>
-                <Link
-                  href="#"
+                <I18nLink
+                  href="/forgot-password"
                   className="text-xs text-muted-foreground hover:text-foreground"
                 >
                   {t("forgotPassword")}
-                </Link>
+                </I18nLink>
               </div>
               <div className="relative">
                 <Input
@@ -200,7 +200,7 @@ export default function LoginPage() {
         </div>
 
         <p className="mt-4 text-center text-xs text-muted-foreground">
-          Demo: admin@marketflow.dev / admin123456
+          Demo: admin@todowp.dev / admin123456
         </p>
       </motion.div>
     </div>

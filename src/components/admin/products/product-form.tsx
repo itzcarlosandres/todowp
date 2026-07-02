@@ -93,6 +93,8 @@ export function ProductForm({ categories, brands, initialData }: { categories: a
       return;
     }
 
+    const prefix = `Descargar ${title}${version ? ` ${version}` : ""}. `;
+
     setMetaTitle(`Descargar ${title}${version ? ` ${version}` : ""}`);
     
     setIsGeneratingSEO(true);
@@ -105,7 +107,8 @@ export function ProductForm({ categories, brands, initialData }: { categories: a
       const data = await res.json();
       if (data.error) throw new Error(data.error);
       
-      setMetaDesc(truncate(data.text, MAX_META_DESC));
+      const combined = `${prefix}${data.text}`;
+      setMetaDesc(truncate(combined, MAX_META_DESC));
       toast.success("SEO generado por IA");
     } catch (error: any) {
       toast.error(error.message || "Error al generar SEO con IA");
@@ -140,6 +143,7 @@ export function ProductForm({ categories, brands, initialData }: { categories: a
       fileKey: fileKey || null,
       metaTitle: formData.get("metaTitle") as string,
       metaDescription: formData.get("metaDescription") as string,
+      demoUrl: (formData.get("demoUrl") as string) || undefined,
     };
 
     let result;
@@ -266,6 +270,12 @@ export function ProductForm({ categories, brands, initialData }: { categories: a
               onUploadSuccess={(url) => setFileKey(url)} 
             />
             <p className="text-xs text-muted-foreground mt-1">Este archivo será almacenado de forma privada y solo accesible tras la compra.</p>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="demoUrl">URL de Live Demo</Label>
+            <Input id="demoUrl" name="demoUrl" type="url" defaultValue={initialData?.demoUrl || ""} placeholder="https://demo.tudominio.com" />
+            <p className="text-xs text-muted-foreground">Enlace a la demo en vivo del producto. Aparecerá un botón "Live Demo" en la página de producto.</p>
           </div>
 
           <div className="space-y-3 pt-2">

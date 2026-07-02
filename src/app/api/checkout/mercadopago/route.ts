@@ -1,11 +1,12 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
+import { applyCashbackToOrder } from "@/modules/cashback/checkout-helper";
 
 export async function POST(req: Request) {
   try {
     const session = await auth();
-    const { items, subtotal, type, planId } = await req.json();
+    const { items, subtotal, type, planId, useCashback } = await req.json();
 
     const isMembership = type === "membership";
 
@@ -16,7 +17,6 @@ export async function POST(req: Request) {
     const email = session?.user?.email || "guest@example.com";
     const userId = session?.user?.id;
 
-    // 1. Obtener credenciales de la BD
     const settings = await db.setting.findMany({
       where: { key: "payment_mp_access_token" },
     });
@@ -26,7 +26,6 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "MercadoPago no está configurado" }, { status: 500 });
     }
 
-    // 2. Crear orden local en estado PENDING
     const orderData: any = {
       userId,
       email,
@@ -53,11 +52,20 @@ export async function POST(req: Request) {
       };
     }
 
-    const order = await db.order.create({
-      data: orderData,
-    });
+    const order = await db.order.create({ data: orderData });
 
-    // 3. Crear Preferencia en MercadoPago
+    let finalTotal = subtotal;
+    if (useCashback && userId && !isMembership) {
+      const result = await applyCashbackToOrder(userId, order.id, subtotal);
+      if (result.discount > 0) {
+        finalTotal = result.finalTotal;
+        await db.order.update({
+          where: { id: order.id },
+          data: { discount: result.discount, total: result.finalTotal },
+        });
+      }
+    }
+
     let mpItems = [];
     if (isMembership) {
       mpItems = [{
@@ -65,7 +73,7 @@ export async function POST(req: Request) {
         title: "Suscripción Membresía",
         quantity: 1,
         currency_id: "USD",
-        unit_price: Number(subtotal),
+        unit_price: Number(finalTotal),
       }];
     } else {
       mpItems = items.map((item: any) => ({
@@ -77,36 +85,30 @@ export async function POST(req: Request) {
       }));
     }
 
-    const preferenceData = {
-      items: mpItems,
-      payer: {
-        email: email,
-      },
-      back_urls: {
-        success: `${process.env.NEXT_PUBLIC_APP_URL}/checkout?success=true&orderId=${order.id}`,
-        failure: `${process.env.NEXT_PUBLIC_APP_URL}/checkout?canceled=true`,
-        pending: `${process.env.NEXT_PUBLIC_APP_URL}/checkout?pending=true`,
-      },
-      auto_return: "approved",
-      external_reference: order.id, // Muy importante para el Webhook
-    };
-
-    const mpRes = await fetch("https://api.mercadopago.com/checkout/preferences", {
+    const preferenceRes = await fetch("https://api.mercadopago.com/checkout/preferences", {
       method: "POST",
       headers: {
         Authorization: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(preferenceData),
+      body: JSON.stringify({
+        items: mpItems,
+        external_reference: order.id,
+        back_urls: {
+          success: `${process.env.NEXT_PUBLIC_APP_URL}/checkout?success=true&orderId=${order.id}`,
+          failure: `${process.env.NEXT_PUBLIC_APP_URL}/checkout?canceled=true`,
+          pending: `${process.env.NEXT_PUBLIC_APP_URL}/checkout?success=true&orderId=${order.id}`,
+        },
+        auto_return: "approved",
+      }),
     });
 
-    const preference = await mpRes.json();
+    const preference = await preferenceRes.json();
 
     if (preference.init_point) {
       return NextResponse.json({ url: preference.init_point });
     } else {
-      console.error("MP Error:", preference);
-      throw new Error("No se pudo crear la preferencia en MercadoPago");
+      throw new Error("No se pudo obtener el link de pago de MercadoPago");
     }
   } catch (error) {
     console.error("[MP_CHECKOUT_ERROR]", error);

@@ -1,4 +1,4 @@
-# MarketFlow
+# TodoWP
 
 > Premium digital marketplace platform — WordPress themes, plugins, scripts, templates, SaaS, licenses, and more.
 
@@ -58,8 +58,8 @@ A production-grade, modern marketplace built from scratch with **Next.js 15**, *
 
 ```bash
 # 1. Clone
-git clone https://github.com/your-org/marketflow.git
-cd marketflow
+git clone https://github.com/your-org/todowp.git
+cd todowp
 
 # 2. Install dependencies
 pnpm install
@@ -83,7 +83,7 @@ pnpm dev
 Visit [http://localhost:3000](http://localhost:3000).
 
 ### Demo accounts (after seed)
-- **Admin**: `admin@marketflow.dev` / `admin123456`
+- **Admin**: `admin@todowp.dev` / `admin123456`
 - **User**: `ana@example.com` / `user123456`
 
 ---
@@ -262,9 +262,103 @@ pnpm start
 
 ---
 
+## 🚀 Despliegue en Dokploy
+
+### 1. Crear proyecto en Dokploy
+
+1. En Dokploy, crear un nuevo **Project** (por ejemplo `todowp`).
+2. Crear un nuevo **Service** de tipo **App** → seleccionar **Docker**.
+3. Conectar el repositorio de GitHub: `https://github.com/itzcarlosandres/todowp.git`.
+4. Branch: `main`. Build method: **Dockerfile**.
+
+### 2. Servicios externos (crear antes del deploy)
+
+Dokploy provee Postgres/Redis como servicios separados. Crear:
+
+- **PostgreSQL 16**: crear base de datos `todowp`. Copiar la `DATABASE_URL` interna.
+- **Redis 7** (opcional): para cache. Copiar la `REDIS_URL`.
+- **Mailserver** (opcional): SMTP como Mailgun, Brevo, Resend, etc.
+
+### 3. Variables de entorno requeridas
+
+Configurar en Dokploy → App → **Environment Variables**:
+
+```env
+# === Obligatorias ===
+DATABASE_URL=postgresql://user:pass@host:5432/todowp
+AUTH_SECRET=<openssl rand -base64 32>
+AUTH_URL=https://tudominio.com
+AUTH_TRUST_HOST=true
+NEXT_PUBLIC_APP_URL=https://tudominio.com
+NODE_ENV=production
+PORT=3000
+
+# === Email (SMTP) ===
+SMTP_HOST=smtp.tu-provider.com
+SMTP_PORT=587
+SMTP_USER=...
+SMTP_PASSWORD=...
+SMTP_FROM_NAME=TodoWP
+SMTP_FROM_EMAIL=no-reply@tudominio.com
+
+# === Almacenamiento (Cloudflare R2 / S3) ===
+R2_ACCOUNT_ID=...
+R2_ACCESS_KEY_ID=...
+R2_SECRET_ACCESS_KEY=...
+R2_BUCKET=todowp-files
+R2_PUBLIC_URL=https://files.tudominio.com
+
+# === Pagos (al menos uno) ===
+STRIPE_SECRET_KEY=sk_live_...
+# o
+PAYPAL_CLIENT_ID=...
+PAYPAL_CLIENT_SECRET=...
+# o
+MERCADOPAGO_ACCESS_TOKEN=...
+
+# === IA (opcional) ===
+GEMINI_API_KEY=...
+
+# === Otros (opcional) ===
+REDIS_URL=redis://...
+NEXT_TELEMETRY_DISABLED=1
+```
+
+### 4. Configuración del build en Dokploy
+
+- **Dockerfile path**: `./Dockerfile`
+- **Port**: `3000`
+- **Healthcheck path**: `/` (la app responde 200)
+- **Build args**: ninguno necesario
+
+### 5. Dominio y SSL
+
+En Dokploy → App → **Domains**, añadir `tudominio.com`. Dokploy gestiona el SSL automáticamente con Let's Encrypt.
+
+### 6. Migración de la base de datos
+
+Después del primer deploy exitoso, ejecutar las migraciones de Prisma desde la consola de Dokploy:
+
+```bash
+pnpm db:generate
+pnpm db:push     # o: pnpm prisma migrate deploy
+pnpm db:seed      # opcional, para datos iniciales
+```
+
+Opcionalmente, ejecutar `pnpm db:seed` para cargar datos demo (admin@todowp.dev / admin123456).
+
+### 7. Verificación post-deploy
+
+- `https://tudominio.com/` → debe responder 200 OK
+- `https://tudominio.com/sitemap.xml` → sitemap generado
+- `https://tudominio.com/robots.txt` → robots configurado
+- `https://tudominio.com/admin` → login con credenciales seed
+
+---
+
 ## 📄 License
 
-MIT © MarketFlow
+MIT © TodoWP
 
 ---
 

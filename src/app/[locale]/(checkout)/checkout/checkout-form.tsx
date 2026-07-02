@@ -2,16 +2,19 @@
 
 import * as React from "react";
 import { useTranslations } from "next-intl";
-import { CreditCard, Check, Shield, Lock, Building2, Bitcoin, Banknote } from "lucide-react";
+import { CreditCard, Check, Shield, Lock, Building2, Bitcoin, Banknote, Wallet } from "lucide-react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
 import { useCartStore } from "@/store/cart-store";
 import { formatPrice } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import { Link as I18nLink } from "@/i18n/routing";
+import { getUserBalance } from "@/modules/cashback";
+import { useSession } from "next-auth/react";
 
 interface CheckoutFormProps {
   activeMethods: {
@@ -24,8 +27,18 @@ interface CheckoutFormProps {
 
 export function CheckoutForm({ activeMethods }: CheckoutFormProps) {
   const t = useTranslations("checkout");
+  const { data: session } = useSession();
   const items = useCartStore((s) => s.items);
   const subtotal = items.reduce((acc, i) => acc + (i.salePrice ?? i.price) * i.quantity, 0);
+
+  const [walletBalance, setWalletBalance] = React.useState(0);
+  const [useCashback, setUseCashback] = React.useState(false);
+
+  React.useEffect(() => {
+    if (session?.user?.id) {
+      getUserBalance(session.user.id).then(setWalletBalance);
+    }
+  }, [session]);
   
   // Available methods based on settings
   const availableMethods = [];
@@ -55,7 +68,7 @@ export function CheckoutForm({ activeMethods }: CheckoutFormProps) {
       const res = await fetch(`/api/checkout/${method}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ items, subtotal }),
+        body: JSON.stringify({ items, subtotal, useCashback }),
       });
       const data = await res.json();
 
@@ -210,8 +223,21 @@ export function CheckoutForm({ activeMethods }: CheckoutFormProps) {
               </div>
               <div className="flex items-center justify-between border-t border-border/60 pt-3">
                 <span className="font-semibold">Total</span>
-                <span className="text-2xl font-bold tabular-nums">{formatPrice(subtotal)}</span>
+                <span className="text-2xl font-bold tabular-nums">{formatPrice(useCashback ? Math.max(subtotal - walletBalance, 0) : subtotal)}</span>
               </div>
+
+              {walletBalance > 0 && (
+                <div className="flex items-center justify-between rounded-lg border border-brand-500/20 bg-brand-500/5 p-3">
+                  <div className="flex items-center gap-2">
+                    <Wallet className="size-4 text-brand-500" />
+                    <div>
+                      <p className="text-sm font-medium">Saldo disponible</p>
+                      <p className="text-lg font-bold text-brand-500">{formatPrice(walletBalance)}</p>
+                    </div>
+                  </div>
+                  <Switch checked={useCashback} onCheckedChange={setUseCashback} />
+                </div>
+              )}
               <Button 
                 type="submit" 
                 variant="brand" 

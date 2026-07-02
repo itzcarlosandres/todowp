@@ -28,7 +28,7 @@ export const useFavoritesStore = create<FavoritesState>()(
       clear: () => set({ ids: [] }),
     }),
     {
-      name: "marketflow-favorites",
+      name: "todowp-favorites",
       storage: createJSONStorage(() => localStorage),
     },
   ),

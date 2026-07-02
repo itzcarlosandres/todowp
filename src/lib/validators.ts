@@ -50,3 +50,34 @@ export const productFiltersSchema = z.object({
 });
 
 export type ProductFilters = z.infer<typeof productFiltersSchema>;
+
+// =====================
+// User profile
+// =====================
+export const profileUpdateSchema = z.object({
+  name: z.string().min(1, "El nombre es obligatorio").max(100, "Máximo 100 caracteres"),
+  username: z
+    .string()
+    .min(3, "Mínimo 3 caracteres")
+    .max(30, "Máximo 30 caracteres")
+    .regex(/^[a-zA-Z0-9_]+$/, "Solo letras, números y guiones bajos")
+    .optional()
+    .or(z.literal("")),
+  bio: z.string().max(500, "Máximo 500 caracteres").optional().or(z.literal("")),
+  image: z.string().max(2048).optional().or(z.literal("")),
+});
+
+export type ProfileUpdateValues = z.infer<typeof profileUpdateSchema>;
+
+export const passwordChangeSchema = z
+  .object({
+    currentPassword: z.string().min(1, "La contraseña actual es obligatoria"),
+    newPassword: passwordSchema,
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.newPassword === data.confirmPassword, {
+    message: "Las contraseñas no coinciden",
+    path: ["confirmPassword"],
+  });
+
+export type PasswordChangeValues = z.infer<typeof passwordChangeSchema>;

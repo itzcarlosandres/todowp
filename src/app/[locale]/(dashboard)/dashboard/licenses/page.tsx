@@ -16,7 +16,7 @@ export default async function DashboardLicensesPage() {
   });
 
   return (
-    <div className="container-fluid py-8">
+    <>
       <h1 className="mb-6 text-3xl font-bold tracking-tight">Mis licencias</h1>
       {licenses.length === 0 ? (
         <Card>
@@ -51,6 +51,6 @@ export default async function DashboardLicensesPage() {
           ))}
         </div>
       )}
-    </div>
+    </>
   );
 }

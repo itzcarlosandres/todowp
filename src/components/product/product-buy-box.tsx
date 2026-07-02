@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { useTranslations } from "next-intl";
-import { ShoppingCart, Heart, Download, Share2, ExternalLink, FileText, Star, Check, Zap, Eye } from "lucide-react";
+import { ShoppingCart, Heart, Download, ExternalLink, FileText, Star, Check, Zap, Eye, Play } from "lucide-react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -16,6 +16,7 @@ import { useCartStore } from "@/store/cart-store";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import type { ProductWithRelations } from "@/types/product";
+import { CashbackBadge } from "@/components/cashback/cashback-badge";
 
 interface ProductBuyBoxProps {
   product: ProductWithRelations;
@@ -60,16 +61,6 @@ export function ProductBuyBox({ product, hasAccess }: ProductBuyBoxProps) {
     setTimeout(() => {
       setDownloading(false);
     }, 3000);
-  };
-
-  const handleShare = async () => {
-    const url = typeof window !== "undefined" ? window.location.href : "";
-    if (navigator.share) {
-      await navigator.share({ title: product.title, url });
-    } else {
-      await navigator.clipboard.writeText(url);
-      toast.success("Enlace copiado");
-    }
   };
 
   return (
@@ -130,6 +121,8 @@ export function ProductBuyBox({ product, hasAccess }: ProductBuyBoxProps) {
         size="xl"
       />
 
+      <CashbackBadge price={Number(product.price)} />
+
       {/* Actions */}
       <div className="space-y-2">
         {hasAccess ? (
@@ -138,25 +131,27 @@ export function ProductBuyBox({ product, hasAccess }: ProductBuyBoxProps) {
             Descargar Directamente
           </Button>
         ) : (
-          <Button variant="brand" size="xl" className="w-full" onClick={handleAdd}>
-            <ShoppingCart className="size-4 mr-2" />
-            {tCommon("addToCart")}
-          </Button>
-        )}
-        <div className="grid grid-cols-2 gap-2">
-          <Button variant="outline" onClick={handleShare}>
-            <Share2 className="size-4" />
-            <span className="hidden sm:inline">Compartir</span>
-          </Button>
-          {product.demoUrl && (
-            <Button variant="outline" asChild>
-              <a href={product.demoUrl} target="_blank" rel="noreferrer">
-                <ExternalLink className="size-4" />
-                <span className="hidden sm:inline">Demo</span>
-              </a>
+          <div className="flex gap-2">
+            <Button
+              variant="brand"
+              size="default"
+              className="flex-1 relative overflow-hidden transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_0_30px_rgba(99,102,241,0.45)] hover:brightness-110 active:scale-[0.98]"
+              onClick={handleAdd}
+            >
+              <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
+              <ShoppingCart className="size-4 mr-2 relative z-10" />
+              <span className="relative z-10">{tCommon("addToCart")}</span>
             </Button>
-          )}
-        </div>
+            {(product.demoUrl || product.previewUrl) && (
+              <Button variant="outline" size="default" asChild className="border-brand-500/30 text-brand-500 hover:bg-brand-500/10 shrink-0 whitespace-nowrap">
+                <a href={(product.demoUrl || product.previewUrl)!} target="_blank" rel="noreferrer">
+                  <Play className="size-4 mr-2" />
+                  {tCommon("liveDemo")}
+                </a>
+              </Button>
+            )}
+          </div>
+        )}
       </div>
 
       <Separator />

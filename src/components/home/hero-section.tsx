@@ -261,15 +261,19 @@ export function HeroSection({ config, locale = "es" }: HeroSectionProps) {
             transition={{ delay: 0.4, duration: 0.5 }}
             className="mx-auto mt-12 grid max-w-4xl grid-cols-2 gap-4 sm:grid-cols-4 relative z-10"
           >
-            {c.stats.map((stat, i) => (
-              <div
-                key={i}
-                className="rounded-xl border border-border/40 bg-card/60 p-4 backdrop-blur-md shadow-sm"
-              >
-                <p className="text-2xl font-bold tabular-nums md:text-3xl text-center">{stat.value}</p>
-                <p className="mt-1 text-xs text-muted-foreground text-center">{stat.label}</p>
-              </div>
-            ))}
+            {c.stats.map((stat, i) => {
+              const IconComponent = (stat.icon && (Icons as any)[stat.icon]) ? (Icons as any)[stat.icon] : null;
+              return (
+                <div
+                  key={i}
+                  className="rounded-xl border border-border/40 bg-card/60 p-4 backdrop-blur-md shadow-sm"
+                >
+                  {IconComponent && <IconComponent className="size-5 text-brand-500 mx-auto mb-1.5" />}
+                  <p className="text-2xl font-bold tabular-nums md:text-3xl text-center">{stat.value}</p>
+                  <p className="mt-1 text-xs text-muted-foreground text-center">{stat.label}</p>
+                </div>
+              );
+            })}
           </motion.div>
         )}
       </div>

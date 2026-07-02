@@ -3,6 +3,10 @@ import { hash } from "argon2";
 import { z } from "zod";
 import { db } from "@/lib/db";
 import { rateLimit } from "@/lib/rate-limit";
+import { sendReactEmail } from "@/lib/mail";
+import { WelcomeEmail } from "@/emails/welcome";
+import { VerifyEmail } from "@/emails/verify-email";
+import crypto from "crypto";
 
 const schema = z.object({
   name: z.string().min(2).max(60),
@@ -38,13 +42,12 @@ export async function POST(req: Request) {
 
     const existing = await db.user.findUnique({ where: { email: parsed.data.email } });
     if (existing) {
-      return NextResponse.json(
-        { error: "Este email ya está registrado" },
-        { status: 409 },
-      );
+      return NextResponse.json({ error: "Este email ya está registrado" }, { status: 409 });
     }
 
     const passwordHash = await hash(parsed.data.password);
+    const verifyToken = crypto.randomBytes(32).toString("hex");
+    const expires = new Date(Date.now() + 24 * 60 * 60_000);
 
     const user = await db.user.create({
       data: {
@@ -53,9 +56,22 @@ export async function POST(req: Request) {
         passwordHash,
         role: "USER",
         status: "ACTIVE",
-        emailVerified: null, // Will verify via email
+        emailVerified: null,
       },
     });
+
+    await db.verificationToken.create({
+      data: {
+        identifier: parsed.data.email,
+        token: verifyToken,
+        expires,
+      },
+    });
+
+    const verifyUrl = `${process.env.NEXT_PUBLIC_APP_URL}/api/auth/verify?token=${verifyToken}&email=${encodeURIComponent(parsed.data.email)}`;
+
+    sendReactEmail(user.email!, "Verifica tu email — TodoWP", VerifyEmail({ name: user.name ?? "", verifyUrl })).catch(() => {});
+    sendReactEmail(user.email!, "¡Bienvenido a TodoWP!", WelcomeEmail({ name: user.name ?? "" })).catch(() => {});
 
     return NextResponse.json({
       success: true,

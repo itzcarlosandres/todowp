@@ -17,7 +17,7 @@ export function CTASection() {
             ¿Listo para empezar?
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-pretty text-white/80 md:text-lg">
-            Únete a miles de profesionales que ya confían en MarketFlow para crear experiencias digitales increíbles.
+            Únete a miles de profesionales que ya confían en TodoWP para crear experiencias digitales increíbles.
           </p>
           <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
             <Button asChild size="xl" className="bg-white text-brand-700 hover:bg-white/90">

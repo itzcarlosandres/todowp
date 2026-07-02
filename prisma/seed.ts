@@ -60,7 +60,7 @@ async function main() {
 
   const admin = await prisma.user.create({
     data: {
-      email: "admin@marketflow.dev",
+      email: "admin@todowp.dev",
       name: "Admin",
       username: "admin",
       role: UserRole.ADMIN,
@@ -103,7 +103,7 @@ async function main() {
       icon: "Palette",
       color: "#7C3AED",
       order: 1,
-      metaTitle: "WordPress Themes Premium | MarketFlow",
+       metaTitle: "WordPress Themes Premium | TodoWP",
       metaDescription:
         "Descubre los mejores themes de WordPress para crear sitios web profesionales, blogs, tiendas y más.",
     },
@@ -114,7 +114,7 @@ async function main() {
       icon: "Puzzle",
       color: "#10B981",
       order: 2,
-      metaTitle: "WordPress Plugins Premium | MarketFlow",
+       metaTitle: "WordPress Plugins Premium | TodoWP",
     },
     {
       name: "UI Templates",
@@ -863,7 +863,7 @@ Incluye todo lo necesario para empezar a vender online: filtros AJAX, búsqueda 
         categoryId: category.id,
         brandId: brand.id,
         authorName: brand.name,
-        metaTitle: `${productData.title} | MarketFlow`,
+         metaTitle: `${productData.title} | TodoWP`,
         metaDescription: productData.shortDescription,
         rating: productData.rating,
         reviewCount: productData.reviewCount,
@@ -958,7 +958,7 @@ Incluye todo lo necesario para empezar a vender online: filtros AJAX, búsqueda 
     data: [
       {
         key: "site.name",
-        value: "MarketFlow",
+        value: "TodoWP",
         type: "string",
         group: "general",
         isPublic: true,
@@ -973,7 +973,7 @@ Incluye todo lo necesario para empezar a vender online: filtros AJAX, búsqueda 
       },
       {
         key: "site.url",
-        value: "https://marketflow.dev",
+        value: "https://todowp.dev",
         type: "string",
         group: "general",
         isPublic: true,

@@ -1,7 +1,9 @@
 import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
-export const alt = "MarketFlow - Premium Digital Marketplace";
+export const alt = process.env.NEXT_PUBLIC_APP_NAME
+  ? `${process.env.NEXT_PUBLIC_APP_NAME} - Premium Digital Marketplace`
+  : "TodoWP - Premium Digital Marketplace";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -53,7 +55,7 @@ export default async function OG() {
               letterSpacing: "-0.02em",
             }}
           >
-            MarketFlow
+            TodoWP
           </div>
         </div>
         <div

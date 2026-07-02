@@ -4,7 +4,7 @@ import { CheckoutForm } from "./checkout-form";
 import { setRequestLocale } from "next-intl/server";
 
 export const metadata = {
-  title: "Finalizar Compra | MarketFlow",
+  title: "Finalizar Compra | TodoWP",
 };
 
 interface PageProps {

@@ -6,6 +6,7 @@ export interface HeroTrustBadge {
 export interface HeroStat {
   value: string;
   label: string;
+  icon: string;
 }
 
 export interface HeroConfig {
@@ -56,10 +57,10 @@ export const defaultHeroConfig: { es: HeroConfig; en: HeroConfig } = {
       { icon: "Sparkles", text: "Actualizaciones gratis" },
     ],
     stats: [
-      { value: "12,500+", label: "Productos" },
-      { value: "850+", label: "Creadores" },
-      { value: "1.2M+", label: "Descargas" },
-      { value: "99%", label: "Satisfacción" },
+      { value: "12,500+", label: "Productos", icon: "Package" },
+      { value: "850+", label: "Creadores", icon: "Users" },
+      { value: "1.2M+", label: "Descargas", icon: "Download" },
+      { value: "99%", label: "Satisfacción", icon: "Star" },
     ],
     image: {
       enabled: true,
@@ -90,10 +91,10 @@ export const defaultHeroConfig: { es: HeroConfig; en: HeroConfig } = {
       { icon: "Sparkles", text: "Free updates" },
     ],
     stats: [
-      { value: "12,500+", label: "Products" },
-      { value: "850+", label: "Creators" },
-      { value: "1.2M+", label: "Downloads" },
-      { value: "99%", label: "Satisfaction" },
+      { value: "12,500+", label: "Products", icon: "Package" },
+      { value: "850+", label: "Creators", icon: "Users" },
+      { value: "1.2M+", label: "Downloads", icon: "Download" },
+      { value: "99%", label: "Satisfaction", icon: "Star" },
     ],
     image: {
       enabled: true,
@@ -130,7 +131,12 @@ export function mergeHeroConfig(
     trustBadges: Array.isArray(saved.trustBadges)
       ? (saved.trustBadges as HeroTrustBadge[])
       : base.trustBadges,
-    stats: Array.isArray(saved.stats) ? (saved.stats as HeroStat[]) : base.stats,
+    stats: Array.isArray(saved.stats)
+      ? (saved.stats as HeroStat[]).map((s, i) => ({
+          ...s,
+          icon: s.icon || base.stats[i]?.icon || "Star",
+        }))
+      : base.stats,
     image: {
       enabled: (saved.image as HeroConfig["image"])?.enabled ?? base.image.enabled,
       src: (saved.image as HeroConfig["image"])?.src ?? base.image.src,

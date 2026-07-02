@@ -89,9 +89,9 @@ export function Footer() {
                 </I18nLink>
               </li>
               <li>
-                <Link href="#" className="text-muted-foreground hover:text-foreground">
+                <I18nLink href="/about" className="text-muted-foreground hover:text-foreground">
                   {t("about")}
-                </Link>
+                </I18nLink>
               </li>
               <li>
                 <Link href="#" className="text-muted-foreground hover:text-foreground">
@@ -104,7 +104,7 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <a href="mailto:contact@marketflow.dev" className="text-muted-foreground hover:text-foreground inline-flex items-center gap-1">
+                <a href="mailto:contact@todowp.dev" className="text-muted-foreground hover:text-foreground inline-flex items-center gap-1">
                   <Mail className="size-3" /> {t("contact")}
                 </a>
               </li>
@@ -115,24 +115,29 @@ export function Footer() {
             <h3 className="text-sm font-semibold">{t("support")}</h3>
             <ul className="mt-4 space-y-3 text-sm">
               <li>
-                <Link href="#" className="text-muted-foreground hover:text-foreground">
+                <I18nLink href="/about" className="text-muted-foreground hover:text-foreground">
                   {t("help")}
-                </Link>
+                </I18nLink>
               </li>
               <li>
-                <Link href="#" className="text-muted-foreground hover:text-foreground">
-                  {t("documentation")}
-                </Link>
+                <I18nLink href="/faq" className="text-muted-foreground hover:text-foreground">
+                  FAQ
+                </I18nLink>
               </li>
               <li>
-                <Link href="#" className="text-muted-foreground hover:text-foreground">
-                  {t("api")}
-                </Link>
+                <I18nLink href="/refund" className="text-muted-foreground hover:text-foreground">
+                  {t("refund")}
+                </I18nLink>
               </li>
               <li>
-                <Link href="#" className="text-muted-foreground hover:text-foreground">
-                  {t("status")}
-                </Link>
+                <I18nLink href="/terms" className="text-muted-foreground hover:text-foreground">
+                  {t("legal")}
+                </I18nLink>
+              </li>
+              <li>
+                <I18nLink href="/privacy" className="text-muted-foreground hover:text-foreground">
+                  {t("privacy")}
+                </I18nLink>
               </li>
               <li>
                 <I18nLink href="/dashboard" className="text-muted-foreground hover:text-foreground">
@@ -147,12 +152,12 @@ export function Footer() {
 
         <div className="flex flex-col items-center justify-between gap-4 py-6 md:flex-row">
           <p className="text-xs text-muted-foreground">
-            © {year} MarketFlow. {t("rights")}.
+            © {year} {process.env.NEXT_PUBLIC_APP_NAME || "TodoWP"}. {t("rights")}.
           </p>
           <div className="flex flex-wrap items-center gap-4 text-xs text-muted-foreground">
-            <Link href="#" className="hover:text-foreground">{t("terms")}</Link>
-            <Link href="#" className="hover:text-foreground">{t("privacy")}</Link>
-            <Link href="#" className="hover:text-foreground">{t("cookies")}</Link>
+            <I18nLink href="/terms" className="hover:text-foreground">{t("terms")}</I18nLink>
+            <I18nLink href="/privacy" className="hover:text-foreground">{t("privacy")}</I18nLink>
+            <I18nLink href="/cookies" className="hover:text-foreground">{t("cookies")}</I18nLink>
           </div>
         </div>
       </Container>
