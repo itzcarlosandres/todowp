@@ -19,6 +19,7 @@ export const routing = defineRouting({
     "/checkout": "/checkout",
     "/dashboard": "/dashboard",
     "/dashboard/orders": "/dashboard/orders",
+    "/dashboard/orders/[id]": "/dashboard/orders/[id]",
     "/dashboard/downloads": "/dashboard/downloads",
     "/dashboard/licenses": "/dashboard/licenses",
     "/dashboard/favorites": "/dashboard/favorites",
