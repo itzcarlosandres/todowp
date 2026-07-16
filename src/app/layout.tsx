@@ -1,16 +1,6 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, JetBrains_Mono, Bricolage_Grotesque } from "next/font/google";
 import { getSiteConfig } from "@/lib/site-config";
 import "./globals.css";
-
-const inter = Inter({ subsets: ["latin"], display: "swap", variable: "--font-inter" });
-const jetbrains = JetBrains_Mono({ subsets: ["latin"], display: "swap", variable: "--font-mono" });
-const bricolage = Bricolage_Grotesque({
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-bricolage",
-  weight: ["400", "500", "600", "700", "800"],
-});
 
 export async function generateMetadata(): Promise<Metadata> {
   const site = await getSiteConfig();
@@ -39,7 +29,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="es" suppressHydrationWarning className={`${inter.variable} ${jetbrains.variable} ${bricolage.variable}`}>
+    <html lang="es" suppressHydrationWarning>
       <body>{children}</body>
     </html>
   );
