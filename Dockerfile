@@ -55,8 +55,8 @@ COPY --from=builder --chown=nextjs:nodejs /app/node_modules/.prisma ./node_modul
 COPY --from=builder --chown=nextjs:nodejs /app/node_modules/@prisma ./node_modules/@prisma
 COPY --from=builder --chown=nextjs:nodejs /app/node_modules/prisma ./node_modules/prisma
 
-# Crear wrapper de inicio (Next.js 15 standalone usa .next/server/index.js dentro de .next/standalone)
-RUN printf '#!/bin/sh\ncd /app/.next/standalone/.next/server && PORT=${PORT:-3000} HOSTNAME=0.0.0.0 node index.js\n' > /app/start.sh && chmod +x /app/start.sh
+# Crear wrapper de inicio (Next.js 15 standalone copia el contenido a /app/)
+RUN printf '#!/bin/sh\ncd /app && PORT=${PORT:-3000} HOSTNAME=0.0.0.0 node server.js\n' > /app/start.sh && chmod +x /app/start.sh
 
 USER nextjs
 EXPOSE 3000
