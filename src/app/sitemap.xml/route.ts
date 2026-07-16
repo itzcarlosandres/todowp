@@ -3,6 +3,7 @@ import { db } from "@/lib/db";
 import { routing } from "@/i18n/routing";
 import { getSiteConfig } from "@/lib/site-config";
 
+export const dynamic = "force-dynamic";
 export const revalidate = 3600;
 
 function buildXml(entries: MetadataRoute.Sitemap, siteUrl: string): string {

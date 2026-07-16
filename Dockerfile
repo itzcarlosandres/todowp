@@ -17,11 +17,11 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 ENV NEXT_TELEMETRY_DISABLED=1
-# Placeholder para que Prisma no falle al validar el schema durante el build.
-# El valor real se provee en runtime via variables de entorno de Dokploy/Easypanel.
-ENV DATABASE_URL="postgresql://placeholder:placeholder@localhost:5432/placeholder?schema=public"
+# Solo AUTH_SECRET es necesario para que NextAuth no falle al validar config.
+# El DATABASE_URL real se provee en runtime via variables de entorno de Dokploy/Easypanel.
 ENV AUTH_SECRET="placeholder-secret-for-build-only-not-used-at-runtime"
 ENV AUTH_URL="http://localhost:3000"
+ENV NEXTAUTH_URL="http://localhost:3000"
 # Generar cliente Prisma (sin internet, usa el schema local)
 RUN corepack enable && pnpm db:generate
 # Build de Next.js con output standalone
