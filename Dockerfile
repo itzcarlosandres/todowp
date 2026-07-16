@@ -38,7 +38,7 @@ ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
 
 # Paquetes del sistema
-RUN apk add --no-cache openssl curl
+RUN apk add --no-cache openssl curl bash
 # Usuario no-root para seguridad
 RUN addgroup --system --gid 1001 nodejs && \
     adduser --system --uid 1001 nextjs
@@ -58,8 +58,5 @@ COPY --from=builder --chown=nextjs:nodejs /app/node_modules/prisma ./node_module
 USER nextjs
 EXPOSE 3000
 
-# Healthcheck para Dokploy
-HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
-  CMD wget --quiet --tries=1 --spider http://localhost:3000/ || exit 1
-
+# CMD directo con paths absolutos para evitar problemas de PATH o shell
 CMD ["node", "server.js"]
