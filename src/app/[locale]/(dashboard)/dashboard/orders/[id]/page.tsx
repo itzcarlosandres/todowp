@@ -65,10 +65,10 @@ export default async function OrderDetailPage({ params }: PageProps) {
                   </div>
                   <div className="text-right">
                     <p className="font-semibold tabular-nums">
-                      {formatPrice(Number(item.price), { currency: order.currency })}
+                      {formatPrice(Number(item.totalPrice), { currency: order.currency })}
                     </p>
                     <p className="text-xs text-muted-foreground">
-                      {item.quantity > 1 && `${item.quantity} × ${formatPrice(Number(item.price) / item.quantity, { currency: order.currency })}`}
+                      {item.quantity > 1 && `${item.quantity} × ${formatPrice(Number(item.unitPrice), { currency: order.currency })}`}
                     </p>
                   </div>
                 </li>
