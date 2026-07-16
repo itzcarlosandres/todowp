@@ -17,8 +17,9 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 ENV NEXT_TELEMETRY_DISABLED=1
-# Solo AUTH_SECRET es necesario para que NextAuth no falle al validar config.
-# El DATABASE_URL real se provee en runtime via variables de entorno de Dokploy/Easypanel.
+# Placeholder para que Prisma valide el schema. El valor real se provee en runtime.
+ENV DATABASE_URL="postgresql://placeholder:placeholder@localhost:5432/placeholder?schema=public"
+ENV SHADOW_DATABASE_URL="postgresql://placeholder:placeholder@localhost:5432/placeholder_shadow?schema=public"
 ENV AUTH_SECRET="placeholder-secret-for-build-only-not-used-at-runtime"
 ENV AUTH_URL="http://localhost:3000"
 ENV NEXTAUTH_URL="http://localhost:3000"
