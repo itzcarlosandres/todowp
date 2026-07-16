@@ -6,6 +6,7 @@ import { formatDate } from "@/lib/date";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { DollarSign, ShoppingCart, Users, Package, TrendingUp } from "lucide-react";
 import { unstable_cache } from "next/cache";
+import { AdminCharts } from "@/components/admin/admin-charts";
 
 const getDashboardStats = unstable_cache(
   async () => {
@@ -69,17 +70,100 @@ const getTopProducts = unstable_cache(
   { revalidate: 60 }
 );
 
+const getRevenueChart = unstable_cache(
+  async () => {
+    const now = new Date();
+    const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+
+    const orders = await db.order.findMany({
+      where: {
+        createdAt: { gte: thirtyDaysAgo },
+      },
+      select: {
+        createdAt: true,
+        total: true,
+        status: true,
+      },
+      orderBy: { createdAt: "asc" },
+    });
+
+    const dailyMap: Record<string, { revenue: number; orders: number }> = {};
+
+    for (let i = 0; i < 30; i++) {
+      const d = new Date(thirtyDaysAgo.getTime() + i * 24 * 60 * 60 * 1000);
+      const key = d.toISOString().slice(0, 10);
+      dailyMap[key] = { revenue: 0, orders: 0 };
+    }
+
+    for (const o of orders) {
+      const key = o.createdAt.toISOString().slice(0, 10);
+      if (!dailyMap[key]) dailyMap[key] = { revenue: 0, orders: 0 };
+      dailyMap[key].orders += 1;
+      if (o.status === "PAID") {
+        dailyMap[key].revenue += Number(o.total);
+      }
+    }
+
+    return Object.entries(dailyMap).map(([date, data]) => ({
+      date: date.slice(5),
+      revenue: data.revenue,
+      orders: data.orders,
+    }));
+  },
+  ["admin-revenue-chart"],
+  { revalidate: 120 }
+);
+
+const getOrderStatusData = unstable_cache(
+  async () => {
+    const groups = await db.order.groupBy({
+      by: ["status"],
+      _count: { status: true },
+    });
+    return groups.map((g) => ({
+      status: g.status,
+      count: g._count.status,
+    }));
+  },
+  ["admin-order-status"],
+  { revalidate: 120 }
+);
+
+const getCategoryData = unstable_cache(
+  async () => {
+    const categories = await db.category.findMany({
+      where: { parentId: null },
+      select: {
+        name: true,
+        _count: { select: { products: true } },
+      },
+      orderBy: { products: { _count: "desc" } },
+      take: 8,
+    });
+    return categories.map((c) => ({
+      name: c.name,
+      products: c._count.products,
+    }));
+  },
+  ["admin-category-chart"],
+  { revalidate: 120 }
+);
+
 export default async function AdminDashboardPage() {
   const session = await auth();
   if (!session?.user || session.user.role !== "ADMIN") {
     redirect("/login?callbackUrl=/admin");
   }
 
-  const [statsData, recentOrders, topProducts] = await Promise.all([
-    getDashboardStats(),
-    getRecentOrders(),
-    getTopProducts(),
-  ]);
+  const [statsData, recentOrders, topProducts, revenueData, orderStatusData, categoryData] =
+    await Promise.all([
+      getDashboardStats(),
+      getRecentOrders(),
+      getTopProducts(),
+      getRevenueChart(),
+      getOrderStatusData(),
+      getCategoryData(),
+    ]);
 
   const stats = [
     { label: "Ingresos totales", value: formatPrice(statsData.revenue), icon: DollarSign, change: "+12.5%" },
@@ -118,6 +202,14 @@ export default async function AdminDashboardPage() {
             </Card>
           );
         })}
+      </div>
+
+      <div className="mt-8">
+        <AdminCharts
+          revenueData={revenueData}
+          orderStatusData={orderStatusData}
+          categoryData={categoryData}
+        />
       </div>
 
       <div className="mt-8 grid gap-6 lg:grid-cols-2">

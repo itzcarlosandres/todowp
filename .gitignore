@@ -8,6 +8,10 @@ node_modules
 !.yarn/releases
 !.yarn/versions
 
+# pnpm build artifacts
+pnpm-buildconfig.json
+pnpm-workspace.yaml
+
 # testing
 coverage
 .nyc_output

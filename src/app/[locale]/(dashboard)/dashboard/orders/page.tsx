@@ -2,9 +2,10 @@ import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { formatPrice } from "@/lib/format";
 import { formatDate } from "@/lib/date";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { getTranslations } from "next-intl/server";
+import { Link } from "@/i18n/routing";
 import { Package } from "lucide-react";
 
 export default async function OrdersPage() {
@@ -30,25 +31,27 @@ export default async function OrdersPage() {
       ) : (
         <div className="space-y-3">
           {orders.map((o) => (
-            <Card key={o.id}>
-              <CardContent className="p-5">
-                <div className="flex flex-wrap items-center justify-between gap-3">
-                  <div>
-                    <p className="font-mono text-sm font-semibold">#{o.orderNumber}</p>
-                    <p className="text-xs text-muted-foreground">{formatDate(o.createdAt)}</p>
+            <Link key={o.id} href={`/dashboard/orders/${o.id}`} className="block">
+              <Card className="transition-colors hover:border-border">
+                <CardContent className="p-5">
+                  <div className="flex flex-wrap items-center justify-between gap-3">
+                    <div>
+                      <p className="font-mono text-sm font-semibold">#{o.orderNumber}</p>
+                      <p className="text-xs text-muted-foreground">{formatDate(o.createdAt)}</p>
+                    </div>
+                    <Badge variant={o.status === "PAID" ? "success" : "secondary"}>
+                      {o.status}
+                    </Badge>
+                    <div className="text-right">
+                      <p className="font-semibold tabular-nums">
+                        {formatPrice(Number(o.total), { currency: o.currency })}
+                      </p>
+                      <p className="text-xs text-muted-foreground">{o.items.length} productos</p>
+                    </div>
                   </div>
-                  <Badge variant={o.status === "PAID" ? "success" : "secondary"}>
-                    {o.status}
-                  </Badge>
-                  <div className="text-right">
-                    <p className="font-semibold tabular-nums">
-                      {formatPrice(Number(o.total), { currency: o.currency })}
-                    </p>
-                    <p className="text-xs text-muted-foreground">{o.items.length} productos</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            </Link>
           ))}
         </div>
       )}

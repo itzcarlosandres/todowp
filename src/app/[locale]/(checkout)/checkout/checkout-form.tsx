@@ -4,6 +4,9 @@ import * as React from "react";
 import { useTranslations } from "next-intl";
 import { CreditCard, Check, Shield, Lock, Building2, Bitcoin, Banknote, Wallet } from "lucide-react";
 import { motion } from "framer-motion";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -15,6 +18,17 @@ import { cn } from "@/lib/utils";
 import { Link as I18nLink } from "@/i18n/routing";
 import { getUserBalance } from "@/modules/cashback";
 import { useSession } from "next-auth/react";
+
+const billingSchema = z.object({
+  name: z.string().min(2, "El nombre es obligatorio"),
+  email: z.string().email("Email inválido"),
+  address: z.string().optional(),
+  city: z.string().optional(),
+  zip: z.string().optional(),
+  country: z.string().optional(),
+});
+
+type BillingFormData = z.infer<typeof billingSchema>;
 
 interface CheckoutFormProps {
   activeMethods: {
@@ -33,6 +47,18 @@ export function CheckoutForm({ activeMethods }: CheckoutFormProps) {
 
   const [walletBalance, setWalletBalance] = React.useState(0);
   const [useCashback, setUseCashback] = React.useState(false);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<BillingFormData>({
+    resolver: zodResolver(billingSchema),
+    defaultValues: {
+      name: session?.user?.name ?? "",
+      email: session?.user?.email ?? "",
+    },
+  });
 
   React.useEffect(() => {
     if (session?.user?.id) {
@@ -61,23 +87,22 @@ export function CheckoutForm({ activeMethods }: CheckoutFormProps) {
   const [loading, setLoading] = React.useState(false);
   const [success, setSuccess] = React.useState(false);
 
-  const onSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const onSubmit = async (data: BillingFormData) => {
     setLoading(true);
     try {
       const res = await fetch(`/api/checkout/${method}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ items, subtotal, useCashback }),
+        body: JSON.stringify({ items, subtotal, useCashback, billing: data }),
       });
-      const data = await res.json();
+      const result = await res.json();
 
-      if (data.url) {
-        window.location.href = data.url;
-      } else if (data.success) {
+      if (result.url) {
+        window.location.href = result.url;
+      } else if (result.success) {
         setSuccess(true);
       } else {
-        console.error("Error al procesar pago:", data.error);
+        console.error("Error al procesar pago:", result.error);
         alert("Ocurrió un error al procesar el pago.");
       }
     } catch (err) {
@@ -118,7 +143,7 @@ export function CheckoutForm({ activeMethods }: CheckoutFormProps) {
     <div className="container-fluid py-8">
       <h1 className="mb-6 text-3xl font-bold tracking-tight">{t("title")}</h1>
 
-      <form onSubmit={onSubmit} className="grid gap-8 lg:grid-cols-[1fr_400px]">
+      <form onSubmit={handleSubmit(onSubmit)} className="grid gap-8 lg:grid-cols-[1fr_400px]">
         <div className="space-y-6">
           <Card>
             <CardContent className="space-y-4 p-6">
@@ -126,27 +151,33 @@ export function CheckoutForm({ activeMethods }: CheckoutFormProps) {
               <div className="grid gap-4 sm:grid-cols-2">
                 <div>
                   <Label>Nombre</Label>
-                  <Input required placeholder="Tu nombre" />
+                  <Input required placeholder="Tu nombre" {...register("name")} />
+                  {errors.name && (
+                    <p className="mt-1 text-xs text-destructive">{errors.name.message}</p>
+                  )}
                 </div>
                 <div>
                   <Label>Email</Label>
-                  <Input required type="email" placeholder="tu@email.com" />
+                  <Input required type="email" placeholder="tu@email.com" {...register("email")} />
+                  {errors.email && (
+                    <p className="mt-1 text-xs text-destructive">{errors.email.message}</p>
+                  )}
                 </div>
                 <div className="sm:col-span-2">
                   <Label>Dirección</Label>
-                  <Input placeholder="Calle, número, ciudad" />
+                  <Input placeholder="Calle, número, ciudad" {...register("address")} />
                 </div>
                 <div>
                   <Label>Ciudad</Label>
-                  <Input placeholder="Madrid" />
+                  <Input placeholder="Madrid" {...register("city")} />
                 </div>
                 <div>
                   <Label>Código postal</Label>
-                  <Input placeholder="28001" />
+                  <Input placeholder="28001" {...register("zip")} />
                 </div>
                 <div>
                   <Label>País</Label>
-                  <Input placeholder="España" />
+                  <Input placeholder="España" {...register("country")} />
                 </div>
               </div>
             </CardContent>
