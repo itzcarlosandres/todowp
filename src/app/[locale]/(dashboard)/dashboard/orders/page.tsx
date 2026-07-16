@@ -5,7 +5,7 @@ import { formatDate } from "@/lib/date";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { getTranslations } from "next-intl/server";
-import { Link } from "@/i18n/routing";
+import NextLink from "next/link";
 import { Package } from "lucide-react";
 
 export default async function OrdersPage() {
@@ -31,7 +31,7 @@ export default async function OrdersPage() {
       ) : (
         <div className="space-y-3">
           {orders.map((o) => (
-            <Link key={o.id} href={`/dashboard/orders/${o.id}`} className="block">
+            <NextLink key={o.id} href={`/dashboard/orders/${o.id}`} className="block">
               <Card className="transition-colors hover:border-border">
                 <CardContent className="p-5">
                   <div className="flex flex-wrap items-center justify-between gap-3">
@@ -51,7 +51,7 @@ export default async function OrdersPage() {
                   </div>
                 </CardContent>
               </Card>
-            </Link>
+            </NextLink>
           ))}
         </div>
       )}
