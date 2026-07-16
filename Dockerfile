@@ -38,7 +38,7 @@ ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
 
 # Paquetes del sistema
-RUN apk add --no-cache openssl dumb-init tini curl
+RUN apk add --no-cache openssl curl
 # Usuario no-root para seguridad
 RUN addgroup --system --gid 1001 nodejs && \
     adduser --system --uid 1001 nextjs
@@ -55,15 +55,11 @@ COPY --from=builder --chown=nextjs:nodejs /app/node_modules/.prisma ./node_modul
 COPY --from=builder --chown=nextjs:nodejs /app/node_modules/@prisma ./node_modules/@prisma
 COPY --from=builder --chown=nextjs:nodejs /app/node_modules/prisma ./node_modules/prisma
 
-# Crear wrapper de inicio (Next.js 15 standalone copia el contenido a /app/)
-RUN printf '#!/bin/sh\ncd /app && PORT=${PORT:-3000} HOSTNAME=0.0.0.0 node server.js\n' > /app/start.sh && chmod +x /app/start.sh
-
 USER nextjs
 EXPOSE 3000
 
 # Healthcheck para Dokploy
 HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
-  CMD curl -fsS http://localhost:3000/ || exit 1
+  CMD wget --quiet --tries=1 --spider http://localhost:3000/ || exit 1
 
-ENTRYPOINT ["dumb-init", "--"]
-CMD ["/app/start.sh"]
+CMD ["node", "server.js"]
