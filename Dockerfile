@@ -53,9 +53,14 @@ COPY --from=builder --chown=nextjs:nodejs /app/prisma ./prisma
 COPY --from=builder --chown=nextjs:nodejs /app/node_modules/.prisma ./node_modules/.prisma
 # node_modules de Prisma para runtime
 COPY --from=builder --chown=nextjs:nodejs /app/node_modules/@prisma ./node_modules/@prisma
-# Copiar binarios de prisma CLI y tsx para poder correr migraciones y seed
+# Copiar paquetes prisma y tsx
 COPY --from=builder --chown=nextjs:nodejs /app/node_modules/prisma ./node_modules/prisma
 COPY --from=builder --chown=nextjs:nodejs /app/node_modules/tsx ./node_modules/tsx
+# Copiar los binarios de prisma y tsx que están en .bin (no los incluye el standalone)
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/.bin/prisma ./node_modules/.bin/prisma
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/.bin/tsx ./node_modules/.bin/tsx
+# Asegurar permisos de ejecución en los binarios
+RUN chmod +x ./node_modules/.bin/prisma ./node_modules/.bin/tsx
 
 USER nextjs
 EXPOSE 3000
