@@ -39,6 +39,8 @@ ENV HOSTNAME="0.0.0.0"
 
 # Paquetes del sistema
 RUN apk add --no-cache openssl curl bash
+# Instalar pnpm globalmente para poder correr prisma y tsx desde el contenedor
+RUN corepack enable && corepack prepare pnpm@10.13.1 --activate
 # Usuario no-root para seguridad
 RUN addgroup --system --gid 1001 nodejs && \
     adduser --system --uid 1001 nextjs
@@ -53,15 +55,12 @@ COPY --from=builder --chown=nextjs:nodejs /app/prisma ./prisma
 COPY --from=builder --chown=nextjs:nodejs /app/node_modules/.prisma ./node_modules/.prisma
 # node_modules de Prisma para runtime
 COPY --from=builder --chown=nextjs:nodejs /app/node_modules/@prisma ./node_modules/@prisma
-# Copiar paquetes prisma y tsx
-COPY --from=builder --chown=nextjs:nodejs /app/node_modules/prisma ./node_modules/prisma
-COPY --from=builder --chown=nextjs:nodejs /app/node_modules/@prisma/engines ./node_modules/@prisma/engines
-COPY --from=builder --chown=nextjs:nodejs /app/node_modules/tsx ./node_modules/tsx
-# Copiar los binarios de prisma y tsx que están en .bin (no los incluye el standalone)
-COPY --from=builder --chown=nextjs:nodejs /app/node_modules/.bin/prisma ./node_modules/.bin/prisma
-COPY --from=builder --chown=nextjs:nodejs /app/node_modules/.bin/tsx ./node_modules/.bin/tsx
-# Asegurar permisos de ejecución en los binarios
-RUN chmod +x ./node_modules/.bin/prisma ./node_modules/.bin/tsx
+
+# Instalar prisma y tsx como devDependencies para poder correr migraciones
+# desde la terminal del contenedor
+USER root
+RUN corepack enable && pnpm add -g prisma@6.19.3 tsx@4.19.2
+USER nextjs
 
 USER nextjs
 EXPOSE 3000
