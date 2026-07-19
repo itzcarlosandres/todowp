@@ -14,6 +14,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "sonner";
 import { Loader2, Sparkles } from "lucide-react";
 import { FileUploader } from "@/components/ui/file-uploader";
+import { RichTextEditor } from "@/components/admin/rich-text-editor";
 
 const MAX_META_DESC = 160;
 
@@ -30,7 +31,6 @@ export function ProductForm({ categories, brands, initialData }: { categories: a
   const [loading, setLoading] = useState(false);
   const [coverImage, setCoverImage] = useState(initialData?.coverImage || "");
   const [fileKey, setFileKey] = useState("");
-  const [isGeneratingAI, setIsGeneratingAI] = useState(false);
   const [isGeneratingSEO, setIsGeneratingSEO] = useState(false);
   const [slug, setSlug] = useState(initialData?.slug || "");
   const [metaTitle, setMetaTitle] = useState(initialData?.metaTitle || "");
@@ -38,7 +38,6 @@ export function ProductForm({ categories, brands, initialData }: { categories: a
     truncate(initialData?.metaDescription || "", MAX_META_DESC)
   );
   const titleRef = useRef<HTMLInputElement>(null);
-  const descRef = useRef<HTMLTextAreaElement>(null);
 
   const handleMetaDescChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value;
@@ -55,34 +54,6 @@ export function ProductForm({ categories, brands, initialData }: { categories: a
       .replace(/-+/g, "-") // remove consecutive hyphens
       .replace(/^-+|-+$/g, ""); // trim hyphens
     setSlug(autoSlug);
-  };
-
-  const handleGenerateAI = async () => {
-    const title = titleRef.current?.value;
-    if (!title) {
-      toast.error("Ingresa un título primero para generar la descripción");
-      return;
-    }
-
-    setIsGeneratingAI(true);
-    try {
-      const res = await fetch("/api/ai/generate", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ prompt: title }),
-      });
-      const data = await res.json();
-      if (data.error) throw new Error(data.error);
-      
-      if (descRef.current) {
-        descRef.current.value = data.text;
-      }
-      toast.success("Descripción generada por IA");
-    } catch (error: any) {
-      toast.error(error.message || "Error al generar con IA");
-    } finally {
-      setIsGeneratingAI(false);
-    }
   };
 
   const handleGenerateSEO = async () => {
@@ -198,19 +169,30 @@ export function ProductForm({ categories, brands, initialData }: { categories: a
           <div className="space-y-2">
             <div className="flex items-center justify-between">
               <Label htmlFor="description">Descripción</Label>
-              <Button 
-                type="button" 
-                variant="brand" 
-                size="sm" 
-                className="h-7 text-xs shadow-sm" 
-                onClick={handleGenerateAI}
-                disabled={isGeneratingAI}
-              >
-                {isGeneratingAI ? <Loader2 className="size-3 mr-1 animate-spin" /> : <Sparkles className="size-3 mr-1" />}
-                Generar con IA
-              </Button>
             </div>
-            <Textarea id="description" name="description" ref={descRef} defaultValue={initialData?.description} placeholder="Descripción detallada del producto..." required className="min-h-[120px]" />
+            <RichTextEditor
+              name="description"
+              defaultValue={initialData?.description || ""}
+              placeholder="Describe el producto: características, beneficios, qué incluye, cómo usarlo..."
+              minHeight={350}
+              enableAI
+              aiContext={{
+                title: titleRef.current?.value,
+                category: (document.getElementById("categoryId") as HTMLSelectElement)
+                  ?.selectedOptions?.[0]?.text,
+              }}
+              onAIEnhance={(_html, metaDescription) => {
+                if (metaDescription) {
+                  setMetaDesc(truncate(metaDescription, MAX_META_DESC));
+                  setMetaTitle(
+                    titleRef.current?.value
+                      ? `${titleRef.current.value} - Descargar y Comprar`
+                      : "",
+                  );
+                  toast.success("Meta descripción también actualizada");
+                }
+              }}
+            />
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
