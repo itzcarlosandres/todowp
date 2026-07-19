@@ -1,14 +1,21 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
-import { readFile } from "fs/promises";
-import path from "path";
-import { S3Client, GetObjectCommand } from "@aws-sdk/client-s3";
-import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+import { storageGetUrl, storageRead, isR2Enabled } from "@/lib/storage";
 
+export const runtime = "nodejs";
+
+/**
+ * Descarga un producto digital.
+ *
+ * 1. Verifica que el usuario compró el producto (o tiene membresía activa con
+ *    la categoría autorizada, o es admin).
+ * 2. Si R2 está activo, redirige a URL firmada de R2.
+ * 3. Si R2 no está activo, devuelve el archivo desde local.
+ */
 export async function GET(
-  req: NextRequest,
-  { params }: { params: Promise<{ versionId: string }> }
+  _req: NextRequest,
+  { params }: { params: Promise<{ versionId: string }> },
 ) {
   try {
     const session = await auth();
@@ -18,117 +25,74 @@ export async function GET(
 
     const { versionId } = await params;
 
-    // Verify user actually purchased this product version (or product)
     const version = await db.productVersion.findUnique({
       where: { id: versionId },
-      include: { product: true }
+      include: { product: true },
     });
+    if (!version) return new NextResponse("Not Found", { status: 404 });
 
-    if (!version) {
-      return new NextResponse("Not Found", { status: 404 });
-    }
-
-    // Admins can download anything
     const isAdmin = session.user.role === "ADMIN";
 
     if (!isAdmin) {
-      // Check if user has an ACTIVE membership
+      // Membresía
       const membership = await db.userMembership.findUnique({
         where: { userId: session.user.id },
         include: { plan: true },
       });
 
-      let hasMembershipAccess = false;
-
-      if (membership && membership.status === "ACTIVE" && membership.plan) {
-        const isExpired = membership.expiresAt && membership.expiresAt < new Date();
-        
-        if (!isExpired) {
-          // Check if product's category is in the plan's authorized categories
-          const authorizedCats = membership.plan.authorizedCategories || [];
-
-          if (authorizedCats.includes(version.product.categoryId)) {
-            hasMembershipAccess = true;
-          }
+      let hasAccess = false;
+      if (
+        membership?.status === "ACTIVE" &&
+        membership.plan &&
+        (!membership.expiresAt || membership.expiresAt > new Date())
+      ) {
+        const authorized = membership.plan.authorizedCategories ?? [];
+        if (authorized.includes(version.product.categoryId)) {
+          hasAccess = true;
         }
       }
 
-      if (!hasMembershipAccess) {
-        // Fallback to checking if they purchased the product
+      // Compra directa
+      if (!hasAccess) {
         const orderCount = await db.order.count({
           where: {
             userId: session.user.id,
             status: "PAID",
-            items: {
-              some: {
-                productId: version.productId
-              }
-            }
-          }
-        });
-
-        if (orderCount === 0) {
-          return new NextResponse("Forbidden: You haven't purchased this product or lack a valid membership", { status: 403 });
-        }
-      }
-    }
-
-    // Now serve the file
-    const fileKey = version.fileKey;
-
-    if (fileKey.startsWith("r2://")) {
-      // Serve via R2 Presigned URL
-      const settings = await db.setting.findMany({
-        where: { group: "storage" }
-      });
-      const config: Record<string, string> = {};
-      settings.forEach(s => {
-        config[s.key] = s.value as string;
-      });
-
-      if (!config["r2_account_id"] || !config["r2_bucket_name"]) {
-        return new NextResponse("R2 storage not configured properly", { status: 500 });
-      }
-
-      const S3 = new S3Client({
-        region: "auto",
-        endpoint: `https://${config["r2_account_id"]}.r2.cloudflarestorage.com`,
-        credentials: {
-          accessKeyId: config["r2_access_key_id"] || "",
-          secretAccessKey: config["r2_secret_access_key"] || "",
-        },
-      });
-
-      const actualKey = fileKey.replace(`r2://${config["r2_bucket_name"]}/`, "");
-      
-      const command = new GetObjectCommand({
-        Bucket: config["r2_bucket_name"],
-        Key: actualKey,
-        ResponseContentDisposition: `attachment; filename="${version.fileName}"`,
-      });
-
-      const signedUrl = await getSignedUrl(S3, command, { expiresIn: 3600 });
-      return NextResponse.redirect(signedUrl);
-
-    } else {
-      // Local File
-      const filePath = path.join(process.cwd(), "storage", "products", fileKey);
-      try {
-        const fileBuffer = await readFile(filePath);
-        return new NextResponse(fileBuffer, {
-          headers: {
-            "Content-Disposition": `attachment; filename="${version.fileName}"`,
-            "Content-Type": "application/octet-stream",
+            items: { some: { productId: version.productId } },
           },
         });
-      } catch (err) {
-        console.error(err);
-        return new NextResponse("File not found on server", { status: 404 });
+        hasAccess = orderCount > 0;
+      }
+
+      if (!hasAccess) {
+        return new NextResponse("Forbidden: no purchase or membership for this product", {
+          status: 403,
+        });
       }
     }
 
-  } catch (error) {
-    console.error("Download Error:", error);
+    const fileKey = version.fileKey;
+    const filename = version.fileName;
+
+    if (isR2Enabled() && fileKey.startsWith("r2://")) {
+      const url = await storageGetUrl(fileKey, filename);
+      return NextResponse.redirect(url);
+    }
+
+    // Local: leer y devolver directamente
+    const buffer = await storageRead(fileKey);
+    return new NextResponse(new Uint8Array(buffer), {
+      headers: {
+        "Content-Disposition": `attachment; filename="${filename.replace(/"/g, "")}"`,
+        "Content-Type": "application/octet-stream",
+        "Cache-Control": "private, no-store",
+      },
+    });
+  } catch (err: any) {
+    console.error("Download Error:", err);
+    if (err?.code === "ENOENT") {
+      return new NextResponse("File not found on server", { status: 404 });
+    }
     return new NextResponse("Internal Server Error", { status: 500 });
   }
 }

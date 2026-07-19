@@ -1,11 +1,61 @@
 import { PrismaClient, ProductType, ProductStatus, UserRole } from "@prisma/client";
 import { hash } from "argon2";
 import slugify from "slugify";
+import { writeFile, mkdir } from "fs/promises";
+import { join } from "path";
+import { existsSync } from "fs";
 
 // Ensure we use the generated client
 const prisma = new PrismaClient({
   log: ["error", "warn"],
 });
+
+/**
+ * Cache local de imágenes: descarga una vez desde picsum y la guarda
+ * en /public/seed-images/. Las siguientes veces sirve la copia local,
+ * que carga mucho más rápido que un fetch externo en cada seed.
+ */
+const SEED_IMAGES_DIR = join(process.cwd(), "public", "seed-images");
+const imageCache = new Map<string, string>();
+
+async function ensureSeedImageDir() {
+  if (!existsSync(SEED_IMAGES_DIR)) {
+    await mkdir(SEED_IMAGES_DIR, { recursive: true });
+  }
+}
+
+async function seedImage(seedKey: string, width: number, height: number): Promise<string> {
+  const cacheKey = `${seedKey}-${width}x${height}`;
+  if (imageCache.has(cacheKey)) return imageCache.get(cacheKey)!;
+
+  await ensureSeedImageDir();
+  const fileName = `${cacheKey}.jpg`;
+  const localPath = join(SEED_IMAGES_DIR, fileName);
+  const publicUrl = `/seed-images/${fileName}`;
+
+  if (existsSync(localPath)) {
+    imageCache.set(cacheKey, publicUrl);
+    return publicUrl;
+  }
+
+  // Descargar desde picsum con timeout. Si falla, fallback a la URL externa.
+  try {
+    const url = `https://picsum.photos/seed/${encodeURIComponent(seedKey)}/${width}/${height}`;
+    const res = await fetch(url, {
+      signal: AbortSignal.timeout(10_000),
+      redirect: "follow",
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const buffer = Buffer.from(await res.arrayBuffer());
+    await writeFile(localPath, buffer);
+    imageCache.set(cacheKey, publicUrl);
+    return publicUrl;
+  } catch (err) {
+    console.warn(`  ⚠️  Failed to cache image "${cacheKey}", using remote URL:`, (err as Error).message);
+    imageCache.set(cacheKey, url);
+    return url;
+  }
+}
 
 async function main() {
   console.log("🌱 Seeding database...");
@@ -203,7 +253,7 @@ async function main() {
       prisma.category.create({
         data: {
           ...c,
-          image: `https://picsum.photos/seed/${c.slug}/800/600`,
+          image: await seedImage(c.slug, 800, 600),
         },
       }),
     ),
@@ -854,9 +904,11 @@ Incluye todo lo necesario para empezar a vender online: filtros AJAX, búsqueda 
         price: productData.price,
         salePrice: productData.salePrice,
         currency: "USD",
-        coverImage: `https://picsum.photos/seed/${slugify(productData.title, { lower: true })}/800/600`,
-        gallery: Array.from({ length: 5 }, (_, i) =>
-          `https://picsum.photos/seed/${slugify(productData.title, { lower: true })}-${i}/1200/800`,
+        coverImage: await seedImage(slugify(productData.title, { lower: true }), 800, 600),
+        gallery: await Promise.all(
+          Array.from({ length: 5 }, (_, i) =>
+            seedImage(`${slugify(productData.title, { lower: true })}-${i}`, 1200, 800),
+          ),
         ),
         features: productData.features,
         compatibility: productData.compatibility,
@@ -1097,7 +1149,7 @@ El diseño web evoluciona constantemente...`,
         ...post,
         authorId: admin.id,
         status: "PUBLISHED",
-        coverImage: `https://picsum.photos/seed/${post.slug}/1200/630`,
+        coverImage: await seedImage(post.slug, 1200, 630),
         metaTitle: post.title,
         metaDescription: post.excerpt,
         publishedAt: new Date(),

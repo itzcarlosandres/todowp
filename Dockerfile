@@ -62,6 +62,9 @@ USER root
 RUN npm install -g prisma@6.19.3 tsx@4.19.2 slugify argon2
 USER nextjs
 
+# Crear carpetas de storage local (uploads y productos)
+RUN mkdir -p /app/storage/products /app/public/uploads && chown -R nextjs:nodejs /app/storage /app/public
+
 USER nextjs
 EXPOSE 3000
 

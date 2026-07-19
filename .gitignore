@@ -62,7 +62,11 @@ logs
 
 # Uploads
 public/uploads
-storage
+public/seed-images/*
+!public/seed-images/.gitkeep
+!public/seed-images/README.md
+/storage
+/storage/*
 tmp
 temp
 
