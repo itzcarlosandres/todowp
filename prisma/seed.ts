@@ -1,8 +1,6 @@
 import { PrismaClient, ProductType, ProductStatus, UserRole } from "@prisma/client";
 import { hash } from "argon2";
 import slugify from "slugify";
-import { writeFile, mkdir } from "fs/promises";
-import { join } from "path";
 import { existsSync } from "fs";
 
 // Ensure we use the generated client
@@ -11,50 +9,16 @@ const prisma = new PrismaClient({
 });
 
 /**
- * Cache local de imágenes: descarga una vez desde picsum y la guarda
- * en /public/seed-images/. Las siguientes veces sirve la copia local,
- * que carga mucho más rápido que un fetch externo en cada seed.
+ * Devuelve la URL pública de una imagen de seed.
+ * Las imágenes se generan con `scripts/generate-seed-images.ts` y se
+ * incluyen en /public/seed-images/ para servirlas directamente desde
+ * el CDN sin depender de servicios externos.
  */
-const SEED_IMAGES_DIR = join(process.cwd(), "public", "seed-images");
-const imageCache = new Map<string, string>();
-
-async function ensureSeedImageDir() {
-  if (!existsSync(SEED_IMAGES_DIR)) {
-    await mkdir(SEED_IMAGES_DIR, { recursive: true });
-  }
-}
-
-async function seedImage(seedKey: string, width: number, height: number): Promise<string> {
-  const cacheKey = `${seedKey}-${width}x${height}`;
-  if (imageCache.has(cacheKey)) return imageCache.get(cacheKey)!;
-
-  await ensureSeedImageDir();
-  const fileName = `${cacheKey}.jpg`;
-  const localPath = join(SEED_IMAGES_DIR, fileName);
-  const publicUrl = `/seed-images/${fileName}`;
-
-  if (existsSync(localPath)) {
-    imageCache.set(cacheKey, publicUrl);
-    return publicUrl;
-  }
-
-  // Descargar desde picsum con timeout. Si falla, fallback a la URL externa.
-  try {
-    const url = `https://picsum.photos/seed/${encodeURIComponent(seedKey)}/${width}/${height}`;
-    const res = await fetch(url, {
-      signal: AbortSignal.timeout(10_000),
-      redirect: "follow",
-    });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const buffer = Buffer.from(await res.arrayBuffer());
-    await writeFile(localPath, buffer);
-    imageCache.set(cacheKey, publicUrl);
-    return publicUrl;
-  } catch (err) {
-    console.warn(`  ⚠️  Failed to cache image "${cacheKey}", using remote URL:`, (err as Error).message);
-    imageCache.set(cacheKey, url);
-    return url;
-  }
+function seedImageUrl(name: string, _width: number, _height: number): string {
+  // Las imágenes se sirven desde /seed-images/<name>.jpg
+  // Si la imagen no existe (no se regeneró el script), el <img> mostrará
+  // el alt y la UI se degrada gracefully.
+  return `/seed-images/${name}.jpg`;
 }
 
 async function main() {
@@ -253,7 +217,7 @@ async function main() {
       prisma.category.create({
         data: {
           ...c,
-          image: await seedImage(c.slug, 800, 600),
+          image: seedImageUrl(c.slug, 800, 600),
         },
       }),
     ),
@@ -904,11 +868,9 @@ Incluye todo lo necesario para empezar a vender online: filtros AJAX, búsqueda 
         price: productData.price,
         salePrice: productData.salePrice,
         currency: "USD",
-        coverImage: await seedImage(slugify(productData.title, { lower: true }), 800, 600),
-        gallery: await Promise.all(
-          Array.from({ length: 5 }, (_, i) =>
-            seedImage(`${slugify(productData.title, { lower: true })}-${i}`, 1200, 800),
-          ),
+        coverImage: seedImageUrl(slugify(productData.title, { lower: true }), 800, 600),
+        gallery: Array.from({ length: 5 }, (_, i) =>
+          seedImageUrl(`${slugify(productData.title, { lower: true })}-${i}`, 1200, 800),
         ),
         features: productData.features,
         compatibility: productData.compatibility,
