@@ -56,10 +56,10 @@ COPY --from=builder --chown=nextjs:nodejs /app/node_modules/.prisma ./node_modul
 # node_modules de Prisma para runtime
 COPY --from=builder --chown=nextjs:nodejs /app/node_modules/@prisma ./node_modules/@prisma
 
-# Instalar prisma y tsx como devDependencies para poder correr migraciones
+# Instalar prisma y tsx globalmente para poder correr migraciones
 # desde la terminal del contenedor
 USER root
-RUN corepack enable && pnpm add -g prisma@6.19.3 tsx@4.19.2
+RUN npm install -g prisma@6.19.3 tsx@4.19.2
 USER nextjs
 
 USER nextjs
