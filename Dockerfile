@@ -59,11 +59,8 @@ COPY --from=builder --chown=nextjs:nodejs /app/node_modules/@prisma ./node_modul
 # Instalar prisma y tsx globalmente para poder correr migraciones
 # desde la terminal del contenedor
 USER root
-RUN npm install -g prisma@6.19.3 tsx@4.19.2 slugify argon2
-USER nextjs
-
-# Crear carpetas de storage local (uploads y productos) con permisos correctos
-RUN mkdir -p /app/storage/products /app/public/uploads && \
+RUN npm install -g prisma@6.19.3 tsx@4.19.2 slugify argon2 && \
+    mkdir -p /app/storage/products /app/public/uploads && \
     chown nextjs:nodejs /app/storage /app/storage/products /app/public/uploads
 
 USER nextjs
