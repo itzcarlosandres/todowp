@@ -26,6 +26,10 @@ ENV NEXTAUTH_URL="http://localhost:3000"
 # Generar cliente Prisma (sin internet, usa el schema local)
 RUN corepack enable && pnpm db:generate
 # Build de Next.js con output standalone
+# NODE_OPTIONS aumenta el heap de Node para builds con muchos archivos
+# (CKEditor + 98 imágenes locales + prisma client)
+ENV NODE_OPTIONS="--max-old-space-size=4096"
+# pnpm build ejecuta "next build" (definido en package.json scripts)
 RUN pnpm build
 
 # ---- Stage 3: runner (imagen final mínima) ----
