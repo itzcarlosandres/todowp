@@ -109,8 +109,8 @@ async function extractPlaceholdersFromSeed(): Promise<Placeholder[]> {
     for (let k = 0; k < 5; k++) {
       placeholders.push({
         name: `${slug}-${k}`,
-        width: 1200,
-        height: 800,
+        width: 800,
+        height: 600,
         label: title.split(" - ")[0] ?? title,
         subtitle: `Vista ${k + 1}`,
         category: type in PALETTES ? type : "OTHER",
@@ -133,8 +133,8 @@ async function extractPlaceholdersFromSeed(): Promise<Placeholder[]> {
   for (const post of BLOG_POSTS) {
     placeholders.push({
       name: `blog-${post.slug}`,
-      width: 1200,
-      height: 630,
+      width: 800,
+      height: 420,
       label: post.title,
       subtitle: "Blog",
       category: "BLOG",
@@ -210,7 +210,8 @@ async function main() {
     const svg = makeSvg(p);
     const out = join(OUT_DIR, `${p.name}.jpg`);
     await sharp(Buffer.from(svg))
-      .jpeg({ quality: 85, progressive: true })
+      .resize({ width: Math.min(p.width, 800), withoutEnlargement: true })
+      .jpeg({ quality: 60, progressive: true, mozjpeg: false })
       .toFile(out);
     process.stdout.write(".");
   }
