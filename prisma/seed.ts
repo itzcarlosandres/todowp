@@ -15,10 +15,8 @@ const prisma = new PrismaClient({
  * el CDN sin depender de servicios externos.
  */
 function seedImageUrl(name: string, _width: number, _height: number): string {
-  // Las imágenes se sirven desde /seed-images/<name>.jpg
-  // Si la imagen no existe (no se regeneró el script), el <img> mostrará
-  // el alt y la UI se degrada gracefully.
-  return `/seed-images/${name}.jpg`;
+  // Las imágenes SVG se sirven desde /seed-images/<name>.svg
+  return `/seed-images/${name}.svg`;
 }
 
 async function main() {

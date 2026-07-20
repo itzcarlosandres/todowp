@@ -3,17 +3,16 @@
  * directamente del seed.ts para que las URLs generadas coincidan
  * exactamente con las que el seed espera.
  *
- * Las imágenes se guardan en /public/seed-images/ y se incluyen en el
- * repositorio para servirse directamente desde el CDN sin depender de
- * servicios externos como picsum.photos.
+ * Las imágenes se guardan en /public/seed-images/ como SVG (NO JPG)
+ * para que sean archivos de TEXTO pequeños y rápidos de transferir.
+ * Next.js las sirve directamente y se ven correctamente en el navegador.
  *
- * Uso:  pnpm tsx scripts/generate-seed-images.ts
+ * Uso:  pnpm seed:images
  */
 import { mkdir, readdir, writeFile, readFile } from "fs/promises";
 import { existsSync } from "fs";
 import { join } from "path";
 import slugify from "slugify";
-import sharp from "sharp";
 
 const OUT_DIR = join(process.cwd(), "public", "seed-images");
 const SEED_FILE = join(process.cwd(), "prisma", "seed.ts");
@@ -38,62 +37,80 @@ const PALETTES: Record<string, [string, string]> = {
 };
 
 interface Placeholder {
-  /** Nombre del archivo (sin extensión) */
   name: string;
-  /** Ancho */
   width: number;
-  /** Alto */
   height: number;
-  /** Etiqueta grande */
   label: string;
-  /** Subtítulo */
   subtitle: string;
-  /** Categoría para elegir paleta */
   category: keyof typeof PALETTES;
 }
 
-/**
- * Extrae títulos y slugs del seed.ts. Busca los `title: "..."` dentro
- * de los arrays de productsData y los mapea a Placeholders.
- */
-async function extractPlaceholdersFromSeed(): Promise<Placeholder[]> {
-  const content = await readFile(SEED_FILE, "utf-8");
+const CATEGORIES: Array<{ slug: string; name: string }> = [
+  { slug: "3d-assets", name: "3D Assets" },
+  { slug: "appstudio", name: "AppStudio" },
+  { slug: "brandify", name: "Brandify" },
+  { slug: "codeforge", name: "CodeForge" },
+  { slug: "designhouse", name: "DesignHouse" },
+  { slug: "email-templates", name: "Email Templates" },
+  { slug: "gift-cards", name: "Gift Cards" },
+  { slug: "guias", name: "Guías" },
+  { slug: "icons-graphics", name: "Icons & Graphics" },
+  { slug: "landing-pages", name: "Landing Pages" },
+  { slug: "licenses", name: "Licenses" },
+  { slug: "mobile-apps", name: "Mobile Apps" },
+  { slug: "novedades", name: "Novedades" },
+  { slug: "php-scripts", name: "PHP Scripts" },
+  { slug: "pixellab", name: "PixelLab" },
+  { slug: "recursos", name: "Recursos" },
+  { slug: "saas-apps", name: "SaaS Apps" },
+  { slug: "softcraft", name: "SoftCraft" },
+  { slug: "themerex", name: "ThemeRex" },
+  { slug: "tutoriales", name: "Tutoriales" },
+  { slug: "ui-templates", name: "UI Templates" },
+  { slug: "wordpress-plugins", name: "WordPress Plugins" },
+  { slug: "wordpress-themes", name: "WordPress Themes" },
+  { slug: "wpforge", name: "WPForge" },
+];
+
+const PRODUCTS: Array<{ title: string; type: keyof typeof PALETTES }> = [
+  { title: "Aurora - Multipurpose WordPress Theme", type: "THEME" },
+  { title: "NexusCommerce - WooCommerce Theme", type: "THEME" },
+  { title: "FormForge Pro - Advanced Form Builder", type: "PLUGIN" },
+  { title: "SEO Master Suite", type: "PLUGIN" },
+  { title: "CloudStack - SaaS Starter Kit", type: "SAAS" },
+  { title: "InvoicePro - Sistema de Facturación", type: "SAAS" },
+  { title: "Luxe Icons Pack", type: "ICON_PACK" },
+  { title: "MobileApp Starter - React Native", type: "MOBILE_APP" },
+  { title: "Newsletter Pro Templates", type: "EMAIL_TEMPLATE" },
+  { title: "Convertly - Landing Page Pack", type: "LANDING_PAGE" },
+  { title: "3D Universe - Asset Pack", type: "GRAPHICS" },
+  { title: "Minimal UI Kit", type: "TEMPLATE" },
+];
+
+const BLOG_POSTS: Array<{ slug: string; title: string }> = [
+  {
+    slug: "10-mejores-themes-wordpress-2024",
+    title: "Top 10 Mejores Themes de WordPress para 2024",
+  },
+  {
+    slug: "guia-completa-plugins-esenciales",
+    title: "Guía completa de plugins esenciales para tu sitio",
+  },
+];
+
+function buildPlaceholders(): Placeholder[] {
   const placeholders: Placeholder[] = [];
 
-  // 1. Categorías: parsea la sección "Creating categories..."
-  const categoryMatches = [
-    ...content.matchAll(/name:\s*"([^"]+)",[\s\S]*?slug:\s*"([^"]+)"/g),
-  ];
-  for (const m of categoryMatches) {
-    const name = m[1] ?? "";
-    const slug = m[2] ?? "";
+  for (const cat of CATEGORIES) {
     placeholders.push({
-      name: `category-${slug}`,
+      name: `category-${cat.slug}`,
       width: 800,
       height: 600,
-      label: name,
+      label: cat.name,
       subtitle: "Categoría",
       category: "CATEGORY",
     });
   }
-
-  // 2. Productos: lista hardcodeada con los slugs reales que produce el seed.
-  // Mantenemos sincronización con prisma/seed.ts. Si agregas un producto
-  // nuevo, también agrégalo aquí.
-  const PRODUCTS: Array<{ title: string; type: keyof typeof PALETTES }> = [
-    { title: "Aurora - Multipurpose WordPress Theme", type: "THEME" },
-    { title: "NexusCommerce - WooCommerce Theme", type: "THEME" },
-    { title: "FormForge Pro - Advanced Form Builder", type: "PLUGIN" },
-    { title: "SEO Master Suite", type: "PLUGIN" },
-    { title: "CloudStack - SaaS Starter Kit", type: "SAAS" },
-    { title: "InvoicePro - Sistema de Facturación", type: "SAAS" },
-    { title: "Luxe Icons Pack", type: "ICON_PACK" },
-    { title: "MobileApp Starter - React Native", type: "MOBILE_APP" },
-    { title: "Newsletter Pro Templates", type: "EMAIL_TEMPLATE" },
-    { title: "Convertly - Landing Page Pack", type: "LANDING_PAGE" },
-    { title: "3D Universe - Asset Pack", type: "GRAPHICS" },
-    { title: "Minimal UI Kit", type: "TEMPLATE" },
-  ];
 
   for (const { title, type } of PRODUCTS) {
     const slug = slugify(title, { lower: true });
@@ -118,18 +135,6 @@ async function extractPlaceholdersFromSeed(): Promise<Placeholder[]> {
     }
   }
 
-  // 3. Blog: slugs reales que produce el seed.
-  const BLOG_POSTS: Array<{ slug: string; title: string }> = [
-    {
-      slug: "10-mejores-themes-wordpress-2024",
-      title: "Top 10 Mejores Themes de WordPress para 2024",
-    },
-    {
-      slug: "guia-completa-plugins-esenciales",
-      title: "Guía completa de plugins esenciales para tu sitio",
-    },
-  ];
-
   for (const post of BLOG_POSTS) {
     placeholders.push({
       name: `blog-${post.slug}`,
@@ -149,27 +154,27 @@ function makeSvg(p: Placeholder): string {
     PALETTES.OTHER) as [string, string];
   const c1 = palette[0];
   const c2 = palette[1];
-  const fontSize = Math.round(p.width * 0.07);
-  const subFontSize = Math.round(p.width * 0.025);
+  const fontSize = Math.round(p.width * 0.06);
+  const subFontSize = Math.round(p.width * 0.022);
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${p.width} ${p.height}" width="${p.width}" height="${p.height}">
-  <defs>
-    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="${c1}"/>
-      <stop offset="100%" stop-color="${c2}"/>
-    </linearGradient>
-    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
-    </pattern>
-  </defs>
-  <rect width="100%" height="100%" fill="url(#g)"/>
-  <rect width="100%" height="100%" fill="url(#grid)"/>
-  <g transform="translate(${p.width / 2}, ${p.height / 2})" text-anchor="middle" fill="white" font-family="system-ui, -apple-system, sans-serif">
-    <text y="-20" font-size="${fontSize}" font-weight="800" letter-spacing="-2">${escapeXml(p.label)}</text>
-    <text y="${fontSize * 0.5}" font-size="${subFontSize}" font-weight="400" opacity="0.85">${escapeXml(p.subtitle)}</text>
-  </g>
-  <g transform="translate(40, ${p.height - 40})" fill="white" font-family="system-ui, sans-serif" opacity="0.6">
-    <text font-size="${subFontSize * 0.6}" font-weight="600">TodoWP</text>
-  </g>
+<defs>
+<linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+<stop offset="0%" stop-color="${c1}"/>
+<stop offset="100%" stop-color="${c2}"/>
+</linearGradient>
+<pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+<path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+</pattern>
+</defs>
+<rect width="100%" height="100%" fill="url(#g)"/>
+<rect width="100%" height="100%" fill="url(#grid)"/>
+<g transform="translate(${p.width / 2}, ${p.height / 2})" text-anchor="middle" fill="white" font-family="system-ui, -apple-system, sans-serif">
+<text y="-15" font-size="${fontSize}" font-weight="800" letter-spacing="-1.5">${escapeXml(p.label)}</text>
+<text y="${fontSize * 0.5}" font-size="${subFontSize}" font-weight="400" opacity="0.85">${escapeXml(p.subtitle)}</text>
+</g>
+<g transform="translate(40, ${p.height - 30})" fill="white" font-family="system-ui, sans-serif" opacity="0.6">
+<text font-size="${subFontSize * 0.5}" font-weight="600">TodoWP</text>
+</g>
 </svg>`;
 }
 
@@ -187,17 +192,16 @@ async function main() {
     await mkdir(OUT_DIR, { recursive: true });
   }
 
-  const placeholders = await extractPlaceholdersFromSeed();
+  const placeholders = buildPlaceholders();
   console.log(`📋 Found ${placeholders.length} images to generate`);
 
-  // Comprobar cuáles faltan
   const existing = new Set<string>(
     existsSync(OUT_DIR)
-      ? (await readdir(OUT_DIR)).filter((f) => f.endsWith(".jpg"))
+      ? (await readdir(OUT_DIR)).filter((f) => f.endsWith(".svg"))
       : [],
   );
 
-  const missing = placeholders.filter((p) => !existing.has(`${p.name}.jpg`));
+  const missing = placeholders.filter((p) => !existing.has(`${p.name}.svg`));
 
   if (missing.length === 0 && placeholders.length > 0) {
     console.log(`✅ All ${placeholders.length} seed images already exist.`);
@@ -208,23 +212,12 @@ async function main() {
 
   for (const p of missing) {
     const svg = makeSvg(p);
-    const out = join(OUT_DIR, `${p.name}.jpg`);
-    await sharp(Buffer.from(svg))
-      .resize({ width: Math.min(p.width, 800), withoutEnlargement: true })
-      .jpeg({ quality: 60, progressive: true, mozjpeg: false })
-      .toFile(out);
+    const out = join(OUT_DIR, `${p.name}.svg`);
+    await writeFile(out, svg, "utf-8");
     process.stdout.write(".");
   }
   console.log(`\n✅ Generated ${missing.length} images in ${OUT_DIR}`);
   console.log(`📦 Total: ${placeholders.length} seed images`);
-
-  // Listado de archivos para debug
-  if (process.env.DEBUG) {
-    console.log("\nFile list:");
-    for (const p of placeholders) {
-      console.log(`  /seed-images/${p.name}.jpg`);
-    }
-  }
 }
 
 main().catch((err) => {

@@ -25,15 +25,9 @@ ENV AUTH_URL="http://localhost:3000"
 ENV NEXTAUTH_URL="http://localhost:3000"
 # Generar cliente Prisma (sin internet, usa el schema local)
 RUN corepack enable && pnpm db:generate
-# Generar imágenes del seed (solo si la carpeta está vacía)
-# Esto evita que el repo sea pesado y reduce el build context
-RUN if [ -z "$(ls -A public/seed-images/ 2>/dev/null | grep -v .gitkeep)" ]; then \
-      npm install -g tsx@4.19.2 sharp@0.35.3 slugify@1.6.6 && \
-      NODE_PATH=/usr/local/lib/node_modules tsx scripts/generate-seed-images.ts; \
-    fi
 # Build de Next.js con output standalone
 # NODE_OPTIONS aumenta el heap de Node para builds con muchos archivos
-# (CKEditor + 98 imágenes locales + prisma client)
+# (CKEditor + prisma client)
 ENV NODE_OPTIONS="--max-old-space-size=4096"
 # pnpm build ejecuta "next build" (definido en package.json scripts)
 RUN pnpm build
